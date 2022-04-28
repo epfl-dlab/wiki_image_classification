@@ -80,6 +80,8 @@ class DataLoader:
         if self.plot_distribution:
             sorted_indices = np.argsort(np.sum(y_true, axis=0))
             sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
+            print('Number of images per class')
+            print(sorted_images_per_class)
             mask_kept = y_true.sum(axis=0)[sorted_indices] > self.min_nr_images_per_class
             mask_removed = y_true.sum(axis=0)[sorted_indices] < self.min_nr_images_per_class
             plt.figure(figsize=(12, 15))
@@ -307,9 +309,9 @@ def main():
         
         # Separate into train/val/test
         print('\n==================== DATA SEPARATOR ======================\n')
-        separator = DataSeparator(loader.data, oversampling=False)
-        test = separator.test
-        test.to_json('data/test_df.json.bz2', compression='bz2')
+        # separator = DataSeparator(loader.data, oversampling=True)
+        # test = separator.test
+        # test.to_json('data/test_df.json.bz2', compression='bz2')
 
         # Construct and train mode, plotting accuracy and loss on train & validation sets
         print('\n===================== MODEL TRAINER =====================\n')
