@@ -79,6 +79,8 @@ class DataLoader:
         if self.plot_distribution:
             sorted_indices = np.argsort(np.sum(y_true, axis=0))
             sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
+            print('Number of images per class')
+            print(sorted_images_per_class)
             mask_kept = y_true.sum(axis=0)[sorted_indices] > self.min_nr_images_per_class
             mask_removed = y_true.sum(axis=0)[sorted_indices] < self.min_nr_images_per_class
             plt.figure(figsize=(12, 15))
@@ -292,19 +294,19 @@ def main():
     if not use_presaved_model:
         # Load image<->label dataframe and clean it
         print('\n====================== DATA LOADER ======================\n')
-        loader = DataLoader('data/image_labels.json.bz2', 1e4, 64, plot_distribution=True)
+        loader = DataLoader('data/image_labels.json.bz2', 0, 64, plot_distribution=True)
         
         # Separate into train/val/test
         print('\n==================== DATA SEPARATOR ======================\n')
-        separator = DataSeparator(loader.data, oversampling=False)
-        test = separator.test
-        test.to_json('data/test_df.json.bz2', compression='bz2')
+        # separator = DataSeparator(loader.data, oversampling=True)
+        # test = separator.test
+        # test.to_json('data/test_df.json.bz2', compression='bz2')
 
         # Construct and train mode, plotting accuracy and loss on train & validation sets
         print('\n===================== MODEL TRAINER =====================\n')
-        model_trainer = ModelTrainer(separator.train, separator.val)
-        model = model_trainer.model
-        model.save('saved_model/my_model')
+        # model_trainer = ModelTrainer(separator.train, separator.val)
+        # model = model_trainer.model
+        # model.save('saved_model/my_model')
     else:
         print('\n============ Using pre-saved test-set and saved model ============\n')
         test = pd.read_json('data/test_df.json.bz2', compression='bz2')
@@ -312,7 +314,7 @@ def main():
     
     # Evaluate on test set and ouput metrics (precision, recall, accuracy)
     print('\n======================= EVALUATOR =======================\n')
-    evaluator = Evaluator(test, model, use_presaved_predictions)
+    #evaluator = Evaluator(test, model, use_presaved_predictions)
 
 
 if __name__ == '__main__':
