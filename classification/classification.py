@@ -3,7 +3,9 @@ import pandas as pd
 import numpy as np
 import urllib.parse
 import time
+import os
 from matplotlib import pyplot as plt
+from datetime import datetime
 
 # ML
 from sklearn.model_selection import train_test_split
@@ -20,7 +22,6 @@ from keras.layers import Dense, Flatten
 
 # Settings
 IMAGE_DIMENSION = 64
-EPOCHS = 50
 
 
 class DataLoader:
@@ -79,6 +80,8 @@ class DataLoader:
         if self.plot_distribution:
             sorted_indices = np.argsort(np.sum(y_true, axis=0))
             sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
+            print('Number of images per class')
+            print(sorted_images_per_class)
             mask_kept = y_true.sum(axis=0)[sorted_indices] > self.min_nr_images_per_class
             mask_removed = y_true.sum(axis=0)[sorted_indices] < self.min_nr_images_per_class
             plt.figure(figsize=(12, 15))
@@ -98,8 +101,8 @@ class DataLoader:
 class DataSeparator:
     def __init__(self, image_label_df, oversampling=False):
 
-        train_df, test_df = train_test_split(image_label_df, test_size=0.1, random_state=17)
-        train_df, val_df = train_test_split(train_df, train_size=0.9, random_state=17)
+        self.train_df, self.test_df = train_test_split(image_label_df, test_size=0.1, random_state=17)
+        self.train_df, self.val_df = train_test_split(self.train_df, train_size=0.9, random_state=17)
 
         # Data generator for training and validation sets
         if oversampling:
@@ -111,13 +114,13 @@ class DataSeparator:
             train_generator = ImageDataGenerator(validation_split=0.10, rescale=1/255)
 
         print('\n----------- Train images -----------')
-        self.train = train_generator.flow_from_dataframe(dataframe=train_df,       directory='/scratch/WIT_Dataset/images', 
+        self.train = train_generator.flow_from_dataframe(dataframe=self.train_df,  directory='/scratch/WIT_Dataset/images', 
                                                          x_col='image_path',       y_col='taxo_labels', 
                                                          class_mode='categorical', subset='training',
                                                          validate_filenames=True,  target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION)) # the dimensions to which all images found will be resized.
 
         print('\n----------- Validation images -----------')          
-        self.val = train_generator.flow_from_dataframe(dataframe=val_df,         directory='/scratch/WIT_Dataset/images', 
+        self.val = train_generator.flow_from_dataframe(dataframe=self.val_df,    directory='/scratch/WIT_Dataset/images', 
                                                        x_col='image_path',       y_col='taxo_labels', 
                                                        class_mode='categorical', subset='validation',
                                                        validate_filenames=True,  target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION))
@@ -125,7 +128,7 @@ class DataSeparator:
         # Data generator for test set
         print('\n----------- Test images -----------')
         # balanced_test_df = self.balance_test(test_df)    
-        self.test = test_df
+        self.test = self.test_df
         
     def balance_test(self, test_df):
         # TODO!
@@ -134,11 +137,12 @@ class DataSeparator:
 
 
 class ModelTrainer:
-    def __init__(self, train, val, use_class_weights=False):
+    def __init__(self, train, val, epochs=50, use_class_weights=False):
         self.train = train
         self.val = val
         self.n_classes = len(train.class_indices)
         self.model = self.construct_model()
+        self.epochs = epochs
         history = self.train_model()
         self.plot_history(history)
 
@@ -166,7 +170,7 @@ class ModelTrainer:
         - On what loss function to choose: https://stats.stackexchange.com/questions/260505/should-i-use-a-categorical-cross-entropy-or-binary-cross-entropy-loss-for-binary
         """
         self.model.compile(optimizer=Adam(learning_rate=0.0001), loss='binary_crossentropy', metrics=['accuracy']) 
-        history = self.model.fit(self.train, epochs=EPOCHS, steps_per_epoch=15, 
+        history = self.model.fit(self.train, epochs=self.epochs, steps_per_epoch=15, 
                                  validation_data=self.val, validation_steps=7,
                                  verbose=2)
         return history
@@ -177,7 +181,7 @@ class ModelTrainer:
 
         loss = history.history['loss']
         val_loss = history.history['val_loss']
-        epochs_range = range(EPOCHS)
+        epochs_range = range(self.epochs)
 
         plt.figure(figsize=(12, 5))
         plt.subplot(1, 2, 1)
@@ -287,22 +291,31 @@ def main():
     use_presaved_model = False
     use_presaved_predictions = False
 
+    # ----- Hyperparameters -----
+    # Data
+    wit_segments = 'one' # 'all'
+    min_nr_images_per_class = 1e4
+    # Model training
+    threshold = 0.2
+    epochs = 50
+    oversampling = False
     use_class_weights = False
+    # ---------------------------
 
     if not use_presaved_model:
         # Load image<->label dataframe and clean it
         print('\n====================== DATA LOADER ======================\n')
-        loader = DataLoader('data/image_labels.json.bz2', 1e4, 64, plot_distribution=True)
+        loader = DataLoader('data/image_labels.json.bz2', min_nr_images_per_class, 64, plot_distribution=True)
         
         # Separate into train/val/test
         print('\n==================== DATA SEPARATOR ======================\n')
-        separator = DataSeparator(loader.data, oversampling=False)
-        test = separator.test
-        test.to_json('data/test_df.json.bz2', compression='bz2')
+        # separator = DataSeparator(loader.data, oversampling=True)
+        # test = separator.test
+        # test.to_json('data/test_df.json.bz2', compression='bz2')
 
         # Construct and train mode, plotting accuracy and loss on train & validation sets
         print('\n===================== MODEL TRAINER =====================\n')
-        model_trainer = ModelTrainer(separator.train, separator.val)
+        model_trainer = ModelTrainer(separator.train, separator.val, epochs)
         model = model_trainer.model
         model.save('saved_model/my_model')
     else:
@@ -312,7 +325,28 @@ def main():
     
     # Evaluate on test set and ouput metrics (precision, recall, accuracy)
     print('\n======================= EVALUATOR =======================\n')
-    evaluator = Evaluator(test, model, use_presaved_predictions)
+    evaluator = Evaluator(test, model, use_presaved_predictions, threshold)
+
+    # Save results in folder for further analysis
+    results_path = os.getcwd() + '/results/' + datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
+    os.mkdir(results_path)
+    with open(results_path + 'result.txt', 'w') as file:
+        l1 = f'DATA: \n - WIT segments: {wit_segments}, with {loader.data.shape[0]} images; \
+                     \n - train (81%): {separator.train_df.shape[0]}; valid (10%): {separator.val_df.shape[0]}; test (9%): {separator.test_df.shape[0]}                  \
+                     \n - distribution of images per class: see plot in {results_path}/class_distribution.png \
+                     \n - imbalance level: ?'
+        l2 = f'MODEL:\n - epochs: {epochs} \
+                     \n - learning rate: {0} \
+                     \n - threshold: {threshold} \
+                     \n - training loss and accuracy over time: see plot in {results_path}/train_val_loss.png \
+                     \n - model summary: ' # to put model summary into print: https://stackoverflow.com/questions/41665799/keras-model-summary-object-to-string
+        l3 = f'HYPER-PARAMETERS: \
+                     \n - threshold: {threshold} \
+                     \n - epochs: {epochs} \
+                     \n - minimal number of images per class: {min_nr_images_per_class} \
+                     \n - oversampling: {oversampling} \
+                     \n - using class weights: {use_class_weights}'
+        file.writelines([l3, l2, l1])
 
 
 if __name__ == '__main__':
