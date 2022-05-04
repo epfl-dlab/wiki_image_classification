@@ -1,0 +1,25 @@
+Baseline run, segment 0, affine oversampling all classes.
+ HYPER-PARAMETERS:                         
+ - threshold: 0.2                         
+ - epochs: 50                         
+ - minimal number of images per class: 10000.0                         
+ - oversampling: True                         
+ - using class weights: False
+ MODEL:
+ - epochs: 50                         
+ - learning rate: 0.0001                         
+ - threshold: 0.2                         
+ - training loss and accuracy over time: see train_val_loss.png                         
+ - model summary: see model_summary.txt
+ METRICS: 
+ - average precision score (macro): 0.06961440625035488
+ - average precision score (weighted): 0.14801637339243634
+ - ROC AUC score: 0.5
+
+CONCLUSION:
+From the predictions one can see that there's not much variation in the prediction values for none of the classes. 
+What does this mean?
+ - is there a problem in the model? Should the model be more complex?
+ - is there a problem in the dataset itself that is not separable enough?
+ - is there a problem in the training? Give it more epochs? (Notice the weird fact that the loss function converges at the same place for training and validation sets)
+How can one solve this? 
