@@ -48,7 +48,7 @@ class DataLoader:
         # After /commons/ comes the file location as it is organized in the WIT_dataset
         df['image_path'] = [url.split('commons/')[1] for url in df.image_url]
         # Decode filename paths so they are validated by tensorflow later
-        df['image_path'] = df['image_path'].apply(lambda encoded_filename : urllib.parse.unquote(encoded_filename))
+        df['image_path'] = df['image_path'].apply(lambda encoded_filename : urllib.parse.unquote(encoded_filename).encode().decode('unicode-escape'))
         return df
 
     def get_y_true(self, samples, class_indices, classes):
