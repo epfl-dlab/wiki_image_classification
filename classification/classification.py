@@ -20,16 +20,17 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten
 
 
-# Settings
+# Global variables
 IMAGE_DIMENSION = 64
 
 
 class DataLoader:
-    def __init__(self, filename, min_nr_images_per_class, image_dimension, plot_distribution=False):
+    def __init__(self, filename, min_nr_images_per_class, image_dimension, results_path, plot_distribution=False):
         self.filename = filename
         self.image_dimension = image_dimension
         self.min_nr_images_per_class = min_nr_images_per_class
         self.plot_distribution = plot_distribution
+        self.results_path = results_path
         print('Loading dataframe...')
         self.data = self.load_dataframe()
         print('Finished loading dataframe! Started cleaning dataframe...')
@@ -47,7 +48,7 @@ class DataLoader:
         # After /commons/ comes the file location as it is organized in the WIT_dataset
         df['image_path'] = [url.split('commons/')[1] for url in df.image_url]
         # Decode filename paths so they are validated by tensorflow later
-        df['image_path'] = df['image_path'].apply(lambda encoded_filename : urllib.parse.unquote(encoded_filename))
+        df['image_path'] = df['image_path'].apply(lambda encoded_filename : urllib.parse.unquote(encoded_filename).encode().decode('unicode-escape'))
         return df
 
     def get_y_true(self, samples, class_indices, classes):
@@ -80,8 +81,8 @@ class DataLoader:
         if self.plot_distribution:
             sorted_indices = np.argsort(np.sum(y_true, axis=0))
             sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
-            print('Number of images per class')
-            print(sorted_images_per_class)
+            # print('Number of images per class')
+            # print(sorted_images_per_class)
             mask_kept = y_true.sum(axis=0)[sorted_indices] > self.min_nr_images_per_class
             mask_removed = y_true.sum(axis=0)[sorted_indices] < self.min_nr_images_per_class
             plt.figure(figsize=(12, 15))
@@ -93,7 +94,7 @@ class DataLoader:
             plt.xlabel('Count')
             plt.grid(True)
             plt.legend(['Kept', 'Removed'], loc='upper right')
-            plt.savefig('results/class_distribution.png')
+            plt.savefig(f'{self.results_path}/class_distribution.png')
 
         return df
 
@@ -137,12 +138,16 @@ class DataSeparator:
 
 
 class ModelTrainer:
-    def __init__(self, train, val, epochs=50, use_class_weights=False):
+    def __init__(self, train, val, learning_rate, results_path, epochs=50, use_class_weights=False):
         self.train = train
         self.val = val
         self.n_classes = len(train.class_indices)
-        self.model = self.construct_model()
         self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.results_path = results_path
+        self.use_class_weights = use_class_weights
+        self.model = self.construct_model()
+    
         history = self.train_model()
         self.plot_history(history)
 
@@ -161,7 +166,9 @@ class ModelTrainer:
         model.add(Flatten())
         model.add(Dense(units=120, activation='relu'))
         model.add(Dense(units=self.n_classes, activation='sigmoid')) # output layer
-        model.summary()
+        model.summary() 
+        with open(f'{self.results_path}/model_summary.txt', 'w') as fh:
+            model.summary(print_fn=lambda x: fh.write(x + '\n'))
         return model
 
     def train_model(self):
@@ -169,11 +176,39 @@ class ModelTrainer:
         Compile and train model using the binary cross entropy as loss function.
         - On what loss function to choose: https://stats.stackexchange.com/questions/260505/should-i-use-a-categorical-cross-entropy-or-binary-cross-entropy-loss-for-binary
         """
-        self.model.compile(optimizer=Adam(learning_rate=0.0001), loss='binary_crossentropy', metrics=['accuracy']) 
-        history = self.model.fit(self.train, epochs=self.epochs, steps_per_epoch=15, 
+        self.model.compile(optimizer=Adam(learning_rate=self.learning_rate), loss='binary_crossentropy', metrics=['accuracy']) 
+        if self.use_class_weights:
+            class_weights = self.compute_class_weights(self.train)
+            history = self.model.fit(self.train, epochs=self.epochs, steps_per_epoch=15, 
+                                 validation_data=self.val, validation_steps=7,
+                                 verbose=2, 
+                                 class_weight=class_weights)
+        else:
+            history = self.model.fit(self.train, epochs=self.epochs, steps_per_epoch=15, 
                                  validation_data=self.val, validation_steps=7,
                                  verbose=2)
         return history
+
+    def compute_class_weights(train):
+        """
+        Computes class_weights to compensate imbalanced classes. Inspired in 
+        'https://towardsdatascience.com/dealing-with-imbalanced-data-in-tensorflow-class-weights-60f876911f99'.
+        Dictionary mapping class indices (integers) to a weight (float) value, 
+        used for weighting the loss function (during training only).
+        """
+        y_true = np.zeros((train.samples, len(train.class_indices))) # nr_rows=nr_images; nr_columns=nr_classes
+        for row_idx, row in enumerate(train.classes):
+            for idx in row:
+                y_true[row_idx, idx] = 1
+
+        class_count = y_true.sum(axis=0)
+        n_samples = y_true.shape[0] 
+        n_classes = y_true.shape[1]
+
+        # Compute class weights using balanced method
+        class_weights = [n_samples / (n_classes * freq) if freq > 0 else 1 for freq in class_count]
+        class_labels = range(len(class_weights))
+        return dict(zip(class_labels, class_weights))
     
     def plot_history(self, history):
         acc = history.history['accuracy']
@@ -203,18 +238,20 @@ class ModelTrainer:
         plt.plot(epochs_range, val_loss, label='Validation loss')
         plt.legend(loc='upper right')
         plt.title('Training and Validation Loss')
-        plt.savefig('results/train_val_loss.png')
+        plt.savefig(f'{self.results_path}/train_val_loss.png')
 
 
 class Evaluator:
-    def __init__(self, test_df, model, use_presaved_predictions=False, threshold=0.2):
+    def __init__(self, test_df, model, results_path, use_presaved_predictions=False, threshold=0.2):
         """
         - threshold: if the output generated by the corresponding output neuron is greater than threshold -> object detected
         """
         self.model = model
         self.test = self.get_generator_test_set(test_df)
         self.threshold = threshold
+        self.results_path = results_path
         print('Evaluating model on test set and generating metrics...')
+        self.metrics = {}
         self.evaluate_and_plot(use_presaved_predictions)
 
     def get_generator_test_set(self, test_df):
@@ -231,10 +268,12 @@ class Evaluator:
             predictions = self.model.predict(self.test, verbose=1)
             with open('checkpoints/predictions', 'wb') as f:
                 np.save(f, predictions)
+            with open(f'{self.results_path}/1000_lines_of_predictions.txt', 'w') as f:
+                np.savetxt(f, predictions[0:1000, :], fmt='%1.5f')
         else:
             print('Using pre-saved predictions...')
             with open('checkpoints/predictions', 'rb') as f:
-                predictions = np.load(f)   
+                predictions = np.load(f)
         y_pred = 1 * (predictions > self.threshold)
         y_true = np.zeros(y_pred.shape)
         for row_idx, row in enumerate(self.test.classes):
@@ -246,7 +285,8 @@ class Evaluator:
         metrics_df['index'] = np.concatenate((np.arange(start=0, stop=n_classes), [None, None, None, None]))
         
         # Output macro and micro accuracies
-        metrics_df.to_json('results/metrics.json')
+        with open(f'{self.results_path}/per_class_metrics', 'w') as f:
+            metrics_df.to_string(f)
         print(metrics_df.tail(4))
 
         # Average precision score
@@ -259,7 +299,7 @@ class Evaluator:
 
         # ROC AUC score
         print('\n ROC AUC score:')
-        print(roc_auc_score(y_true, y_pred))
+        print(roc_auc_score(y_true, predictions))
 
         # Precision and recall for each class
         fig, axs = plt.subplots(1, 2, figsize=(12,12))
@@ -283,70 +323,88 @@ class Evaluator:
         axs[1].set_yticklabels([])
         axs[1].set_xlabel('Recall')
         axs[1].grid(True)
-        plt.savefig('results/precision_recall.png')
+        plt.savefig(f'{self.results_path}/precision_recall.png')
+
+        self.metrics['average precision score (macro)'] = average_precision_score(y_true, y_pred, average='macro')
+        self.metrics['average precision score (weighted)'] = average_precision_score(y_true, y_pred, average='weighted')
+        self.metrics['ROC AUC score'] = roc_auc_score(y_true, y_pred)
         
 
 def main():
 
-    use_presaved_model = False
-    use_presaved_predictions = False
+    test_description = '\nTEST DESCRIPTION: Segment 0, NO oversampling, using class weights.\n'
+    print(test_description)
+
+    # Create folder for saving images during run
+    results_path = os.getcwd() + '/results/' + datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
+    os.mkdir(results_path)
 
     # ----- Hyperparameters -----
     # Data
-    wit_segments = 'one' # 'all'
+    # wit_segments = 'one' # 'all'
     min_nr_images_per_class = 1e4
     # Model training
-    threshold = 0.2
+    threshold = 0.2         # TODO: one threshold per class?
+    learning_rate = 0.0001  # TODO: perhaps make it gradually decreasing?
     epochs = 50
     oversampling = False
-    use_class_weights = False
+    use_class_weights = True
     # ---------------------------
+
+    # To speed-up testing, use pre-saved model and predictions:
+    use_presaved_model = False
+    use_presaved_predictions = False
+    # -----------------------------
 
     if not use_presaved_model:
         # Load image<->label dataframe and clean it
         print('\n====================== DATA LOADER ======================\n')
-        loader = DataLoader('data/image_labels.json.bz2', min_nr_images_per_class, 64, plot_distribution=True)
+        segments_0 = 'data/image_labels.json.bz2'
+        segments_012 = 'data/image_labels_0_1_2.json.bz2'
+        # all_segments = 
+        loader = DataLoader(segments_0, min_nr_images_per_class, 64, results_path, plot_distribution=True)
         
         # Separate into train/val/test
         print('\n==================== DATA SEPARATOR ======================\n')
-        # separator = DataSeparator(loader.data, oversampling=True)
-        # test = separator.test
-        # test.to_json('data/test_df.json.bz2', compression='bz2')
+        separator = DataSeparator(loader.data, oversampling)
+        test = separator.test
+        test.to_json('data/test_df.json.bz2', compression='bz2')
 
         # Construct and train mode, plotting accuracy and loss on train & validation sets
         print('\n===================== MODEL TRAINER =====================\n')
-        model_trainer = ModelTrainer(separator.train, separator.val, epochs)
+        model_trainer = ModelTrainer(separator.train, separator.val, learning_rate, results_path, epochs)
         model = model_trainer.model
-        model.save('saved_model/my_model')
+        model.save(f'{results_path}/saved_model')
     else:
-        print('\n============ Using pre-saved test-set and saved model ============\n')
+        print('\n-> Using pre-saved test-set and saved model\n')
         test = pd.read_json('data/test_df.json.bz2', compression='bz2')
-        model = tf.keras.models.load_model('saved_model/my_model')
+        model = tf.keras.models.load_model(f'{results_path}/saved_model')
     
     # Evaluate on test set and ouput metrics (precision, recall, accuracy)
     print('\n======================= EVALUATOR =======================\n')
-    evaluator = Evaluator(test, model, use_presaved_predictions, threshold)
+    evaluator = Evaluator(test, model, results_path, use_presaved_predictions, threshold)
 
     # Save results in folder for further analysis
-    results_path = os.getcwd() + '/results/' + datetime.now().strftime('%d-%m-%Y_%H:%M:%S')
-    os.mkdir(results_path)
-    with open(results_path + 'result.txt', 'w') as file:
-        l1 = f'DATA: \n - WIT segments: {wit_segments}, with {loader.data.shape[0]} images; \
+    with open(results_path + '/result.txt', 'w') as file:
+        l1 = f'DATA: \n - WIT segments: 012, with {loader.data.shape[0]} images; \
                      \n - train (81%): {separator.train_df.shape[0]}; valid (10%): {separator.val_df.shape[0]}; test (9%): {separator.test_df.shape[0]}                  \
-                     \n - distribution of images per class: see plot in {results_path}/class_distribution.png \
+                     \n - distribution of images per class: see class_distribution.png \
                      \n - imbalance level: ?'
-        l2 = f'MODEL:\n - epochs: {epochs} \
-                     \n - learning rate: {0} \
-                     \n - threshold: {threshold} \
-                     \n - training loss and accuracy over time: see plot in {results_path}/train_val_loss.png \
-                     \n - model summary: ' # to put model summary into print: https://stackoverflow.com/questions/41665799/keras-model-summary-object-to-string
-        l3 = f'HYPER-PARAMETERS: \
-                     \n - threshold: {threshold} \
-                     \n - epochs: {epochs} \
-                     \n - minimal number of images per class: {min_nr_images_per_class} \
-                     \n - oversampling: {oversampling} \
-                     \n - using class weights: {use_class_weights}'
-        file.writelines([l3, l2, l1])
+        l2 = f'\n MODEL:\n - epochs: {epochs} \
+                        \n - learning rate: {learning_rate} \
+                        \n - threshold: {threshold} \
+                        \n - training loss and accuracy over time: see train_val_loss.png \
+                        \n - model summary: see model_summary.txt' # to put model summary into print: https://stackoverflow.com/questions/41665799/keras-model-summary-object-to-string
+        l3 = f'\n HYPER-PARAMETERS: \
+                        \n - threshold: {threshold} \
+                        \n - epochs: {epochs} \
+                        \n - minimal number of images per class: {min_nr_images_per_class} \
+                        \n - oversampling: {oversampling} \
+                        \n - using class weights: {use_class_weights}'
+        l4 = f'\n METRICS: '
+        for metric in evaluator.metrics:
+            l4 += f'\n - {metric}: {evaluator.metrics[metric]}'
+        file.writelines([test_description, l3, l2, l4])
 
 
 if __name__ == '__main__':

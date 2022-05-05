@@ -1,0 +1,19 @@
+
+TEST DESCRIPTION: Segment 0, NO oversampling, using class weights.
+
+ HYPER-PARAMETERS:                         
+ - threshold: 0.2                         
+ - epochs: 50                         
+ - minimal number of images per class: 10000.0                         
+ - oversampling: False                         
+ - using class weights: True
+ MODEL:
+ - epochs: 50                         
+ - learning rate: 0.0001                         
+ - threshold: 0.2                         
+ - training loss and accuracy over time: see train_val_loss.png                         
+ - model summary: see model_summary.txt
+ METRICS: 
+ - average precision score (macro): 0.06961440625035488
+ - average precision score (weighted): 0.14801637339243634
+ - ROC AUC score: 0.5
