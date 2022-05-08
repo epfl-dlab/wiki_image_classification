@@ -2,20 +2,13 @@ import numpy as np
 import pandas as pd
 import networkx as nx
 import logging, sys
+import pickle
 
 from headParsing import find_head
 from iteration_utilities import duplicates, unique_everseen
 
 
-# logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-logging.basicConfig(filename='categories.log',
-                            filemode='w',
-                            format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',
-                            datefmt='%H:%M:%S',
-                            level=logging.DEBUG)
-
-logging.info("Label querying")
-
+logger = logging.getLogger()
 
 
 class Taxonomy:
@@ -40,6 +33,22 @@ class Taxonomy:
         depth = {node: len(sps) for node, sps in nx.shortest_path(G, target='CommonsRoot').items()}
         nx.set_node_attributes(G, depth, name='depth')
         self.G = G
+    
+    def dump_graph(self, path):
+        '''
+        Save the edge list in a file
+        '''
+        assert path.endswith('.pkl')
+        with open(path, 'wb') as f:
+            pickle.dump(self.G, f)
+    
+    def load_graph(self, path):
+        '''
+        Load the edge list from a file
+        '''
+        assert path.endswith('.pkl')
+        with open(path, 'rb') as f:
+            self.G = pickle.load(f)
 
     def reset_labels(self):
         '''
