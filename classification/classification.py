@@ -113,7 +113,7 @@ class DataSeparator:
                                                  zoom_range=0.2,         horizontal_flip=True, fill_mode='nearest') 
         else:
             train_generator = ImageDataGenerator(validation_split=0.10, rescale=1/255)
-
+                        
         print('\n----------- Train images -----------')
         self.train = train_generator.flow_from_dataframe(dataframe=self.train_df,  directory='/scratch/WIT_Dataset/images', 
                                                          x_col='image_path',       y_col='taxo_labels', 
