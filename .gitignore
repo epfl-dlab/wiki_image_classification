@@ -1,2 +1,4 @@
 data/*
 classification/data/*
+__pycache__/
+*.log
