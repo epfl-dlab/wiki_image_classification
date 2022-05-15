@@ -8,7 +8,7 @@ from headParsing import find_head
 from iteration_utilities import duplicates, unique_everseen
 
 
-logger = logging.getLogger()
+logger = logging.getLogger('taxonomy')
 
 
 class Taxonomy:
@@ -165,7 +165,7 @@ class Taxonomy:
             self.G.nodes[category]['visited'] = True
             self.visited_nodes += 1
             logging.debug(str(self.visited_nodes) + ' - Searching for ' + category +
-                          ' (depth ' + str(self.G.nodes[category]['depth']) + '), with parents ' +
+                          ' (depth ' + str(self.G.nodes[category].get('depth', None)) + '), with parents ' +
                           str(list(self.G.neighbors(category))) + '...')
 
             if(how == 'all'):
