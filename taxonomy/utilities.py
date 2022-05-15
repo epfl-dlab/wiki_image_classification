@@ -21,6 +21,7 @@ def init_logger(path, logger_name=None):
                                       datefmt='%H:%M:%S')
         if(isinstance(path, str)):
             handler = logging.FileHandler(path, mode='w')
+            open(path, 'a').close()
         else:
             handler = logging.StreamHandler(path)
         handler.setFormatter(formatter)
