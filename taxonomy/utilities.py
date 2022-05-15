@@ -2,11 +2,11 @@ import logging
 import urllib
 
 
-def init_logger(name, logger_name=None):
+def init_logger(path, logger_name=None):
     '''
     Initialize logger, using either a FileHandler or a StreamHandler.
     '''
-    assert isinstance(name, str) or isinstance(name, OutStream)
+    assert isinstance(path, str) or isinstance(path, OutStream)
 
     if(logger_name):
         logger = logging.getLogger(logger_name)
@@ -19,10 +19,10 @@ def init_logger(name, logger_name=None):
 
         formatter = logging.Formatter('%(asctime)s, %(levelname)s %(message)s',
                                       datefmt='%H:%M:%S')
-        if(isinstance(name, str)):
-            handler = logging.FileHandler(name, mode='w')
+        if(isinstance(path, str)):
+            handler = logging.FileHandler(path, mode='w')
         else:
-            handler = logging.StreamHandler(name)
+            handler = logging.StreamHandler(path)
         handler.setFormatter(formatter)
         logger.addHandler(handler)
     return logger
