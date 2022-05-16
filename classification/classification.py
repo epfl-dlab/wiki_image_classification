@@ -19,7 +19,6 @@ from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
 
-
 # Global variables
 IMAGE_DIMENSION = 64
 
@@ -169,6 +168,20 @@ class ModelTrainer:
         model.summary() 
         with open(f'{self.results_path}/model_summary.txt', 'w') as fh:
             model.summary(print_fn=lambda x: fh.write(x + '\n'))
+
+        tf.keras.utils.plot_model(
+            model,
+            to_file="model.png",
+            show_shapes=False,
+            show_dtype=False,
+            show_layer_names=True,
+            rankdir="TB",
+            expand_nested=False,
+            dpi=96,
+            layer_range=None,
+            show_layer_activations=False,
+        )
+        
         return model
 
     def train_model(self):
