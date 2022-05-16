@@ -17,10 +17,10 @@ def init_logger(path, logger_name=None):
     if(not logger.handlers):
         logger.setLevel(logging.DEBUG)
 
-        formatter = logging.Formatter('%(asctime)s, %(levelname)s %(message)s',
+        formatter = logging.Formatter(u'%(asctime)s, %(levelname)s %(message)s',
                                       datefmt='%H:%M:%S')
         if(isinstance(path, str)):
-            handler = logging.FileHandler(path, mode='w')
+            handler = logging.FileHandler(path, mode='w', encoding='utf-8')
             open(path, 'a').close()
         else:
             handler = logging.StreamHandler(path)
