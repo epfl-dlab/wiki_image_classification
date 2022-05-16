@@ -38,7 +38,7 @@ class Taxonomy:
         '''
         Save the edge list in a file
         '''
-        assert path.endswith('.pkl')
+        assert '.pkl' in path
         with open(path, 'wb') as f:
             pickle.dump(self.G, f)
     
@@ -46,7 +46,7 @@ class Taxonomy:
         '''
         Load the edge list from a file
         '''
-        assert path.endswith('.pkl')
+        assert '.pkl' in path
         with open(path, 'rb') as f:
             self.G = pickle.load(f)
 
