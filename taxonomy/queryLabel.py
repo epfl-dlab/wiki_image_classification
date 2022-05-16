@@ -157,46 +157,51 @@ class Taxonomy:
         '''
         assert isinstance(category, str)
 
-        if(self.G.nodes[category]['visited']):
-            logger.debug('Found ' + category + ' with label ' + str(self.G.nodes[category]['labels']))
-            return self.G.nodes[category]['labels']
+        try:
+            curr_node = self.G.nodes[category]
+        except ValueError:
+            self.error('Red link, skipping category ' + category)
+
+        if(curr_node['visited']):
+            logger.debug('Found ' + category + ' with label ' + str(curr_node['labels']))
+            return curr_node['labels']
         
         else:
-            self.G.nodes[category]['visited'] = True
+            curr_node['visited'] = True
             self.visited_nodes += 1
             logger.debug(str(self.visited_nodes) + ' - Searching for ' + category +
-                          ' (depth ' + str(self.G.nodes[category].get('depth', None)) + '), with parents ' +
+                          ' (depth ' + str(curr_node.get('depth', None)) + '), with parents ' +
                           str(list(self.G.neighbors(category))) + '...')
 
             if(how == 'all'):
                 for parent in self.G.neighbors(category):
-                    self.G.nodes[category]['labels'].update(self.get_label(parent, how))
-                return self.G.nodes[category]['labels']
+                    curr_node['labels'].update(self.get_label(parent, how))
+                return curr_node['labels']
 
             elif(how=='naive'):
                 # non-connected categories
-                if('depth' not in self.G.nodes[category]):
+                if('depth' not in curr_node):
                     return set()
     
-                depth = self.G.nodes[category]['depth']
+                depth = curr_node['depth']
                 for parent in self.G.neighbors(category):
                     try:
                         if(self.G.nodes[parent]['depth'] < depth):
-                            self.G.nodes[category]['labels'].update(self.get_label(parent, how))
+                            curr_node['labels'].update(self.get_label(parent, how))
                     # Not connected category (temp fix to template expansion)
                     except KeyError:
                         continue
-                return self.G.nodes[category]['labels']
+                return curr_node['labels']
 
             elif(how=='heuristics'):
 
                 # 0 Temporary solution to non-connected categories (due to missing template expansion)
-                if('depth' not in self.G.nodes[category]):
-                    logger.exception('Non connected category, returning empty set')
+                if('depth' not in curr_node):
+                    logger.error('Non connected category, returning empty set')
                     return set()
 
                 # 1 Hidden category
-                if(self.G.nodes[category]['hiddencat']):
+                if(curr_node['hiddencat']):
                     logger.debug('Hidden category, returning empty set')
                     return set()
 
@@ -236,30 +241,30 @@ class Taxonomy:
                 for common_head in common_heads:
                     if(common_head in nx.descendants(self.G, category) and 
                        not (common_head.isnumeric() or common_head in null_heads)):
-                        self.G.nodes[category]['labels'].update(self.get_label(common_head, how))
+                        curr_node['labels'].update(self.get_label(common_head, how))
                     else:
                         logger.debug('Common head ' + str(common_head) + ' not found or time-related')
                 
                 # Will be empty if no common_head is found, if the common_heads are
                 # all not valid category names, hidden categories or already visited 
                 # (including the current category)
-                if(self.G.nodes[category]['labels']):
-                    return self.G.nodes[category]['labels']
+                if(curr_node['labels']):
+                    return curr_node['labels']
 
                 # 3. is_a or subcategory_of (temp: depth check)
-                depth = self.G.nodes[category]['depth']
+                depth = curr_node['depth']
                 for parent in self.G.neighbors(category):
                     try:
                         if(self.G.nodes[parent]['depth'] < depth):
-                            self.G.nodes[category]['labels'].update(self.get_label(parent, how))
+                            curr_node['labels'].update(self.get_label(parent, how))
                         else:
                             logger.debug('[' + category + '] Skipping parent ' + parent + 
                             ' (depth ' + str(self.G.nodes[parent]['depth']) + ')')
                     # Not connected category (temp fix to template expansion)
                     except KeyError:
-                        logger.exception('[' + category + '] Parent ' + parent + ' not connected.')
+                        logger.error('[' + category + '] Parent ' + parent + ' not connected.')
                         continue
-                return self.G.nodes[category]['labels']
+                return curr_node['labels']
 
             else:
                 raise ValueError('Invalid "how" option')
