@@ -1,5 +1,15 @@
 import logging
 import urllib
+import datetime
+from ipykernel.iostream import OutStream
+
+
+def printt(*args, **kwargs):
+    """
+    Prints with current system time
+    """
+    current_time = datetime.datetime.now().time()
+    print(current_time.strftime('%H:%M:%S') + ' - ', *args, **kwargs)
 
 
 def init_logger(path, logger_name=None):
@@ -27,7 +37,6 @@ def init_logger(path, logger_name=None):
         handler.setFormatter(formatter)
         logger.addHandler(handler)
     return logger
-
 
 
 # Adapted from https://github.com/epfl-dlab/WikiPDA/blob/master/PaperAndCode/TopicsExtractionPipeline/GenerateDataframes.py
