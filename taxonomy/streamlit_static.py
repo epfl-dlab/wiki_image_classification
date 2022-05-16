@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 import os
 
-SAMPLE_PATH = 'streamlit_data/'
+SAMPLE_PATH = '/taxonomy/streamlit_data/'
 COMMONS_URL = 'https://commons.wikimedia.org/wiki/File:'
 UPLOAD_URL = 'https://upload.wikimedia.org/wikipedia/commons/'
 
