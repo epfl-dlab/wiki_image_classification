@@ -159,8 +159,14 @@ class Taxonomy:
 
         try:
             curr_node = self.G.nodes[category]
-        except ValueError:
-            self.error('Red link, skipping category ' + category)
+        except KeyError:
+            logger.warning('Red link, skipping category ' + category)
+            return set()
+
+        # Temporary solution to non-connected categories (due to missing template expansion)
+        if('depth' not in curr_node):
+            logger.warning(f'Non connected category {category}, returning empty set')
+            return set()
 
         if(curr_node['visited']):
             logger.debug('Found ' + category + ' with label ' + str(curr_node['labels']))
@@ -179,10 +185,6 @@ class Taxonomy:
                 return curr_node['labels']
 
             elif(how=='naive'):
-                # non-connected categories
-                if('depth' not in curr_node):
-                    return set()
-    
                 depth = curr_node['depth']
                 for parent in self.G.neighbors(category):
                     try:
@@ -194,12 +196,6 @@ class Taxonomy:
                 return curr_node['labels']
 
             elif(how=='heuristics'):
-
-                # 0 Temporary solution to non-connected categories (due to missing template expansion)
-                if('depth' not in curr_node):
-                    logger.error('Non connected category, returning empty set')
-                    return set()
-
                 # 1 Hidden category
                 if(curr_node['hiddencat']):
                     logger.debug('Hidden category, returning empty set')
@@ -262,7 +258,7 @@ class Taxonomy:
                             ' (depth ' + str(self.G.nodes[parent]['depth']) + ')')
                     # Not connected category (temp fix to template expansion)
                     except KeyError:
-                        logger.error('[' + category + '] Parent ' + parent + ' not connected.')
+                        logger.warning('[' + category + '] Parent ' + parent + ' not connected.')
                         continue
                 return curr_node['labels']
 
