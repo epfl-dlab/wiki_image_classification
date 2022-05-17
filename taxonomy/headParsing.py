@@ -8,16 +8,18 @@ def find_tree_head(tree):
     '''
 
     # Get the first NP
-    while(tree.label != 'NP'):
+    while(tree.children and tree.label != 'NP'):
         tree = tree.children[0]
+    
+    if(not tree.children):
+        return ''
     
     # Break compound sentence
     while(tree.children[0].label == 'NP'):
         tree = tree.children[0]
     
-
     if(tree.children[-1].label == 'POS'):
-        return tree.children[-1]
+        return tree.children[-1].leaf_labels()[0]
     
     head = []
     for child in tree.children[::-1]:

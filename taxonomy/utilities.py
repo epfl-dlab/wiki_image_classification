@@ -1,12 +1,22 @@
 import logging
 import urllib
+import datetime
+from ipykernel.iostream import OutStream
 
 
-def init_logger(name, logger_name=None):
+def printt(*args, **kwargs):
+    """
+    Prints with current system time
+    """
+    current_time = datetime.datetime.now().time()
+    print(current_time.strftime('%H:%M:%S') + ' - ', *args, **kwargs)
+
+
+def init_logger(path, logger_name=None):
     '''
     Initialize logger, using either a FileHandler or a StreamHandler.
     '''
-    assert isinstance(name, str) or isinstance(name, OutStream)
+    assert isinstance(path, str) or isinstance(path, OutStream)
 
     if(logger_name):
         logger = logging.getLogger(logger_name)
@@ -17,16 +27,16 @@ def init_logger(name, logger_name=None):
     if(not logger.handlers):
         logger.setLevel(logging.DEBUG)
 
-        formatter = logging.Formatter('%(asctime)s, %(levelname)s %(message)s',
+        formatter = logging.Formatter(u'%(asctime)s, %(levelname)s %(message)s',
                                       datefmt='%H:%M:%S')
-        if(isinstance(name, str)):
-            handler = logging.FileHandler(name, mode='w')
+        if(isinstance(path, str)):
+            handler = logging.FileHandler(path, mode='w', encoding='utf-8')
+            open(path, 'a').close()
         else:
-            handler = logging.StreamHandler(name)
+            handler = logging.StreamHandler(path)
         handler.setFormatter(formatter)
         logger.addHandler(handler)
     return logger
-
 
 
 # Adapted from https://github.com/epfl-dlab/WikiPDA/blob/master/PaperAndCode/TopicsExtractionPipeline/GenerateDataframes.py
