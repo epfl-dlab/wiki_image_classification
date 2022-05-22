@@ -1,1 +1,4 @@
-taxonomy/streamlit_data/*
+streamlit_data/
+streamlit_data/*/
+__pycache__/
+
