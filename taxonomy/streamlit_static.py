@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
-import streamlit as st
 import os
+import streamlit as st
+from streamlit_server_state import server_state, server_state_lock
 
 SAMPLE_PATH = 'streamlit_data/'
 COMMONS_URL = 'https://commons.wikimedia.org/wiki/File:'
@@ -36,16 +37,25 @@ def showFile():
         """,
     unsafe_allow_html=True
     )
-    index_map = {-1: 0, 0: 2, 1: 1}
+    index_map = {None: 0, 0: 2, 1: 1}
     for label, value in file.labels.items():
         st.radio(label, ('-', 'Correct', 'Wrong'), key=file.title + label, index=index_map[value], 
-                 on_change=evaluate_label, args=(file, label))
+                 on_change=evaluate_label, args=(label))
 
 
     # Extract the current log
     log_dump = file.log.replace('\n', '  \n ')
     with st.expander("Show log"):
         st.write(log_dump)
+
+
+def evaluate_label(file, label):
+    index_map = {'Correct': 1, 'Wrong': 0}
+    evaluation = index_map[st.session_state[file.title + label]]
+    with server_state_lock[st.session_state.dataset]:
+        # server_state[st.session_state.dataset].iloc[st.session_state.fileList[st.session_state.counter]].labels[label] = evaluation
+        file.labels[label]
+    showFile()
 
 
 def nextFile():
@@ -70,28 +80,31 @@ def resetSeedNumber():
     st.session_state.previous_disabled = True
     st.session_state.counter = -1
     nextFile()
+    
 
 
 def load_dataset():
-    with st.spinner('Loading files...'):
-        st.session_state.files = pd.read_json(SAMPLE_PATH + st.session_state.dataset)
-        st.session_state.filesize = len(st.session_state.files)
+    if st.session_state.dataset not in server_state:
+        with server_state_lock[st.session_state.dataset]:
+            with st.spinner('Loading files...'):
+                server_state[st.session_state.dataset] = pd.read_json(SAMPLE_PATH + st.session_state.dataset)
+
+    st.session_state.files = server_state[st.session_state.dataset]
+    st.session_state.filesize = len(st.session_state.files)
     resetSeedNumber()
 
+def save_dataset():
+    server_state[st.session_state.dataset].to_json(SAMPLE_PATH + st.session_state.dataset)
 
-def evaluate_label(file, label):
-    index_map = {'Correct': 1, 'Wrong': 0}
-    file.labels[label] = index_map[st.session_state[file.title + label]]
-    showFile()
 
 
 # Initialize session
-if 'seedNumber' not in st.session_state:       
+if 'seedNumber' not in st.session_state:
     # st.set_page_config(layout="wide")
     st.session_state.seedNumber = 0
     st.session_state.dataset = 'files_0.10.json.bz2'
+    # st.text('initializing..')
     load_dataset()
-
 
 
 # col1, col2, col3, col4 = st.columns([1, 1, 1.8, 1.8])
@@ -109,4 +122,8 @@ with st.sidebar:
     st.button('Next file', on_click=nextFile)
     
     st.number_input('Random seed', min_value=0, key='seedNumber', on_change=showFile)
-    st.button('Reset', on_click=resetSeedNumber)
+    st.button('Go', on_click=resetSeedNumber)
+    # Blank vertical space
+    for _ in range(10):
+        st.text('')
+    st.button('Save', on_click=save_dataset)
