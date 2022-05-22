@@ -39,7 +39,7 @@ def showFile():
     )
     index_map = {None: 0, 0: 2, 1: 1}
     for label, value in file.labels.items():
-        st.radio(label, ('-', 'Correct', 'Wrong'), key=file.title + label, index=index_map[value], 
+        st.radio(label, ('-', 'Correct', 'Wrong'), key=file.title+label, index=index_map[value], 
                  on_change=evaluate_label, args=(file, label))
 
 
@@ -53,41 +53,17 @@ def evaluate_label(file, label):
     index_map = {'Correct': 1, 'Wrong': 0}
     evaluation = index_map[st.session_state[file.title + label]]
     with server_state_lock[st.session_state.dataset]:
-        # server_state[st.session_state.dataset].iloc[st.session_state.counter].labels[label]
         file.labels[label] = evaluation
     showFile()
 
 
-# def nextFile():
-#     st.session_state.counter += 1
-#     st.session_state.previous_disabled = not bool(st.session_state.counter)
-#     showFile()
-
-
-# def previousFile():
-#     st.session_state.counter -= 1
-#     if(not st.session_state.counter):
-#         st.session_state.previous_disabled = True
-#     showFile()
-
-
-# def resetSeedNumber():
-#     np.random.seed(st.session_state.seedNumber)
-#     st.session_state.fileList = []
-#     st.session_state.previous_disabled = True
-#     st.session_state.counter = -1
-#     nextFile()
-    
-
-
 def load_dataset():
     if st.session_state.dataset not in server_state:
-        with server_state_lock[st.session_state.dataset]:
-            with st.spinner('Loading files...'):
+        with st.spinner('Loading files...'):
+            with server_state_lock[st.session_state.dataset]:
                 server_state[st.session_state.dataset] = pd.read_json(SAMPLE_PATH + st.session_state.dataset)
 
     st.session_state.filesize = len(server_state[st.session_state.dataset])
-    # resetSeedNumber()
     showFile()
 
 def save_dataset():
@@ -110,9 +86,11 @@ def main():
     if 'counter' not in st.session_state:
         # st.set_page_config(layout="wide")
         st.session_state.counter = 0
+        st.session_state.filesize = 1
         st.session_state.previous_disabled = True
         st.session_state.dataset = 'files_0.10.json.bz2'
         load_dataset()
+        st.write('')
 
 
     with st.sidebar:
