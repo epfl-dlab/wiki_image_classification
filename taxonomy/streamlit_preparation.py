@@ -69,5 +69,5 @@ if __name__ == "__main__":
     files_sample[['labels', 'log']] = files_sample.progress_apply(lambda x: queryFile(x), 
                                                                   axis=1, result_type="expand")
     # Dict storing evaluations
-    files_sample['labels'] = files_sample.apply(lambda x: {label: -1 for label in x.labels}, axis=1)                                                                  
+    files_sample['labels'] = files_sample.apply(lambda x: {label: None for label in x.labels}, axis=1)                                                                  
     files_sample.to_json(SAMPLE_PATH + f'files_{seed}.{n}.json.bz2')
