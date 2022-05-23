@@ -2,8 +2,10 @@ import pandas as pd
 import numpy as np
 import networkx as nx
 import time
+import os
 import stanza
 import pickle
+import argparse
 from headParsing import find_head
 from queryLabel import Taxonomy
 from tqdm import tqdm
@@ -12,6 +14,8 @@ from utilities import printt
 
 GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
 HEADS_PATH = '/scratch/WikipediaImagesTaxonomy/heads/'
+
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 
 def align_head(categories, heads):
     '''
@@ -35,11 +39,17 @@ def align_head(categories, heads):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-c', '--c', help='initial chunk')
+    args = parser.parse_args()
+
+    starting_chunk = int(args.c) if args.c else 0
+    printt('Starting from chunk', starting_chunk)
+
     printt('Loading taxonomy...')
     taxonomy = Taxonomy()
     taxonomy.load_graph(GRAPH_PATH)
     categories = list(taxonomy.G.nodes)
-    print(len(categories))
 
     n_chunks = 20
     batch_size = 64
@@ -47,7 +57,6 @@ if __name__ == "__main__":
 
     find_head('ready')
 
-    starting_chunk = 0
     for chunk in range(starting_chunk, n_chunks):
         printt(f'Processing chunk {chunk}')
         categories_batched = np.array_split(categories_chunked[chunk], len(categories_chunked[chunk])//batch_size + 1)
