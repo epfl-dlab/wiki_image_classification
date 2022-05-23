@@ -1,4 +1,5 @@
 streamlit_data/
 streamlit_data/*/
 __pycache__/
+*.log
 
