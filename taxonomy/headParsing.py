@@ -49,14 +49,17 @@ def find_tree_head(tree):
     return tree.children[-1].leaf_labels()[0]
     
 
-def find_head(category):
+def find_head(categories, use_gpu=True):
     '''
     Find the lexical head of a category, considering only takes the first sentence
     '''
-    if not hasattr(find_head, "nlp"):
-        find_head.nlp = stanza.Pipeline(lang='en', processors='tokenize,pos,constituency')
+    if isinstance(categories, str):
+        categories = [categories]
 
-    doc = find_head.nlp(category)
-    tree = doc.sentences[0].constituency
-    return find_tree_head(tree).capitalize()
+    if not hasattr(find_head, "nlp"):
+        find_head.nlp = stanza.Pipeline(lang='en', processors='tokenize,pos,constituency', use_gpu=use_gpu)
+
+    doc = find_head.nlp('.\n\n'.join(categories))
+    heads = map(lambda c: find_tree_head(c.constituency).capitalize(), doc.sentences)
+    return list(heads)
 

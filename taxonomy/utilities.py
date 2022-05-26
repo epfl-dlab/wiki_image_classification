@@ -9,7 +9,7 @@ def printt(*args, **kwargs):
     Prints with current system time
     """
     current_time = datetime.datetime.now().time()
-    print(current_time.strftime('%H:%M:%S') + ' - ', *args, **kwargs)
+    print(current_time.strftime('%H:%M:%S') + '   ', *args, **kwargs)
 
 
 def init_logger(path, logger_name=None):

@@ -68,4 +68,6 @@ if __name__ == "__main__":
     tqdm.pandas()
     files_sample[['labels', 'log']] = files_sample.progress_apply(lambda x: queryFile(x), 
                                                                   axis=1, result_type="expand")
-    files_sample.to_parquet(SAMPLE_PATH + f'files_{seed}.{n}.parquet')
+    # Dict storing evaluations
+    files_sample['labels'] = files_sample.apply(lambda x: {label: None for label in x.labels}, axis=1)                                                                  
+    files_sample.to_json(SAMPLE_PATH + f'files_{seed}.{n}.json.bz2')
