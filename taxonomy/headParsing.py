@@ -59,6 +59,9 @@ def align_sentences(categories, sentences):
     new_sentences = []
     i_sent = 0
     for i in range(len(categories)-1):
+        # Needed for cases where category is split in 3+ sentences and only the 2nd is also contained in the following category
+        while(not sentences[i_sent].text.lower() in categories[i].lower()):
+            i_sent += 1
         new_sentences.append(sentences[i_sent])
         i_sent += 1
     
