@@ -15,16 +15,16 @@ from utilities import printt
 GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
 HEADS_PATH = '/scratch/WikipediaImagesTaxonomy/heads/'
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-c', '--c', help='initial chunk')
+    parser.add_argument('-cuda', '--cuda', help='cuda device')
     args = parser.parse_args()
 
     starting_chunk = int(args.c) if args.c else 0
     printt('Starting from chunk', starting_chunk)
+    if(args.cuda):
+        os.environ['CUDA_VISIBLE_DEVICES'] = args.cuda    
 
     printt('Loading taxonomy...')
     taxonomy = Taxonomy()
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         heads = pd.Series(categories_batched).progress_apply(lambda cs: find_head(cs)).explode().values
         
         printt('Saving file...')
-        heads_dict = dict(zip(categories, heads))
+        heads_dict = dict(zip(categories_chunked[chunk], heads))
 
         with open(HEADS_PATH + f'chunk{chunk}.pkl', 'wb') as fp:
             pickle.dump(heads_dict, fp)
