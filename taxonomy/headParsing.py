@@ -68,6 +68,9 @@ def align_sentences(categories, sentences):
         while(sentences[i_sent].text.lower() in categories[i].lower() and sentences[i_sent].text.lower() not in categories[i+1].lower()):
             i_sent += 1
 
+    # Last category
+    while(not sentences[i_sent].text.lower() in categories[i].lower()):
+        i_sent += 1
     new_sentences.append(sentences[i_sent])
     assert sentences[i_sent].text.lower() in categories[-1].lower()
     assert len(categories) == len(new_sentences)

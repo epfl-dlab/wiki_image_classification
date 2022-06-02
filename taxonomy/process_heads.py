@@ -15,16 +15,15 @@ from utilities import printt
 GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
 HEADS_PATH = '/scratch/WikipediaImagesTaxonomy/heads/'
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-c', '--c', help='initial chunk')
+    parser.add_argument('-s', '--start', help='initial chunk')
+    parser.add_argument('-e', '--end', help='final chunk')
+    parser.add_argument('-cuda', '--cuda', help='cuda device')
     args = parser.parse_args()
 
-    starting_chunk = int(args.c) if args.c else 0
-    printt('Starting from chunk', starting_chunk)
+    if(args.cuda):
+        os.environ['CUDA_VISIBLE_DEVICES'] = args.cuda    
 
     printt('Loading taxonomy...')
     taxonomy = Taxonomy()
@@ -34,16 +33,24 @@ if __name__ == "__main__":
     n_chunks = 20
     batch_size = 64
     categories_chunked = np.array_split(categories, n_chunks)
+    starting_chunk = int(args.c) if args.c else 0
+    end_chunk = int(args.e) if args.e else n_chunks
+    printt('Processing from chunk', starting_chunk, 'to chunk', end_chunk)
 
     find_head('ready')
 
-    for chunk in range(starting_chunk, n_chunks):
+    for chunk in range(starting_chunk, end_chunk):
         printt(f'Processing chunk {chunk}')
         categories_batched = np.array_split(categories_chunked[chunk], len(categories_chunked[chunk])//batch_size + 1)
+
+        # Temp fix to empty category
+        if(chunk == 19):
+            categories_batched[6118] = categories_batched[6118][np.where(categories_batched[6118])]
+
         heads = pd.Series(categories_batched).progress_apply(lambda cs: find_head(cs)).explode().values
         
         printt('Saving file...')
-        heads_dict = dict(zip(categories, heads))
+        heads_dict = dict(zip(categories_chunked[chunk], heads))
 
         with open(HEADS_PATH + f'chunk{chunk}.pkl', 'wb') as fp:
             pickle.dump(heads_dict, fp)
