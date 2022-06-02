@@ -1,36 +1,19 @@
-# TensorFlow and tf.keras
 import tensorflow as tf
-
-# Helper libraries
-import numpy as np
-import json
-import bz2
-import urllib.parse
 import pandas as pd
-import matplotlib.pyplot as plt
 import os
-from help_functions import compute_class_weights, get_y_true
+from help_functions import create_model, compute_class_weights, get_y_true
 from PIL import PngImagePlugin  
-from tensorflow import keras 
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications import EfficientNetB0
-from tensorflow.keras.layers import GlobalAveragePooling2D, Dense, Dropout
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras import optimizers
-from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.models import Sequential
 
 print(tf.__version__)
 print(f"Num GPUs Available: {len(tf.config.list_physical_devices('GPU'))}")
 
-# Hyperparameters
+# 0. Hyperparameters
 EPOCHS = 15
 IMAGE_DIMENSION = 64
 MINIMAL_NR_IMAGES = 1_000
 LARGE_ENOUGH_NUMBER = 100
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024**2) # to avoid corrupted .png images
+
 
 # 1. Load train and test dataframes, create augmentations
 train_df = pd.read_json('data/splitted_dfs_500k_20220602/train_df.json.bz2', compression='bz2')
@@ -68,45 +51,24 @@ val = train_generator.flow_from_dataframe(dataframe=train_df,
                                           target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION))
 
 # Data generator for test set
-test_generator = ImageDataGenerator() 
-print('\n----------- Test images -----------')          
-test = test_generator.flow_from_dataframe(dataframe=test_df,
-                                          directory='/scratch/WIT_Dataset/images',
-                                          x_col='url', 
-                                          y_col='labels', 
-                                          batch_size=32,
-                                          class_mode='categorical',
-                                          validate_filenames=True,
-                                          target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION))
+# test_generator = ImageDataGenerator() 
+# print('\n----------- Test images -----------')          
+# test = test_generator.flow_from_dataframe(dataframe=test_df,
+#                                           directory='/scratch/WIT_Dataset/images',
+#                                           x_col='url', 
+#                                           y_col='labels', 
+#                                           batch_size=32,
+#                                           class_mode='categorical',
+#                                           validate_filenames=True,
+#                                           target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION))
 
 N_LABELS = len(train.class_indices)
 
-def create_model():
-    """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
-    efficient_net = EfficientNetB0(include_top=False, 
-                                   weights='imagenet', 
-                                   classes=N_LABELS,
-                                   input_shape=(IMAGE_DIMENSION, IMAGE_DIMENSION, 3))
-    efficient_net.trainable=False
-
-    model = Sequential([
-        efficient_net,
-        layers.Flatten(),
-        layers.Dense(128, activation='relu'),
-        layers.Dense(N_LABELS, activation='sigmoid')
-    ])
-
-    model.compile(optimizer=tf.keras.optimizers.Adam(),
-                  loss='binary_crossentropy',
-                  metrics=['accuracy', 'categorical_accuracy'])
-
-    print(model.summary())
-    return model
-
-model = create_model()
+model = create_model(model_name='EfficientNetB0', n_labels=N_LABELS, image_dimension=IMAGE_DIMENSION)
 y_true = get_y_true(train.samples, train.class_indices, train.classes)
-class_weights = compute_class_weights(y_true)#dict(enumerate(y_true.sum().sum() / y_true.sum(axis=0)))
+class_weights = compute_class_weights(y_true)
 print(class_weights)
+
 # Save the weights using the `checkpoint_path` format
 # https://www.youtube.com/watch?v=HxtBIwfy0kM
 # https://www.tensorflow.org/tutorials/keras/save_and_load#checkpoint_callback_usage
@@ -130,6 +92,3 @@ history = model.fit(train,
                     callbacks=[cp_callback, history_callback],
                     class_weight=class_weights,
                    )
-
-
-

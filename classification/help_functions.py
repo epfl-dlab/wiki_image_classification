@@ -1,5 +1,34 @@
 import numpy as np
+import tensorflow as tf
 from matplotlib import pyplot as plt
+from tensorflow.keras.applications import EfficientNetB0
+from tensorflow.keras import layers
+from tensorflow.keras.models import Sequential
+
+
+def create_model(n_labels, image_dimension, model_name='EfficientNetB0'):
+    """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
+    if model_name == 'EfficientNetB0':
+        base_model = EfficientNetB0(include_top=False, 
+                                    weights='imagenet', 
+                                    classes=n_labels,
+                                    input_shape=(image_dimension, image_dimension, 3))
+    base_model.trainable=False
+
+    model = Sequential([
+        base_model,
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(n_labels, activation='sigmoid')
+    ])
+
+    model.compile(optimizer=tf.keras.optimizers.Adam(),
+                  loss='binary_crossentropy',
+                  metrics=['accuracy', 'categorical_accuracy'])
+
+    print(model.summary())
+    return model
+
 
 def get_y_true(samples, class_indices, classes):
     y_true = np.zeros((samples, len(class_indices))) # nr_rows=nr_images; nr_columns=nr_classes

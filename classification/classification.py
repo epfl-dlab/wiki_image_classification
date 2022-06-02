@@ -22,8 +22,16 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
+print(tf.__version__)
+print(f"Num GPUs Available: {len(tf.config.list_physical_devices('GPU'))}")
+
+
 # Global variables
 IMAGE_DIMENSION = 64
+EPOCHS = 15
+MINIMAL_NR_IMAGES = 1_000
+LARGE_ENOUGH_NUMBER = 100
+PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024**2) # to avoid corrupted .png images
 
 
 class DataLoader:
