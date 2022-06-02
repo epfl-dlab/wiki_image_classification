@@ -1,23 +1,26 @@
-﻿# Common libraries
-import pandas as pd
-import numpy as np
-import urllib.parse
-import time
-import os
-from matplotlib import pyplot as plt
-from datetime import datetime
-
-# ML
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report, average_precision_score, roc_auc_score
-
-# Tensorflow
+# TensorFlow and tf.keras
 import tensorflow as tf
-from tensorflow.keras.optimizers import Adam
+
+# Helper libraries
+import numpy as np
+import json
+import bz2
+import urllib.parse
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+from help_functions import compute_class_weights, get_y_true
+from PIL import PngImagePlugin  
+from tensorflow import keras 
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications import EfficientNetB0
-from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
-from keras.layers import Dense, Flatten
+from tensorflow.keras.layers import GlobalAveragePooling2D, Dense, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import optimizers
+from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.models import Sequential
 
 # Global variables
 IMAGE_DIMENSION = 64
@@ -99,31 +102,40 @@ class DataLoader:
 
 
 class DataSeparator:
-    def __init__(self, image_label_df, oversampling=False):
-
-        self.train_df, self.test_df = train_test_split(image_label_df, test_size=0.1, random_state=17)
-        self.train_df, self.val_df = train_test_split(self.train_df, train_size=0.9, random_state=17)
+    def __init__(self, train_df, test_df, oversampling=False):
 
         # Data generator for training and validation sets
         if oversampling:
-            train_generator = ImageDataGenerator(validation_split=0.10,  rescale=1/255,
-                                                 rotation_range=40,      width_shift_range=0.2,
-                                                 height_shift_range=0.2, shear_range=0.2,
-                                                 zoom_range=0.2,         horizontal_flip=True, fill_mode='nearest') 
+            train_generator = ImageDataGenerator(validation_split=0.10,  
+                                                 rotation_range=40,      
+                                                 width_shift_range=0.2,
+                                                 height_shift_range=0.2, 
+                                                 shear_range=0.2,
+                                                 zoom_range=0.2,         
+                                                 horizontal_flip=True, 
+                                                 fill_mode='nearest') 
         else:
-            train_generator = ImageDataGenerator(validation_split=0.10, rescale=1/255)
+            train_generator = ImageDataGenerator(validation_split=0.05)
                         
         print('\n----------- Train images -----------')
-        self.train = train_generator.flow_from_dataframe(dataframe=self.train_df,  directory='/scratch/WIT_Dataset/images', 
-                                                         x_col='image_path',       y_col='taxo_labels', 
-                                                         class_mode='categorical', subset='training',
-                                                         validate_filenames=True,  target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION)) # the dimensions to which all images found will be resized.
+        self.train = train_generator.flow_from_dataframe(dataframe=self.train_df,  
+                                                         directory='/scratch/WIT_Dataset/images', 
+                                                         x_col='image_path',       
+                                                         y_col='taxo_labels', 
+                                                         class_mode='categorical', 
+                                                         subset='training',
+                                                         validate_filenames=True,  
+                                                         target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION)) 
 
         print('\n----------- Validation images -----------')          
-        self.val = train_generator.flow_from_dataframe(dataframe=self.val_df,    directory='/scratch/WIT_Dataset/images', 
-                                                       x_col='image_path',       y_col='taxo_labels', 
-                                                       class_mode='categorical', subset='validation',
-                                                       validate_filenames=True,  target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION))
+        self.val = train_generator.flow_from_dataframe(dataframe=self.train_df,    
+                                                       directory='/scratch/WIT_Dataset/images', 
+                                                       x_col='image_path',       
+                                                       y_col='taxo_labels', 
+                                                       class_mode='categorical', 
+                                                       subset='validation',
+                                                       validate_filenames=True,  
+                                                       target_size=(IMAGE_DIMENSION, IMAGE_DIMENSION))
 
         # Data generator for test set
         print('\n----------- Test images -----------')
@@ -137,7 +149,7 @@ class DataSeparator:
 
 
 class ModelTrainer:
-    def __init__(self, train, val, learning_rate, results_path, epochs=50, use_class_weights=False):
+    def __init__(self, train, val, learning_rate, results_path, epochs=15, use_class_weights=False):
         self.train = train
         self.val = val
         self.n_classes = len(train.class_indices)
@@ -156,16 +168,26 @@ class ModelTrainer:
         ImageNet-1k, and add a fully connect layer plus an output layer (with the sigmoid function as activation function). 
         - EfficientNet: https://keras.io/api/applications/efficientnet/
         - Sigmoid activation function on a multi-label classification problem: https://towardsdatascience.com/multi-label-image-classification-with-neural-network-keras-ddc1ab1afede
-        """
-        efficient_net = EfficientNetB0(include_top=False, weights='imagenet', classes=self.n_classes,
+        """        
+        efficient_net = EfficientNetB0(include_top=False, 
+                                       weights='imagenet', 
+                                       classes=N_LABELS,
                                        input_shape=(IMAGE_DIMENSION, IMAGE_DIMENSION, 3))
-        efficient_net.trainable = False
-        model = Sequential()
-        model.add(efficient_net)
-        model.add(Flatten())
-        model.add(Dense(units=120, activation='relu'))
-        model.add(Dense(units=self.n_classes, activation='sigmoid')) # output layer
-        model.summary() 
+        efficient_net.trainable=False
+
+        model = Sequential([
+            efficient_net,
+            layers.Flatten(),
+            layers.Dense(128, activation='relu'),
+            layers.Dense(N_LABELS, activation='sigmoid')
+        ])
+
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                      loss='binary_crossentropy',
+                      metrics=['accuracy', 'categorical_accuracy'])
+
+        print(model.summary())
+        
         with open(f'{self.results_path}/model_summary.txt', 'w') as fh:
             model.summary(print_fn=lambda x: fh.write(x + '\n'))
 
@@ -189,7 +211,6 @@ class ModelTrainer:
         Compile and train model using the binary cross entropy as loss function.
         - On what loss function to choose: https://stats.stackexchange.com/questions/260505/should-i-use-a-categorical-cross-entropy-or-binary-cross-entropy-loss-for-binary
         """
-        self.model.compile(optimizer=Adam(learning_rate=self.learning_rate), loss='binary_crossentropy', metrics=['accuracy']) 
         if self.use_class_weights:
             class_weights = self.compute_class_weights(self.train)
             history = self.model.fit(self.train, epochs=self.epochs, steps_per_epoch=15, 
@@ -197,9 +218,10 @@ class ModelTrainer:
                                  verbose=2, 
                                  class_weight=class_weights)
         else:
-            history = self.model.fit(self.train, epochs=self.epochs, steps_per_epoch=15, 
-                                 validation_data=self.val, validation_steps=7,
-                                 verbose=2)
+            history = self.model.fit(self.train, 
+                                     epochs=self.epochs, 
+                                     validation_data=self.val, 
+                                     verbose=1)
         return history
 
     def compute_class_weights(train):
@@ -355,19 +377,14 @@ def main():
     # ----- Hyperparameters -----
     # Data
     # wit_segments = 'one' # 'all'
-    min_nr_images_per_class = 1e4
+    min_nr_images_per_class = 1e3
     # Model training
-    threshold = 0.2         # TODO: one threshold per class?
-    learning_rate = 0.0001  # TODO: perhaps make it gradually decreasing?
+    threshold = 0.5    
+    learning_rate = 0.0001 
     epochs = 50
-    oversampling = False
+    oversampling = True
     use_class_weights = True
     # ---------------------------
-
-    # To speed-up testing, use pre-saved model and predictions:
-    use_presaved_model = False
-    use_presaved_predictions = False
-    # -----------------------------
 
     if not use_presaved_model:
         # Load image<->label dataframe and clean it

@@ -2,4 +2,7 @@ streamlit_data/
 streamlit_data/*/
 __pycache__/
 *.log
-
+classification/.ipynb_checkpoints/*
+classification/data
+classification/checkpoints/*
+classification/checkpoints*

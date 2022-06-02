@@ -33,8 +33,8 @@ LARGE_ENOUGH_NUMBER = 100
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024**2) # to avoid corrupted .png images
 
 # 1. Load train and test dataframes, create augmentations
-train_df = pd.read_json('data/splitted_dfs_20220601/train_df.json.bz2', compression='bz2')
-test_df = pd.read_json('data/splitted_dfs_20220601/train_df.json.bz2', compression='bz2')
+train_df = pd.read_json('data/splitted_dfs_500k_20220602/train_df.json.bz2', compression='bz2')
+test_df = pd.read_json('data/splitted_dfs_500k_20220602/test_df.json.bz2', compression='bz2')
 
 # Data generator for training and validation sets, performs data augmentations
 train_generator = ImageDataGenerator(validation_split=0.05, 
@@ -98,7 +98,7 @@ def create_model():
 
     model.compile(optimizer=tf.keras.optimizers.Adam(),
                   loss='binary_crossentropy',
-                  metrics=['accuracy'])
+                  metrics=['accuracy', 'categorical_accuracy'])
 
     print(model.summary())
     return model
@@ -110,14 +110,14 @@ print(class_weights)
 # Save the weights using the `checkpoint_path` format
 # https://www.youtube.com/watch?v=HxtBIwfy0kM
 # https://www.tensorflow.org/tutorials/keras/save_and_load#checkpoint_callback_usage
-checkpoint_path = "checkpoints/naive_26_labels_weights_20220531/cp-{epoch:04d}.ckpt"
+checkpoint_path = "checkpoints/naive_26_labels_weights_20220602/cp-{epoch:04d}.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, 
                                                  save_weights_only=True, 
                                                  save_freq='epoch', # save after each epoch
                                                  verbose=1)
 # https://stackoverflow.com/questions/41061457/keras-how-to-save-the-training-history-attribute-of-the-history-object
-history_callback = tf.keras.callbacks.CSVLogger('checkpoints/naive_26_labels_weights_20220531/history.csv', 
+history_callback = tf.keras.callbacks.CSVLogger('checkpoints/naive_26_labels_weights_20220602/history.csv', 
                                                 separator=',', 
                                                 append=True)
 
