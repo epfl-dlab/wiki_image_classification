@@ -69,7 +69,7 @@ def align_sentences(categories, sentences):
             i_sent += 1
 
     # Last category
-    while(not sentences[i_sent].text.lower() in categories[i].lower()):
+    while(not sentences[i_sent].text.lower() in categories[-1].lower()):
         i_sent += 1
     new_sentences.append(sentences[i_sent])
     assert sentences[i_sent].text.lower() in categories[-1].lower()

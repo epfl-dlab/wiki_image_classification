@@ -32,6 +32,7 @@ class Taxonomy:
         nx.set_node_attributes(G, dict(zip(categories.index, categories[['id', 'hiddencat']].to_dict(orient='records'))))
         depth = {node: len(sps) for node, sps in nx.shortest_path(G, target='CommonsRoot').items()}
         nx.set_node_attributes(G, depth, name='depth')
+        G.remove_node('')
         self.G = G
     
     def dump_graph(self, path):
