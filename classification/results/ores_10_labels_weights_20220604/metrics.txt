@@ -1,0 +1,27 @@
+﻿ROC AUC: 0.6418
+                                          precision    recall  f1-score  \
+Culture.Media.Media*                       0.579730  0.315441  0.408571   
+Culture.Media.Music                        0.642487  0.201954  0.307311   
+Culture.Sports                             0.870647  0.391061  0.539707   
+Culture.Visual arts.Visual arts*           0.679842  0.366069  0.475889   
+Geography.Geographical                     0.657623  0.224526  0.334758   
+History and Society.Military and warfare   0.644772  0.250000  0.360300   
+History and Society.Society                0.179487  0.007982  0.015284   
+STEM.Biology                               0.798036  0.586900  0.676374   
+STEM.STEM*                                 0.806831  0.505829  0.621819   
+STEM.Space                                 0.852459  0.204724  0.330159   
+micro avg                                  0.736750  0.365610  0.488703   
+macro avg                                  0.671191  0.305449  0.407017   
+weighted avg                               0.703202  0.365610  0.472539   
+samples avg                                0.383003  0.356881  0.363012  
+
+Media* 429/1360 == 0.315
+Music 124/614 == 0.202
+Sports 700/1790 == 0.391
+Visual arts* 1204/3289 == 0.366
+Geographical 509/2267 == 0.225
+Military and warfare 481/1924 == 0.25
+Society 7/877 == 0.008
+Biology 1138/1939 == 0.587
+STEM* 2126/4203 == 0.506
+Space 52/254 == 0.205
