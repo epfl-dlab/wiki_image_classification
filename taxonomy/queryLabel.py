@@ -35,21 +35,27 @@ class Taxonomy:
         G.remove_node('')
         self.G = G
     
-    def dump_graph(self, path):
+    def dump_graph(self, path, clean=False):
         '''
         Save the edge list in a file
         '''
         assert '.pkl' in path
+        G = self.G if not clean else self.G_h
         with open(path, 'wb') as f:
-            pickle.dump(self.G, f)
+            pickle.dump(G, f)
     
-    def load_graph(self, path):
+    def load_graph(self, path, clean=False):
         '''
         Load the edge list from a file
         '''
         assert '.pkl' in path
         with open(path, 'rb') as f:
-            self.G = pickle.load(f)
+            G = pickle.load(f)
+        
+        if(clean):
+            self.G_h = G
+        else:
+            self.G = G
 
     def reset_labels(self):
         '''
@@ -57,6 +63,7 @@ class Taxonomy:
         '''
         nx.set_node_attributes(self.G, {node: {'visited': False, 'labels': set()} for node in self.G.nodes})
         self.visited_nodes = 0
+        self.G_h = nx.DiGraph()
 
     def set_taxonomy(self, mapping='content_extended'):
         '''
@@ -239,8 +246,9 @@ class Taxonomy:
                 # 2.3. Hop to common_heads if they belong to parents and are not meaningless
                 for common_head in common_heads:
                     if((how == 'heuristics' and common_head in nx.descendants(self.G, category) 
-                        or (how == 'heuristics_simple' and taxonomy.G.nodes.get(common_head, {}).get('depth', 1e9) < depth))
+                        or (how == 'heuristics_simple' and self.G.nodes.get(common_head, {}).get('depth', 1e9) < depth))
                        and not (common_head.isnumeric() or common_head in null_heads)):
+                        self.G_h.add_edge(category, common_head)
                         curr_node['labels'].update(self.get_label(common_head, how))
                     else:
                         debug and logger.debug('Common head ' + str(common_head) + ' not found or time-related')
@@ -255,6 +263,7 @@ class Taxonomy:
                 for parent in self.G.neighbors(category):
                     try:
                         if(self.G.nodes[parent]['depth'] < depth):
+                            self.G_h.add_edge(category, parent)
                             curr_node['labels'].update(self.get_label(parent, how))
                         else:
                             debug and logger.debug('[' + category + '] Skipping parent ' + parent + 
