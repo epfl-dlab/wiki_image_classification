@@ -1,9 +1,27 @@
+from distutils.log import error
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 from tensorflow.keras.applications import EfficientNetB0
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+
+def get_top_classes(nr_classes, df):
+    """Returns the nr_classes classes with greater number of samples from the multiclass df."""
+    _generator = ImageDataGenerator() 
+    _data = _generator.flow_from_dataframe(dataframe=df, 
+                                        directory='/scratch/WIT_Dataset/images', 
+                                        x_col='url', 
+                                        y_col='labels', 
+                                        class_mode='categorical', 
+                                        validate_filenames=False)
+
+    y_true = get_y_true(_data.samples, _data.class_indices, _data.classes)
+
+    sorted_indices = np.argsort(np.sum(y_true, axis=0))[::-1]
+    return np.array(list(_data.class_indices.keys()))[sorted_indices[:nr_classes]]
 
 
 def create_model(n_labels, image_dimension, model_name='EfficientNetB0'):
@@ -13,6 +31,9 @@ def create_model(n_labels, image_dimension, model_name='EfficientNetB0'):
                                     weights='imagenet', 
                                     classes=n_labels,
                                     input_shape=(image_dimension, image_dimension, 3))
+    else:
+        raise error
+
     base_model.trainable=False
 
     model = Sequential([
@@ -24,7 +45,7 @@ def create_model(n_labels, image_dimension, model_name='EfficientNetB0'):
 
     model.compile(optimizer=tf.keras.optimizers.Adam(),
                   loss='binary_crossentropy',
-                  metrics=['accuracy', 'categorical_accuracy'])
+                  metrics=['accuracy'])
 
     print(model.summary())
     return model
@@ -36,6 +57,7 @@ def get_y_true(samples, class_indices, classes):
         for idx in row:
             y_true[row_idx, idx] = 1
     return y_true
+
 
 def compute_class_weights(y_true):
     """
