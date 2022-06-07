@@ -33,21 +33,17 @@ if __name__ == "__main__":
     n_chunks = 20
     batch_size = 64
     categories_chunked = np.array_split(categories, n_chunks)
-    starting_chunk = int(args.c) if args.c else 0
-    end_chunk = int(args.e) if args.e else n_chunks
+    starting_chunk = int(args.start) if args.start else 0
+    end_chunk = int(args.end) if args.end else n_chunks
     printt('Processing from chunk', starting_chunk, 'to chunk', end_chunk)
 
-    find_head('ready')
+    find_head('ready', use_gpu=bool(args.cuda))
 
     for chunk in range(starting_chunk, end_chunk):
         printt(f'Processing chunk {chunk}')
         categories_batched = np.array_split(categories_chunked[chunk], len(categories_chunked[chunk])//batch_size + 1)
 
-        # Temp fix to empty category
-        if(chunk == 19):
-            categories_batched[6118] = categories_batched[6118][np.where(categories_batched[6118])]
-
-        heads = pd.Series(categories_batched).progress_apply(lambda cs: find_head(cs)).explode().values
+        heads = pd.Series(categories_batched).progress_apply(lambda cs: find_head(cs, use_gpu=bool(args.cuda))).explode().values
         
         printt('Saving file...')
         heads_dict = dict(zip(categories_chunked[chunk], heads))
