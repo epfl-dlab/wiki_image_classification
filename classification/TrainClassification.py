@@ -82,12 +82,19 @@ CLASS_LABELS = list(class_indices.keys())
 
 # ====================== CREATE MODEL ==================
 # model = create_model(config['nr_classes'], image_dimension=config['image_dimension'], model_name=config['basemodel'])
-from tensorflow.keras.applications import EfficientNetB0
+from tensorflow.keras.applications import EfficientNetB0, EfficientNetB1, EfficientNetB2
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
-def create_model():
-    efficient_net = EfficientNetB0(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
+def create_model(name):
+    if name == 'EfficientNetB0':
+        efficient_net = EfficientNetB0(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
+                                           input_shape=(width, height, 3))
+    elif name == 'EfficientNetB1':
+        efficient_net = EfficientNetB1(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
+                                           input_shape=(width, height, 3))
+    elif name == 'EfficientNetB2':
+        efficient_net = EfficientNetB2(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
                                            input_shape=(width, height, 3))
 
     efficient_net.trainable=False
@@ -105,7 +112,7 @@ def create_model():
 
     model.summary()
     return model
-model = create_model()
+model = create_model(name=config['basemodel'])
 
 
 # Calculate class weights: https://www.tensorflow.org/tutorials/structured_data/imbalanced_data#calculate_class_weights
