@@ -189,7 +189,7 @@ class Taxonomy:
 
             if(how == 'all'):
                 for parent in self.G.neighbors(category):
-                    curr_node['labels'].update(self.get_label(parent, how))
+                    curr_node['labels'].update(self.get_label(parent, how, debug))
                 return curr_node['labels']
 
             elif(how == 'naive'):
@@ -197,7 +197,7 @@ class Taxonomy:
                 for parent in self.G.neighbors(category):
                     try:
                         if(self.G.nodes[parent]['depth'] < depth):
-                            curr_node['labels'].update(self.get_label(parent, how))
+                            curr_node['labels'].update(self.get_label(parent, how, debug))
                     # Not connected category (temp fix to template expansion)
                     except KeyError:
                         continue
@@ -249,7 +249,7 @@ class Taxonomy:
                         or (how == 'heuristics_simple' and self.G.nodes.get(common_head, {}).get('depth', 1e9) < depth))
                        and not (common_head.isnumeric() or common_head in null_heads)):
                         self.G_h.add_edge(category, common_head)
-                        curr_node['labels'].update(self.get_label(common_head, how))
+                        curr_node['labels'].update(self.get_label(common_head, how, debug))
                     else:
                         debug and logger.debug('Common head ' + str(common_head) + ' not found or time-related')
                 
@@ -264,7 +264,7 @@ class Taxonomy:
                     try:
                         if(self.G.nodes[parent]['depth'] < depth):
                             self.G_h.add_edge(category, parent)
-                            curr_node['labels'].update(self.get_label(parent, how))
+                            curr_node['labels'].update(self.get_label(parent, how, debug))
                         else:
                             debug and logger.debug('[' + category + '] Skipping parent ' + parent + 
                             ' (depth ' + str(self.G.nodes[parent]['depth']) + ')')
