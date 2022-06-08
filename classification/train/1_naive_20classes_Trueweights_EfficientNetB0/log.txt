@@ -1,0 +1,66 @@
+{'nr_classes': 20, 'labels': 'naive', 'class_weights': True, 'basemodel': 'EfficientNetB0', 'image_dimension': 64, 'results_and_checkpoints_folder': 'train/1_naive_20classes_Trueweights_EfficientNetB0', 'data_folder': 'data/split_dataframes_600k_33_labels_20220606'}
+Found 30000 non-validated image filenames belonging to 33 classes.
+Found 29944 validated image filenames belonging to 20 classes.
+Model: "sequential_2"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb0 (Functional)  (None, 2, 2, 1280)        4049571   
+_________________________________________________________________
+flatten_2 (Flatten)          (None, 5120)              0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 128)               655488    
+_________________________________________________________________
+dense_5 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 4,707,639
+Trainable params: 658,068
+Non-trainable params: 4,049,571
+_________________________________________________________________
+train/1_naive_20classes_Trueweights_EfficientNetB0/cp-0015.ckpt
+               precision    recall  f1-score  support index
+Animals         0.084507  0.446809  0.142132     94.0     0
+Astronomy       0.011111  0.021277  0.014599     47.0     1
+Biology         0.000000  0.000000  0.000000     49.0     2
+Culture         0.000000  0.000000  0.000000   9355.0     3
+Entertainment   0.061224  0.003774  0.007109    795.0     4
+Events          1.000000  0.002183  0.004357    458.0     5
+History         0.000000  0.000000  0.000000   7216.0     6
+Language        0.000000  0.000000  0.000000    215.0     7
+Literature      0.000000  0.000000  0.000000     81.0     8
+Music           0.005155  0.011765  0.007168     85.0     9
+Nature          0.000000  0.000000  0.000000   5166.0    10
+Objects         0.277778  0.005336  0.010471    937.0    11
+People          0.000000  0.000000  0.000000   2042.0    12
+Places          0.710526  0.085340  0.152378  13288.0    13
+Plants          0.404110  0.457364  0.429091    387.0    14
+Politics        0.368932  0.035382  0.064571   1074.0    15
+Science         0.000000  0.000000  0.000000    622.0    16
+Society         0.333333  0.000153  0.000305   6555.0    17
+Sports          0.478102  0.128055  0.202005   1023.0    18
+Technology      0.000000  0.000000  0.000000    675.0    19
+micro avg       0.456005  0.030580  0.057316  50164.0  None
+macro avg       0.186739  0.059872  0.051709  50164.0  None
+weighted avg    0.268002  0.030580  0.049856  50164.0  None
+samples avg     0.049723  0.038979  0.041867  50164.0  None
+
+Animals 42/94 == 0.447
+Astronomy 1/47 == 0.021
+Biology 0/49 == 0.0
+Culture 0/9355 == 0.0
+Entertainment 3/795 == 0.004
+Events 1/458 == 0.002
+History 0/7216 == 0.0
+Language 0/215 == 0.0
+Literature 0/81 == 0.0
+Music 1/85 == 0.012
+Nature 0/5166 == 0.0
+Objects 5/937 == 0.005
+People 0/2042 == 0.0
+Places 1134/13288 == 0.085
+Plants 177/387 == 0.457
+Politics 38/1074 == 0.035
+Science 0/622 == 0.0
+Society 1/6555 == 0.0
+Sports 131/1023 == 0.128
+Technology 0/675 == 0.0
