@@ -6,7 +6,8 @@ from tqdm import tqdm
 from utilities import init_logger, printt
 from queryLabel import Taxonomy
 
-GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
+# GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
+HGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads.pkl.bz2'
 FILES_PATH = '/scratch/WikipediaImagesTaxonomy/commonswiki-20220220-files.parquet'
 SAMPLE_PATH = 'streamlit_data/'
 LOG_PATH = 'streamlit_preparation.log'
@@ -22,17 +23,13 @@ def initialize():
 
     taxonomy = Taxonomy()
     printt('Loading graph...')
-    taxonomy.load_graph(GRAPH_PATH)
+    taxonomy.load_graph(HGRAPH_PATH)
     printt('Loading mapping...')
     taxonomy.set_taxonomy(mapping='content_extended')
-    printt('Loading lexical parser...')
-    taxonomy.get_head('CommonsRoot')
+    # printt('Loading lexical parser...')
+    # taxonomy.get_head('CommonsRoot')
 
     return files, taxonomy
-
-
-def get_sample(n, seed):
-    return files.sample(n, random_state=seed)
 
 
 def queryFile(file, how='heuristics'):
@@ -44,7 +41,7 @@ def queryFile(file, how='heuristics'):
     labels = set()
     for category in file.categories:
         logger.debug(f'Starting search for category {category}')
-        cat_labels = taxonomy.get_label(category, how=how)
+        cat_labels = taxonomy.get_label(category, how=how, debug=True)
         logger.debug(f'Ending search for category {category} with resulting labels {cat_labels}')
         logger.debug(f'---------------------------------------------------')
         labels |= cat_labels
@@ -58,16 +55,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--n', help='size of the sample')
     parser.add_argument('-s', '--seed', help='random seed')
+    parser.add_argument('-H ', '--how', help='querying scheme')
     args = parser.parse_args()
 
     files, taxonomy = initialize()
 
     n = int(args.n) if args.n else 1000
     seed = int(args.seed) if args.seed else 0
-    files_sample = get_sample(n, seed)
+    how = args.how if args.how else 'heuristics'
+    files_sample = files.sample(n, random_state=seed)
     tqdm.pandas()
-    files_sample[['labels', 'log']] = files_sample.progress_apply(lambda x: queryFile(x), 
+    files_sample[['labels', 'log']] = files_sample.progress_apply(lambda x: queryFile(x, how=how), 
                                                                   axis=1, result_type="expand")
     # Dict storing evaluations
+    printt('Saving file..')
     files_sample['labels'] = files_sample.apply(lambda x: {label: None for label in x.labels}, axis=1)                                                                  
-    files_sample.to_json(SAMPLE_PATH + f'files_{seed}.{n}.json.bz2')
+    files_sample.to_json(SAMPLE_PATH + f'files_{seed}_{n}_{how}.json.bz2')

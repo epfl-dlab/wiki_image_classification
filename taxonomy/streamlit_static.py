@@ -66,10 +66,6 @@ def load_dataset():
     st.session_state.filesize = len(server_state[st.session_state.dataset])
     showFile()
 
-def save_dataset():
-    server_state[st.session_state.dataset].to_json(SAMPLE_PATH + st.session_state.dataset)
-    showFile()
-
 
 def next_unevaluated():
     evaluated = server_state[st.session_state.dataset].labels.apply(lambda x: None in x.values())
@@ -101,7 +97,8 @@ def main():
         # Blank vertical space
         for _ in range(10):
             st.text('')
-        st.button('Save', on_click=save_dataset)
+        st.download_button('Download', data=server_state[st.session_state.dataset].to_json(), 
+                           file_name = st.session_state.dataset.split('.')[0] + '_annotated.json', on_click=showFile)
 
 
 if __name__ == "__main__":
