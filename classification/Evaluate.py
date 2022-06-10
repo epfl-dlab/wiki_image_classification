@@ -3,8 +3,6 @@ import numpy as np
 import tensorflow as tf
 import json
 import sys
-import os
-import logging 
 from matplotlib import pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from help_functions import create_model, get_top_classes
@@ -15,13 +13,11 @@ from help_functions import create_model, get_top_classes
 i = sys.argv[1]
 with open('training_configurations.json', 'r') as fp:
     config = json.load(fp)[str(i)]
+old_stdout = sys.stdout
+log_file = open(config['results_and_checkpoints_folder'] + '/log.txt', 'w')
+sys.stdout = log_file
 
-logging.basicConfig(filename=config['results_and_checkpoints_folder'] + '/metrics.log', 
-					format='%(asctime)s %(message)s', 
-					filemode='w') 
-logger=logging.getLogger() 
-logger.setLevel(logging.DEBUG) 
-logger.info(config)
+
 # ======================================================
 
 
@@ -64,8 +60,9 @@ plt.savefig(config['results_and_checkpoints_folder'] + '/training_metrics.png')
 
 # ====================== LOAD TEST SET =================
 test_df = pd.read_json(config['data_folder'] + '/test_df.json.bz2', compression='bz2')
-top_classes = get_top_classes(config['nr_classes'], test_df) # OBS: are they always the same as top classes of train_df? In the 10-case yes.
-
+train_df = pd.read_json(config['data_folder'] + '/train_df.json.bz2', compression='bz2')
+top_classes = get_top_classes(config['nr_classes'], train_df) # OBS: are they always the same as top classes of train_df? In the 10-case yes.
+print(top_classes)
 # Only keep rows which have either of the top classes
 ids_x_labels = test_df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
 test_set_x_labels = test_df[ids_x_labels]
@@ -92,15 +89,20 @@ N_LABELS = len(test.class_indices)
 
 
 # ============== CREATE MODEL, LOAD WEIGHTS ============
-from tensorflow.keras.applications import EfficientNetB0
+from tensorflow.keras.applications import EfficientNetB0, EfficientNetB1, EfficientNetB2
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
-def create_model():
-    efficient_net = EfficientNetB0(include_top=False, 
-                                   weights='imagenet', 
-                                   classes=config['nr_classes'],
-                                   input_shape=(config['image_dimension'], config['image_dimension'], 3))
+def create_model(name):
+    if name == 'EfficientNetB0':
+        efficient_net = EfficientNetB0(include_top=False, weights='imagenet', classes=config['nr_classes'],
+                                           input_shape=(64, 64, 3))
+    elif name == 'EfficientNetB1':
+        efficient_net = EfficientNetB1(include_top=False, weights='imagenet', classes=config['nr_classes'],
+                                           input_shape=(config['image_dimension'], config['image_dimension'], 3))
+    elif name == 'EfficientNetB2':
+        efficient_net = EfficientNetB2(include_top=False, weights='imagenet', classes=config['nr_classes'],
+                                           input_shape=(config['image_dimension'], config['image_dimension'], 3))
 
     efficient_net.trainable=False
 
@@ -115,13 +117,12 @@ def create_model():
                   loss='binary_crossentropy',
                   metrics=['accuracy', 'categorical_accuracy'])
 
-    print(model.summary())
-    logger.info(model.summary())
+    model.summary()
     return model
-model = create_model()
+model = create_model(name=config['basemodel'])
+
 latest = tf.train.latest_checkpoint(config['results_and_checkpoints_folder'])
 print(latest)
-logger.info(latest)
 model.load_weights(latest)
 # ======================================================
 
