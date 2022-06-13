@@ -9,3 +9,4 @@ Wikipedia is full of articles... and images! Having over 53 million articles in 
 - [CleanAndSplitData.py](https://github.com/epfl-dlab/wiki_image_classification/blob/main/classification/CleanAndSplitData.py): filters data from invalid files and splits it into train and test.
 - [TrainClassification.py](https://github.com/epfl-dlab/wiki_image_classification/blob/main/classification/TrainClassification.py): loads the training data and performs the fine-tuning using the already split data. 
 - [Evaluate.py](https://github.com/epfl-dlab/wiki_image_classification/blob/main/classification/Evaluate.py): loads the test data and the latest training checkpoint and evaluates the model on the test data.
+- [MergeFrames.ipynb](https://github.com/epfl-dlab/wiki_image_classification/blob/main/classification/MergeFrames.ipynb): for each file in the WIT dataset, query the taxonomy function by Francesco that returns the custom label given the commons category.
