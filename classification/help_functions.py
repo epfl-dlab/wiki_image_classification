@@ -117,18 +117,49 @@ def balance_test(classes, class_names, test_df):
 
         return test_df.loc[row_ids, :]
     
-def plot_distribution(classes, class_names=[], description='None', plot_log=False, lims=()):
-    y_true = get_y_true(classes)
+# def plot_distribution(classes, class_names=[], description='None', plot_log=False, lims=()):
+#     y_true = get_y_true(classes)
+#     sorted_indices = np.argsort(np.sum(y_true, axis=0))
+#     sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
+#     plt.figure(figsize=(12, 15))
+#     plt.title('Number of images per class' + description)
+#     if plot_log:
+#         plt.xscale('log')
+#     if lims:
+#         plt.xlim(lims)
+#     plt.xlabel('Count')
+#     plt.grid(True)
+#     plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.65)
+#     if class_names:
+#         plt.yticks(range(y_true.shape[1]), np.array(list(class_names))[sorted_indices])
+
+def plot_distribution(dataframe, filename, minimal_nr_images=0):
+    _generator = ImageDataGenerator() 
+    _data = _generator.flow_from_dataframe(dataframe=dataframe, 
+                                            directory='/scratch/WIT_Dataset/images', 
+                                            x_col='url', 
+                                            y_col='labels', 
+                                            class_mode='categorical', 
+                                            validate_filenames=False)
+
+    y_true = get_y_true(_data.samples, _data.class_indices, _data.classes)
+
     sorted_indices = np.argsort(np.sum(y_true, axis=0))
     sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
-    plt.figure(figsize=(12, 15))
-    plt.title('Number of images per class' + description)
-    if plot_log:
-        plt.xscale('log')
-    if lims:
-        plt.xlim(lims)
-    plt.xlabel('Count')
-    plt.grid(True)
-    plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.65)
-    if class_names:
-        plt.yticks(range(y_true.shape[1]), np.array(list(class_names))[sorted_indices])
+
+    mask_kept = y_true.sum(axis=0)[sorted_indices] > minimal_nr_images
+    mask_removed = y_true.sum(axis=0)[sorted_indices] < minimal_nr_images
+
+    _ = plt.figure(figsize=(8, 14))
+
+    _ = plt.barh(np.array(range(y_true.shape[1]))[mask_kept], sorted_images_per_class[mask_kept], color='blue', alpha=0.6)
+    _ = plt.barh(np.array(range(y_true.shape[1]))[mask_removed], sorted_images_per_class[mask_removed], color='red', alpha=0.6)
+
+    _ = plt.yticks(range(y_true.shape[1]), np.array(list(_data.class_indices.keys()))[sorted_indices], fontsize=12)
+    _ = plt.xscale('log')
+    _ = plt.xlabel('Count', fontsize=13)
+    _ = plt.ylabel('Labels', fontsize=13)
+    _ = plt.grid(True)
+
+    plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
+    plt.savefig(filename)
