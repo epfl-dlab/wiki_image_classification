@@ -5,4 +5,8 @@ __pycache__/
 classification/.ipynb_checkpoints/*
 classification/data
 classification/checkpoints/*
-classification/checkpoints*
+classification/train/**/cp*
+classification/train/**/history.csv
+classification/train/**/y_true.csv
+classification/train/**/y_pred.csv
+
