@@ -145,8 +145,40 @@ for row_idx, row in enumerate(test.classes):
 
 
 
+# ============== CONFUSION MATRICES ===================
+from sklearn.metrics import multilabel_confusion_matrix
+confusion_matrix = multilabel_confusion_matrix(y_true, y_pred)
+import seaborn as sns
+from matplotlib.colors import LogNorm
 
+def print_confusion_matrix(confusion_matrix, axes, class_label, class_names, fontsize=14):
+    # From https://stackoverflow.com/questions/62722416/plot-confusion-matrix-for-multilabel-classifcation-python
+    df_cm = pd.DataFrame(confusion_matrix, index=class_names, columns=class_names)
+    try:
+        heatmap = sns.heatmap(df_cm, annot=True, fmt=\"d\", cbar=False, ax=axes, cmap='YlGnBu', norm=LogNorm())
+    except ValueError:
+        raise ValueError(\"Confusion matrix values must be integers.\")
+    heatmap.yaxis.set_ticklabels(heatmap.yaxis.get_ticklabels(), rotation=0, ha='right', fontsize=fontsize)
+    heatmap.xaxis.set_ticklabels(heatmap.xaxis.get_ticklabels(), rotation=45, ha='right', fontsize=fontsize)
+    axes.set_ylabel('True label', fontsize=8)
+    axes.set_xlabel('Predicted label', fontsize=8)
+    axes.set_title(class_label)
+    fig, ax = plt.subplots(5, 4, figsize=(10, 10))
+    
+for axes, cfs_matrix, label in zip(ax.flatten(), confusion_matrix, list(test.class_indices.keys())):
+    print_confusion_matrix(cfs_matrix, axes, label, [\"N\", \"Y\"])
+    
+fig.tight_layout()
+plt.savefig(config['results_and_checkpoints_folder'] + '/confusion_matrix.png')
+                                                     
+# Extra:
+print(f'Mean number of label assignments per image in ground-truth: {np.sum(y_true) / y_true.shape[0]:.4f}')
+print(f'Mean number of label assignments per image in predictions: {np.sum(y_pred) / y_pred.shape[0]:.4f}')
+                                                     
+# ======================================================
 
+                                                     
+                                                     
 # ================== GET METRICS ======================
 
 metrics_df = pd.DataFrame(classification_report(y_true, y_pred, target_names=list(test.class_indices), output_dict=True)).transpose()
@@ -158,8 +190,8 @@ print(metrics_df)
 sorted_indices_f1score = np.argsort(metrics_df['f1-score'][0:N_LABELS])
 sorted_f1score_per_class = metrics_df['f1-score'][0:N_LABELS][sorted_indices_f1score]
 
-print(f'Unweighted F1-score of top 5 classes: {np.sum(sorted_f1score_per_class[0:5]) / 5}')
-print(f'Unweighted F1-score of the rest: {np.sum(sorted_f1score_per_class[5:-1]) / (len(sorted_f1score_per_class) - 5)}')
+print(f'Unweighted F1-score of top 5 classes: {np.sum(sorted_f1score_per_class[-4:]) / 5}')
+print(f'Unweighted F1-score of the rest: {np.sum(sorted_f1score_per_class[0:-4]) / (len(sorted_f1score_per_class) - 5)}')
 
 _ = plt.figure(figsize=(8, 14))
                 
