@@ -169,7 +169,7 @@ model.save_weights(checkpoint_path.format(epoch=0))
 if config['class_weights'] == True:
     history = model.fit(
     train_generator,
-    verbose=1,
+    verbose=2,
     validation_data=validation_generator,
     epochs=epochs,
     callbacks=[cp_callback, history_callback],
@@ -177,7 +177,7 @@ if config['class_weights'] == True:
 else:
     history = model.fit(
     train_generator,
-    verbose=1,
+    verbose=2,
     validation_data=validation_generator,
     epochs=epochs,
     callbacks=[cp_callback, history_callback])
