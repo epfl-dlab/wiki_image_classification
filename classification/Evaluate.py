@@ -155,7 +155,7 @@ def print_confusion_matrix(confusion_matrix, axes, class_label, class_names, fon
     # From https://stackoverflow.com/questions/62722416/plot-confusion-matrix-for-multilabel-classifcation-python
     df_cm = pd.DataFrame(confusion_matrix, index=class_names, columns=class_names)
     try:
-        heatmap = sns.heatmap(df_cm, annot=True, fmt=\"d\", cbar=False, ax=axes, cmap='YlGnBu', norm=LogNorm())
+        heatmap = sns.heatmap(df_cm, annot=True, fmt="d", cbar=False, ax=axes, cmap='YlGnBu', norm=LogNorm())
     except ValueError:
         raise ValueError(\"Confusion matrix values must be integers.\")
     heatmap.yaxis.set_ticklabels(heatmap.yaxis.get_ticklabels(), rotation=0, ha='right', fontsize=fontsize)
