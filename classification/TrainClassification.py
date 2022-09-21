@@ -1,11 +1,17 @@
 ﻿import tensorflow as tf
 import pandas as pd
+from matplotlib import pyplot as plt
 import json
 import os
 import sys
-from help_functions import get_top_classes, plot_distribution
+from help_functions import get_top_classes
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import time
+
+# Sharing of GPU resources
+# tf.config.gpu.set_per_process_memory_growth(True) # TODO didn't work, got error: AttributeError: module 'tensorflow._api.v2.config' has no attribute 'gpu'
+# tf.config.threading.set_intra_op_parallelism_threads(10) 
+# tf.config.threading.set_inter_op_parallelism_threads(10) 
 
 start = time.time()
 
@@ -13,10 +19,12 @@ print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 # To run this: `python TrainClassification.py 0`
 
-
-
+print('[LOG] Cp 1')
 
 # ================== HYPER-PARAMETERS ==================
+BATCH_SIZE = 512
+EPOCHS = 20
+
 # config: nr_classes, labels, class_weights, basemodel, image_dimension, results_and_checkpoints_folder, data_folder
 i = sys.argv[1]
 with open('training_configurations.json', 'r') as fp:
@@ -30,12 +38,11 @@ sys.stdout = log_file
 # ======================================================
 
 
+print('[LOG] Cp 2')
 
 
 # ================= LOAD & AUGMENT DATA ================
 train_df = pd.read_json(config['data_folder'] + '/train_df.json.bz2', compression='bz2')
-
-plot_distribution(dataframe=train_df, filename=config['results_and_checkpoints_folder'] + '/train_distribution.png')
 
 top_classes = get_top_classes(config['nr_classes'], train_df)#['Places', 'Culture', 'History', 'Society', 'Nature', 'People', 'Politics', 'Sports', 'Objects', 'Entertainment']
 print(f"Top {config['nr_classes']} classes: {top_classes}")
@@ -46,7 +53,6 @@ training_set_x_labels = train_df[ids_x_labels]
 training_set_x_labels['labels'] = train_df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
 train_df = training_set_x_labels.copy()
 
-batch_size = 32
 width, height = config['image_dimension'], config['image_dimension']
 target_size = (height, width)
 if config['augment'] == True:
@@ -68,7 +74,7 @@ train_generator = datagen.flow_from_dataframe(
         x_col='url', 
         y_col='labels', 
         class_mode='categorical', 
-        batch_size=batch_size,
+        batch_size=BATCH_SIZE,
         target_size=target_size)
 
 validation_generator = datagen.flow_from_dataframe(
@@ -90,7 +96,7 @@ class_indices = train_generator.class_indices
 CLASS_LABELS = list(class_indices.keys())
 # ======================================================
 
-
+print('[LOG] Cp 3')
 
 
 # ====================== CREATE MODEL ==================
@@ -109,7 +115,15 @@ def create_model(name):
         efficient_net = EfficientNetB2(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
                                            input_shape=(width, height, 3))
 
-    efficient_net.trainable=False
+    print(f'\nNumber of layers in basemodel: {len(efficient_net.layers)}')
+    # Fine tune from this layer onwards
+    # fine_tune_at = round((1 - config['percent_trainable_layers']) * len(efficient_net.layers))
+    number_trainable_layers = config['number_trainable_layers']
+    fine_tune_at = len(efficient_net.layers) - number_trainable_layers
+ 
+    print(f'Number of trainable layers: {len(efficient_net.layers) - fine_tune_at}\n')
+    for layer in efficient_net.layers[:fine_tune_at]:
+        layer.trainable = False
 
     model = Sequential([
         efficient_net,
@@ -118,9 +132,18 @@ def create_model(name):
         layers.Dense(len(CLASS_LABELS), activation='sigmoid')
     ])
 
+    # Losses:
+    #   - binary cross-entropy: https://www.tensorflow.org/api_docs/python/tf/keras/losses/BinaryCrossentropy
+    #   - binary focal cross-entropy: https://www.tensorflow.org/api_docs/python/tf/keras/losses/BinaryFocalCrossentropy
+
+    # BCE
     model.compile(optimizer=tf.keras.optimizers.Adam(),
                   loss='binary_crossentropy',
                   metrics=['accuracy', 'categorical_accuracy'])
+    # Binary Focal Cross Entropy
+    # model.compile(optimizer=tf.keras.optimizers.Adam(),
+    #               loss='binary_focal_crossentropy',
+    #               metrics=['accuracy', 'categorical_accuracy'])
 
     model.summary()
     return model
@@ -145,12 +168,11 @@ if config['class_weights'] == True:
 
 
 
+print('[LOG] Cp 4')
 
 
 
 # ===================== TRAIN MODEL ==================
-epochs = 15
-
 # Save model in between epochs
 checkpoint_path = config['results_and_checkpoints_folder'] + "/cp-{epoch:04d}.ckpt"
 print(checkpoint_path)
@@ -171,7 +193,7 @@ if config['class_weights'] == True:
     train_generator,
     verbose=2,
     validation_data=validation_generator,
-    epochs=epochs,
+    epochs=EPOCHS,
     callbacks=[cp_callback, history_callback],
     class_weight=class_weight)
 else:
@@ -179,10 +201,44 @@ else:
     train_generator,
     verbose=2,
     validation_data=validation_generator,
-    epochs=epochs,
+    epochs=EPOCHS,
     callbacks=[cp_callback, history_callback])
 # ======================================================
 
+
 end = time.time()
 total_time_in_hours = round((end - start) / 3600)
-print('Training time: {total_time_in_hours} hours')
+print(f'\nTraining time: {total_time_in_hours} hours\n')
+
+print('[LOG] Cp 5')
+
+# ================= PLOT TRAINING METRICS ==============
+# Plot training metrics: loss & accuracy
+training_metrics = pd.read_csv(config['results_and_checkpoints_folder'] + '/history.csv')
+
+epochs = training_metrics.shape[0]
+
+acc = training_metrics.accuracy.values
+loss = training_metrics.loss.values
+
+val_acc = training_metrics.val_accuracy.values
+val_loss = training_metrics.val_loss.values
+
+_ = plt.figure(figsize=(12, 4))
+_ = plt.subplot(1, 3, 1)
+_ = plt.plot(range(epochs), acc, label='Training Accuracy')
+_ = plt.plot(range(epochs), val_acc, label='Validation Accuracy')
+_ = plt.legend(loc='lower right')
+_ = plt.title('Training and Validation Accuracy')
+
+_ = plt.subplot(1, 3, 2)
+_ = plt.plot(range(epochs), loss, label='Training Loss')
+_ = plt.legend(loc='upper right')
+_ = plt.title('Training Loss')
+
+_ = plt.subplot(1, 3, 3)
+_ = plt.plot(range(epochs), val_loss, label='Validation Loss', color='orange')
+_ = plt.legend(loc='upper right')
+_ = plt.title('Validation Loss')
+_ = plt.savefig(config['results_and_checkpoints_folder'] + '/training_metrics.png')
+# ======================================================

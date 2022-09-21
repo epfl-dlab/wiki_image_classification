@@ -5,7 +5,9 @@ import json
 import sys
 from matplotlib import pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from help_functions import create_model, get_top_classes, plot_distribution
+from help_functions import create_model, get_top_classes
+
+# To run this: `python Evaluation.py 0`
 
 
 # ================== HYPER-PARAMETERS ==================
@@ -14,45 +16,9 @@ i = sys.argv[1]
 with open('training_configurations.json', 'r') as fp:
     config = json.load(fp)[str(i)]
 old_stdout = sys.stdout
-log_file = open(config['results_and_checkpoints_folder'] + '/log.txt', 'a') # append to already existing log-file
+log_file = open(config['results_and_checkpoints_folder'] + '/log_eval.txt', 'w')
 sys.stdout = log_file
-
-
-# ======================================================
-
-
-
-
-# ================= PLOT TRAINING METRICS ==============
-# Plot training metrics: loss & accuracy
-training_metrics = pd.read_csv(config['results_and_checkpoints_folder'] + '/history.csv')
-
-epochs = training_metrics.shape[0]
-
-acc = training_metrics.accuracy.values
-loss = training_metrics.loss.values
-
-val_acc = training_metrics.val_accuracy.values
-val_loss = training_metrics.val_loss.values
-
-plt.figure(figsize=(12, 4))
-plt.subplot(1, 3, 1)
-plt.plot(range(epochs), acc, label='Training Accuracy')
-plt.plot(range(epochs), val_acc, label='Validation Accuracy')
-plt.legend(loc='lower right')
-plt.title('Training and Validation Accuracy')
-
-plt.subplot(1, 3, 2)
-plt.plot(range(epochs), loss, label='Training Loss')
-plt.legend(loc='upper right')
-plt.title('Training Loss')
-
-plt.subplot(1, 3, 3)
-plt.plot(range(epochs), val_loss, label='Validation Loss', color='orange')
-plt.legend(loc='upper right')
-plt.title('Validation Loss')
-# plt.show()
-plt.savefig(config['results_and_checkpoints_folder'] + '/training_metrics.png')
+print('\n\n\n=============== EVALUATION ====================\n')
 # ======================================================
 
 
@@ -62,14 +28,11 @@ plt.savefig(config['results_and_checkpoints_folder'] + '/training_metrics.png')
 test_df = pd.read_json(config['data_folder'] + '/test_df.json.bz2', compression='bz2')
 train_df = pd.read_json(config['data_folder'] + '/train_df.json.bz2', compression='bz2')
 top_classes = get_top_classes(config['nr_classes'], train_df) # OBS: are they always the same as top classes of train_df? In the 10-case yes.
-print('Classes with most images:' + str(top_classes))
 # Only keep rows which have either of the top classes
 ids_x_labels = test_df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
 test_set_x_labels = test_df[ids_x_labels]
 test_set_x_labels['labels'] = test_df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
 test_df = test_set_x_labels.copy()
-
-plot_distribution(dataframe=test_df, filename=config['data_folder'] + '/test_distribution.png')
 
 datagen = ImageDataGenerator() 
 test = datagen.flow_from_dataframe(
@@ -157,23 +120,24 @@ def print_confusion_matrix(confusion_matrix, axes, class_label, class_names, fon
     try:
         heatmap = sns.heatmap(df_cm, annot=True, fmt="d", cbar=False, ax=axes, cmap='YlGnBu', norm=LogNorm())
     except ValueError:
-        raise ValueError(\"Confusion matrix values must be integers.\")
+        raise ValueError('Confusion matrix values must be integers.')
     heatmap.yaxis.set_ticklabels(heatmap.yaxis.get_ticklabels(), rotation=0, ha='right', fontsize=fontsize)
     heatmap.xaxis.set_ticklabels(heatmap.xaxis.get_ticklabels(), rotation=45, ha='right', fontsize=fontsize)
     axes.set_ylabel('True label', fontsize=8)
     axes.set_xlabel('Predicted label', fontsize=8)
     axes.set_title(class_label)
-    fig, ax = plt.subplots(5, 4, figsize=(10, 10))
+
+fig, ax = plt.subplots(5, 4, figsize=(10, 10))
     
 for axes, cfs_matrix, label in zip(ax.flatten(), confusion_matrix, list(test.class_indices.keys())):
-    print_confusion_matrix(cfs_matrix, axes, label, [\"N\", \"Y\"])
+    print_confusion_matrix(cfs_matrix, axes, label, ['N', 'Y'])
     
 fig.tight_layout()
 plt.savefig(config['results_and_checkpoints_folder'] + '/confusion_matrix.png')
                                                      
 # Extra:
-print(f'Mean number of label assignments per image in ground-truth: {np.sum(y_true) / y_true.shape[0]:.4f}')
-print(f'Mean number of label assignments per image in predictions: {np.sum(y_pred) / y_pred.shape[0]:.4f}')
+print(f'\nMean number of label assignments per image in ground-truth: {np.sum(y_true) / y_true.shape[0]:.4f}')
+print(f'Mean number of label assignments per image in predictions: {np.sum(y_pred) / y_pred.shape[0]:.4f}\n')
                                                      
 # ======================================================
 
@@ -184,27 +148,27 @@ print(f'Mean number of label assignments per image in predictions: {np.sum(y_pre
 metrics_df = pd.DataFrame(classification_report(y_true, y_pred, target_names=list(test.class_indices), output_dict=True)).transpose()
 metrics_df['index'] = np.concatenate((np.arange(start=0, stop=N_LABELS), [None, None, None, None]))
 print(metrics_df)
-# logger.info(metrics_df)
 
 # F1-score
 sorted_indices_f1score = np.argsort(metrics_df['f1-score'][0:N_LABELS])
 sorted_f1score_per_class = metrics_df['f1-score'][0:N_LABELS][sorted_indices_f1score]
 
-print(f'Unweighted F1-score of top 5 classes: {np.sum(sorted_f1score_per_class[-4:]) / 5}')
-print(f'Unweighted F1-score of the rest: {np.sum(sorted_f1score_per_class[0:-4]) / (len(sorted_f1score_per_class) - 5)}')
+print(f'\nUnweighted avg. F1-score of all classes: {np.sum(sorted_f1score_per_class) / len(sorted_f1score_per_class)}')
+print(f'Unweighted avg. F1-score of top 5 classes: {np.sum(sorted_f1score_per_class[-4:]) / 5}')
+print(f'Unweighted avg. F1-score of the rest: {np.sum(sorted_f1score_per_class[0:-4]) / (len(sorted_f1score_per_class) - 5)}\n')
 
 _ = plt.figure(figsize=(8, 14))
                 
 _ = plt.title('F1-score per class')
 _ = plt.barh(range(y_true.shape[1]), sorted_f1score_per_class, color='blue', alpha=0.6)
-_ = plt.yticks(range(N_LABELS))
-_ = plt.yticklabels(np.array(list(test.class_indices.keys()))[sorted_indices_f1score])
+_ = plt.yticks(ticks=range(N_LABELS), labels=np.array(list(test.class_indices.keys()))[sorted_indices_f1score])
 _ = plt.xlabel('F1-score')
 _ = plt.grid(True)
 
 plt.savefig(config['results_and_checkpoints_folder'] + '/f1_scores.png')
 
 # Per-class accuracy
+print('\n------- Per-class accuracy: --------\n')
 from collections import Counter
 total = Counter()
 correct = Counter()
@@ -224,7 +188,6 @@ for k in name_id_map.keys():
             
 for k in sorted(total.keys()):
     print(class_names[k].split(".")[-1], "{}/{} == {}".format(correct[k], total[k], round(correct[k]/total[k], 3)))
-    # logger.info(class_names[k].split(".")[-1], "{}/{} == {}".format(correct[k], total[k], round(correct[k]/total[k], 3)))
 # ======================================================
 
 
