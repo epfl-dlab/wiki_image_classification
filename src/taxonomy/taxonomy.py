@@ -3,10 +3,12 @@ import pandas as pd
 import networkx as nx
 import logging, sys
 import pickle
-
-from headParsing import find_head
 from iteration_utilities import duplicates, unique_everseen
 
+import sys
+sys.path.append("../../")
+
+from src.taxonomy.head.headParsing import find_head
 
 logger = logging.getLogger('taxonomy')
 

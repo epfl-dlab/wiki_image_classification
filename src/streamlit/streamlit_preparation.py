@@ -1,10 +1,13 @@
 import numpy as np
 import pandas as pd
 import argparse
-
 from tqdm import tqdm
-from utilities import init_logger, printt
-from queryLabel import Taxonomy
+
+import sys
+sys.path.append("../../")
+
+from src.utilities import init_logger, printt
+from src.taxonomy.taxonomy import Taxonomy
 
 # GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
 HGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads.pkl.bz2'

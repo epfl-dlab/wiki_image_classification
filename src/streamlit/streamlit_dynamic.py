@@ -1,8 +1,12 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
-from utilities import init_logger
-from queryLabel import Taxonomy
+
+import sys
+sys.path.append("../../")
+
+from src.utilities import init_logger
+from src.taxonomy.taxonomy import Taxonomy
 
 
 GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'

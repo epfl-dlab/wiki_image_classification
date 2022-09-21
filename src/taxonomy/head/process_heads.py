@@ -6,11 +6,15 @@ import os
 import stanza
 import pickle
 import argparse
-from headParsing import find_head
-from queryLabel import Taxonomy
 from tqdm import tqdm
 tqdm.pandas()
-from utilities import printt
+
+import sys
+sys.path.append("../../../")
+
+from src.taxonomy.head.headParsing import find_head
+from src.taxonomy.taxonomy import Taxonomy
+from src.utilities import printt
 
 GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
 HEADS_PATH = '/scratch/WikipediaImagesTaxonomy/heads/'
