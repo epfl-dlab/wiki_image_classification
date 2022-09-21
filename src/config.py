@@ -19,18 +19,18 @@ CATEGORIES_PATH = (
 FILES_PATH = "/scratch/WikipediaImagesTaxonomy/commonswiki-20220220-files.parquet"
 
 # Graph
-GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
+GRAPH_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2"
 # Graph enriched with heads
-HGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads.pkl.bz2'
+HGRAPH_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads.pkl.bz2"
 # Graph labeled
 # LGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_heuristics_v1.0.pkl.bz2'
-LGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_heuristics_simple_v1.0.pkl.bz2'
-LGRAPH_H_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-clean-graph-wlabels_heuristics_simple_v1.0.pkl.bz2'
+LGRAPH_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_heuristics_simple_v1.0.pkl.bz2"
+LGRAPH_H_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-clean-graph-wlabels_heuristics_simple_v1.0.pkl.bz2"
 
-HEADS_PATH = '/scratch/WikipediaImagesTaxonomy/heads/'
+HEADS_PATH = "/scratch/WikipediaImagesTaxonomy/heads/"
 
 STREAMLIT_PATH = "./data/streamlit/"
-STREAMLIT_LOG_FILE = 'streamlit_preparation.log'
+STREAMLIT_LOG_FILE = "streamlit_preparation.log"
 
 
 # Hierarchy of labels
