@@ -10,14 +10,14 @@ from tqdm import tqdm
 tqdm.pandas()
 
 import sys
+sys.path.append("./")
 sys.path.append("../../../")
 
 from src.taxonomy.head.headParsing import find_head
 from src.taxonomy.taxonomy import Taxonomy
 from src.utilities import printt
+from src.config import *
 
-GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
-HEADS_PATH = '/scratch/WikipediaImagesTaxonomy/heads/'
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

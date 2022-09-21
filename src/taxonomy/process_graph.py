@@ -5,16 +5,12 @@ from tqdm import tqdm
 tqdm.pandas()
 
 import sys
+sys.path.append("./")
 sys.path.append("../../")
 
 from src.taxonomy.taxonomy import Taxonomy
 from src.utilities import printt#, init_logger
-
-
-HGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads.pkl.bz2'
-# LGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_heuristics_v1.0.pkl.bz2'
-LGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_heuristics_simple_v1.0.pkl.bz2'
-LGRAPH_H_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-clean-graph-wlabels_heuristics_simple_v1.0.pkl.bz2'
+from src.config import *
 
 
 if __name__ == "__main__":

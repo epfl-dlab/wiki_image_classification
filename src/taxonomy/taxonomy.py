@@ -6,12 +6,13 @@ import pickle
 from iteration_utilities import duplicates, unique_everseen
 
 import sys
+sys.path.append("./")
 sys.path.append("../../")
 
 from src.taxonomy.head.headParsing import find_head
+from src.config import *
 
 logger = logging.getLogger('taxonomy')
-
 
 class Taxonomy:
     def __init__(self, G=None):
@@ -76,63 +77,17 @@ class Taxonomy:
         if(isinstance(mapping, dict)):
             self.mapping = mapping
 
-        elif(mapping == 'content_general'):
-            self.mapping = {'Nature': ['Animalia', 'Fossils', 'Landscapes', 'Marine organisms', 'Plantae', 'Weather'],
-                            'Society/Culture': ['Art', 'Belief', 'Entertainment', 'Events', 'Flags', 'Food', 'History', 
-                                                'Language', 'Literature', 'Music', 'Objects', 'People', 'Places', 'Politics', 'Sports'],
-                            'Science': ['Astronomy', 'Biology', 'Chemistry', 'Earth sciences', 'Mathematics',
-                                        'Medicine', 'Physics', 'Technology'],
-                            'Engineering': ['Architecture', 'Chemical engineering', 'Civil engineering', 'Electrical engineering',
-                                            'Environmental engineering', 'Geophysical engineering', 'Mechanical engineering', 'Process engineering']}
+        # elif(mapping == 'content_general'):
+        #     self.mapping = {'Nature': ['Animalia', 'Fossils', 'Landscapes', 'Marine organisms', 'Plantae', 'Weather'],
+        #                     'Society/Culture': ['Art', 'Belief', 'Entertainment', 'Events', 'Flags', 'Food', 'History', 
+        #                                         'Language', 'Literature', 'Music', 'Objects', 'People', 'Places', 'Politics', 'Sports'],
+        #                     'Science': ['Astronomy', 'Biology', 'Chemistry', 'Earth sciences', 'Mathematics',
+        #                                 'Medicine', 'Physics', 'Technology'],
+        #                     'Engineering': ['Architecture', 'Chemical engineering', 'Civil engineering', 'Electrical engineering',
+        #                                     'Environmental engineering', 'Geophysical engineering', 'Mechanical engineering', 'Process engineering']}
 
         elif(mapping == 'content_extended'):
-            self.mapping = {# Nature
-                            'Nature': ['Nature'],
-                            'Animals': ['Animalia'],
-                            'Fossils': ['Fossils'],
-                            'Landscapes': ['Landscapes'],
-                            'Marine organisms': ['Marine organisms'],
-                            'Plants': ['Plantae'],
-                            'Weather': ['Weather'],
-                            # Society/Culture
-                            'Society': ['Society'],
-                            'Culture': ['Culture'],
-                            'Art': ['Art'],
-                            'Belief': ['Belief'],
-                            'Entertainment': ['Entertainment'],
-                            'Events': ['Events'],
-                            'Flags': ['Flags'],
-                            'Food': ['Food'],
-                            'History': ['History'],
-                            'Language': ['Language'],
-                            'Literature': ['Literature'],
-                            'Music': ['Music'],
-                            'Objects': ['Objects'],
-                            'People': ['People'],
-                            'Places': ['Places'],
-                            'Politics': ['Politics'],
-                            'Sports': ['Sports'],
-                            # Science
-                            'Science': ['Science'],
-                            'Astronomy': ['Astronomy'],
-                            'Biology': ['Biology'],
-                            'Chemistry': ['Chemistry'],
-                            'Earth sciences': ['Earth sciences'],
-                            'Mathematics': ['Mathematics'],
-                            'Medicine': ['Medicine'],
-                            'Physics': ['Physics'],
-                            'Technology': ['Technology'],
-                            # Engineering
-                            'Engineering': ['Engineering'],
-                            'Architecture': ['Architecture'],
-                            'Chemical eng': ['Chemical engineering'],
-                            'Civil eng': ['Civil engineering'],
-                            'Electrical eng': ['Electrical engineering'],
-                            'Environmental eng': ['Environmental engineering'],
-                            'Geophysical eng': ['Geophysical engineering'],
-                            'Mechanical eng': ['Mechanical engineering'],
-                            'Process eng': ['Process engineering']
-                            }
+            self.mapping = FULL_MAPPING
         else:
             raise ValueError('Invalid mapping')
 

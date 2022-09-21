@@ -4,20 +4,18 @@ import argparse
 from tqdm import tqdm
 
 import sys
+
+from wiki_image_classification.src.config import STREAMLIT_PATH
+sys.path.append("./")
 sys.path.append("../../")
 
 from src.utilities import init_logger, printt
 from src.taxonomy.taxonomy import Taxonomy
-
-# GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
-HGRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads.pkl.bz2'
-FILES_PATH = '/scratch/WikipediaImagesTaxonomy/commonswiki-20220220-files.parquet'
-SAMPLE_PATH = 'streamlit_data/'
-LOG_PATH = 'streamlit_preparation.log'
+from src.config import *
 
 
-logger = init_logger(LOG_PATH, logger_name='taxonomy')
-logfile = open(LOG_PATH, 'w+')
+logger = init_logger(STREAMLIT_PATH + STREAMLIT_LOG_FILE, logger_name='taxonomy')
+logfile = open(STREAMLIT_PATH + STREAMLIT_LOG_FILE, 'w+')
 
 
 def initialize():
@@ -73,4 +71,4 @@ if __name__ == "__main__":
     # Dict storing evaluations
     printt('Saving file..')
     files_sample['labels'] = files_sample.apply(lambda x: {label: None for label in x.labels}, axis=1)                                                                  
-    files_sample.to_json(SAMPLE_PATH + f'files_{seed}_{n}_{how}.json.bz2')
+    files_sample.to_json(STREAMLIT_PATH + f'files_{seed}_{n}_{how}.json.bz2')

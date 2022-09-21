@@ -4,7 +4,12 @@ import os
 import streamlit as st
 from streamlit_server_state import server_state, server_state_lock
 
-SAMPLE_PATH = 'streamlit_data/'
+import sys
+sys.path.append("./")
+sys.path.append("../../")
+
+from src.config import *
+
 COMMONS_URL = 'https://commons.wikimedia.org/wiki/File:'
 UPLOAD_URL = 'https://upload.wikimedia.org/wikipedia/commons/'
 
@@ -61,7 +66,7 @@ def load_dataset():
     if st.session_state.dataset not in server_state:
         with st.spinner('Loading files...'):
             with server_state_lock[st.session_state.dataset]:
-                server_state[st.session_state.dataset] = pd.read_json(SAMPLE_PATH + st.session_state.dataset)
+                server_state[st.session_state.dataset] = pd.read_json(STREAMLIT_PATH + st.session_state.dataset)
 
     st.session_state.filesize = len(server_state[st.session_state.dataset])
     showFile()
@@ -90,7 +95,7 @@ def main():
 
 
     with st.sidebar:
-        st.selectbox('Dataset', options=os.listdir(SAMPLE_PATH) , key='dataset', on_change=load_dataset)
+        st.selectbox('Dataset', options=os.listdir(STREAMLIT_PATH) , key='dataset', on_change=load_dataset)
         
         st.number_input('File counter', min_value=0, max_value=st.session_state.filesize-1, key='counter', on_change=showFile)
         st.button('Go to next unevaluated image', on_click=next_unevaluated, disabled=(st.session_state.counter==st.session_state.filesize-1))

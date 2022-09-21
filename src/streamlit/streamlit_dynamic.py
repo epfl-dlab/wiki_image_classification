@@ -3,18 +3,15 @@ import pandas as pd
 import streamlit as st
 
 import sys
+sys.path.append("./")
 sys.path.append("../../")
 
 from src.utilities import init_logger
 from src.taxonomy.taxonomy import Taxonomy
 
-
-GRAPH_PATH = '/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2'
-FILES_PATH = '/scratch/WikipediaImagesTaxonomy/commonswiki-20220220-files.parquet'
 COMMONS_URL = 'https://commons.wikimedia.org/wiki/File:'
 UPLOAD_URL = 'https://upload.wikimedia.org/wikipedia/commons/'
 LOG_PATH = 'streamlit.log'
-
 
 def queryFile():
     '''
