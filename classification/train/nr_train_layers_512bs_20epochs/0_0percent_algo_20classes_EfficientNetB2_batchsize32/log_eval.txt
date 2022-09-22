@@ -1,0 +1,82 @@
+
+
+
+=============== EVALUATION ====================
+
+Found 760000 non-validated image filenames belonging to 42 classes.
+Found 39614 validated image filenames belonging to 20 classes.
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 723,604
+Non-trainable params: 7,768,569
+_________________________________________________________________
+train/0_0percent_algo_20classes_EfficientNetB2/cp-0020.ckpt
+
+   
+Mean number of label assignments per image in ground-truth: 2.1267
+Mean number of label assignments per image in predictions: 0.8800
+
+               precision    recall  f1-score  support index
+Architecture    0.000000  0.000000  0.000000    680.0     0
+Art             0.285714  0.003328  0.006579   1202.0     1
+Biology         0.747899  0.272171  0.399103    327.0     2
+Culture         0.606389  0.111443  0.188283  10050.0     3
+Entertainment   0.477477  0.033291  0.062243   1592.0     4
+Events          0.415385  0.035589  0.065561   2276.0     5
+History         0.601896  0.036080  0.068078   7040.0     6
+Landscapes      0.000000  0.000000  0.000000    255.0     7
+Language        0.785714  0.012629  0.024859    871.0     8
+Music           0.500000  0.029333  0.055416    375.0     9
+Nature          0.633691  0.294439  0.402063   6222.0    10
+Objects         0.584642  0.118347  0.196847   8492.0    11
+People          0.617128  0.499341  0.552021   8341.0    12
+Places          0.668522  0.614593  0.640424  15830.0    13
+Plants          0.531609  0.366337  0.433763    505.0    14
+Politics        0.451777  0.044769  0.081465   1988.0    15
+Science         0.000000  0.000000  0.000000    388.0    16
+Society         0.553314  0.191371  0.284384  14046.0    17
+Sports          0.655224  0.235515  0.346488   1864.0    18
+Technology      0.553030  0.038340  0.071709   1904.0    19
+micro avg       0.626144  0.259092  0.366521  84248.0  None
+macro avg       0.483471  0.146846  0.193964  84248.0  None
+weighted avg    0.585741  0.259092  0.318988  84248.0  None
+samples avg     0.448924  0.311913  0.342120  84248.0  None
+
+Unweighted avg. F1-score of all classes: 0.19396423579145913
+Unweighted avg. F1-score of top 5 classes: 0.4056542606111703
+Unweighted avg. F1-score of the rest: 0.12340089418488868
+
+
+------- Per-class accuracy: --------
+
+Architecture 0/680 == 0.0
+Art 4/1202 == 0.003
+Biology 89/327 == 0.272
+Culture 1120/10050 == 0.111
+Entertainment 53/1592 == 0.033
+Events 81/2276 == 0.036
+History 254/7040 == 0.036
+Landscapes 0/255 == 0.0
+Language 11/871 == 0.013
+Music 11/375 == 0.029
+Nature 1832/6222 == 0.294
+Objects 1005/8492 == 0.118
+People 4165/8341 == 0.499
+Places 9729/15830 == 0.615
+Plants 185/505 == 0.366
+Politics 89/1988 == 0.045
+Science 0/388 == 0.0
+Society 2688/14046 == 0.191
+Sports 439/1864 == 0.236
+Technology 73/1904 == 0.038

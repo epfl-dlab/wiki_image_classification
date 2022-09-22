@@ -97,7 +97,7 @@ model.load_weights(latest)
 # =============== PREDICT ON TEST SET ==================
 from sklearn.metrics import classification_report
 
-predictions = model.predict(test, verbose=1)
+predictions = model.predict(test, verbose=2)
 threshold = 0.5
 y_pred = 1 * (predictions > threshold)
 y_true = np.zeros(y_pred.shape)

@@ -7,6 +7,7 @@ import sys
 from help_functions import get_top_classes
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import time
+from LossFunction import BinaryFocalCrossentropy
 
 # Sharing of GPU resources
 # tf.config.gpu.set_per_process_memory_growth(True) # TODO didn't work, got error: AttributeError: module 'tensorflow._api.v2.config' has no attribute 'gpu'
@@ -19,11 +20,11 @@ print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 # To run this: `python TrainClassification.py 0`
 
-print('[LOG] Cp 1')
 
 # ================== HYPER-PARAMETERS ==================
-BATCH_SIZE = 512
-EPOCHS = 20
+BATCH_SIZE = 32
+EPOCHS = 15
+LOSS_FUNCTION = 'binary_focal_crossentropy'
 
 # config: nr_classes, labels, class_weights, basemodel, image_dimension, results_and_checkpoints_folder, data_folder
 i = sys.argv[1]
@@ -38,7 +39,7 @@ sys.stdout = log_file
 # ======================================================
 
 
-print('[LOG] Cp 2')
+print(f'\nBATCH SIZE: {BATCH_SIZE}\n')
 
 
 # ================= LOAD & AUGMENT DATA ================
@@ -136,14 +137,15 @@ def create_model(name):
     #   - binary cross-entropy: https://www.tensorflow.org/api_docs/python/tf/keras/losses/BinaryCrossentropy
     #   - binary focal cross-entropy: https://www.tensorflow.org/api_docs/python/tf/keras/losses/BinaryFocalCrossentropy
 
-    # BCE
-    model.compile(optimizer=tf.keras.optimizers.Adam(),
-                  loss='binary_crossentropy',
-                  metrics=['accuracy', 'categorical_accuracy'])
+    if LOSS_FUNCTION == 'binary_crossentropy':
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                    loss='binary_crossentropy',
+                    metrics=['accuracy', 'categorical_accuracy'])
     # Binary Focal Cross Entropy
-    # model.compile(optimizer=tf.keras.optimizers.Adam(),
-    #               loss='binary_focal_crossentropy',
-    #               metrics=['accuracy', 'categorical_accuracy'])
+    elif LOSS_FUNCTION == 'binary_focal_crossentropy':
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                    loss=BinaryFocalCrossentropy(),
+                    metrics=['accuracy', 'categorical_accuracy'])
 
     model.summary()
     return model

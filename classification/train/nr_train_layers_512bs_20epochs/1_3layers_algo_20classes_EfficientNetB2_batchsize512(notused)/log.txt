@@ -1,0 +1,115 @@
+[LOG] Cp 2
+Found 760000 non-validated image filenames belonging to 42 classes.
+Top 20 classes: ['Places' 'Society' 'Culture' 'People' 'Objects' 'History' 'Nature'
+ 'Events' 'Politics' 'Technology' 'Sports' 'Entertainment' 'Art'
+ 'Language' 'Architecture' 'Plants' 'Science' 'Music' 'Biology'
+ 'Landscapes']
+Found 714849 validated image filenames belonging to 20 classes.
+Found 37623 validated image filenames belonging to 20 classes.
+[LOG] Cp 3
+
+Number of layers in basemodel: 339
+Number of trainable layers: 3
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 1,222,036
+Non-trainable params: 7,270,137
+_________________________________________________________________
+[LOG] Cp 4
+train/1_3layers_algo_20classes_EfficientNetB2/cp-{epoch:04d}.ckpt
+Epoch 1/20
+
+Epoch 00001: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0001.ckpt
+22340/22340 - 13104s - loss: 0.2359 - accuracy: 0.2640 - categorical_accuracy: 0.2640 - val_loss: 0.2324 - val_accuracy: 0.2446 - val_categorical_accuracy: 0.2446
+Epoch 2/20
+
+Epoch 00002: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0002.ckpt
+22340/22340 - 1491s - loss: 0.2313 - accuracy: 0.2742 - categorical_accuracy: 0.2742 - val_loss: 0.2298 - val_accuracy: 0.2708 - val_categorical_accuracy: 0.2708
+Epoch 3/20
+
+Epoch 00003: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0003.ckpt
+22340/22340 - 1493s - loss: 0.2294 - accuracy: 0.2782 - categorical_accuracy: 0.2782 - val_loss: 0.2296 - val_accuracy: 0.2905 - val_categorical_accuracy: 0.2905
+Epoch 4/20
+
+Epoch 00004: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0004.ckpt
+22340/22340 - 1490s - loss: 0.2281 - accuracy: 0.2816 - categorical_accuracy: 0.2816 - val_loss: 0.2289 - val_accuracy: 0.2834 - val_categorical_accuracy: 0.2834
+Epoch 5/20
+
+Epoch 00005: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0005.ckpt
+22340/22340 - 1486s - loss: 0.2272 - accuracy: 0.2834 - categorical_accuracy: 0.2834 - val_loss: 0.2290 - val_accuracy: 0.2827 - val_categorical_accuracy: 0.2827
+Epoch 6/20
+
+Epoch 00006: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0006.ckpt
+22340/22340 - 1549s - loss: 0.2264 - accuracy: 0.2850 - categorical_accuracy: 0.2850 - val_loss: 0.2296 - val_accuracy: 0.2876 - val_categorical_accuracy: 0.2876
+Epoch 7/20
+
+Epoch 00007: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0007.ckpt
+22340/22340 - 2063s - loss: 0.2256 - accuracy: 0.2872 - categorical_accuracy: 0.2872 - val_loss: 0.2289 - val_accuracy: 0.2686 - val_categorical_accuracy: 0.2686
+Epoch 8/20
+
+Epoch 00008: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0008.ckpt
+22340/22340 - 2065s - loss: 0.2249 - accuracy: 0.2881 - categorical_accuracy: 0.2881 - val_loss: 0.2285 - val_accuracy: 0.2940 - val_categorical_accuracy: 0.2940
+Epoch 9/20
+
+Epoch 00009: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0009.ckpt
+22340/22340 - 2061s - loss: 0.2244 - accuracy: 0.2889 - categorical_accuracy: 0.2889 - val_loss: 0.2290 - val_accuracy: 0.2702 - val_categorical_accuracy: 0.2702
+Epoch 10/20
+
+Epoch 00010: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0010.ckpt
+22340/22340 - 1725s - loss: 0.2238 - accuracy: 0.2903 - categorical_accuracy: 0.2903 - val_loss: 0.2292 - val_accuracy: 0.2863 - val_categorical_accuracy: 0.2863
+Epoch 11/20
+
+Epoch 00011: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0011.ckpt
+22340/22340 - 1485s - loss: 0.2234 - accuracy: 0.2909 - categorical_accuracy: 0.2909 - val_loss: 0.2290 - val_accuracy: 0.2833 - val_categorical_accuracy: 0.2833
+Epoch 12/20
+
+Epoch 00012: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0012.ckpt
+22340/22340 - 1485s - loss: 0.2229 - accuracy: 0.2915 - categorical_accuracy: 0.2915 - val_loss: 0.2299 - val_accuracy: 0.2817 - val_categorical_accuracy: 0.2817
+Epoch 13/20
+
+Epoch 00013: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0013.ckpt
+22340/22340 - 1493s - loss: 0.2225 - accuracy: 0.2929 - categorical_accuracy: 0.2929 - val_loss: 0.2297 - val_accuracy: 0.2881 - val_categorical_accuracy: 0.2881
+Epoch 14/20
+
+Epoch 00014: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0014.ckpt
+22340/22340 - 1486s - loss: 0.2222 - accuracy: 0.2929 - categorical_accuracy: 0.2929 - val_loss: 0.2292 - val_accuracy: 0.2919 - val_categorical_accuracy: 0.2919
+Epoch 15/20
+
+Epoch 00015: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0015.ckpt
+22340/22340 - 1487s - loss: 0.2219 - accuracy: 0.2935 - categorical_accuracy: 0.2935 - val_loss: 0.2291 - val_accuracy: 0.2936 - val_categorical_accuracy: 0.2936
+Epoch 16/20
+
+Epoch 00016: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0016.ckpt
+22340/22340 - 1484s - loss: 0.2216 - accuracy: 0.2945 - categorical_accuracy: 0.2945 - val_loss: 0.2297 - val_accuracy: 0.2880 - val_categorical_accuracy: 0.2880
+Epoch 17/20
+
+Epoch 00017: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0017.ckpt
+22340/22340 - 1486s - loss: 0.2213 - accuracy: 0.2946 - categorical_accuracy: 0.2946 - val_loss: 0.2300 - val_accuracy: 0.2801 - val_categorical_accuracy: 0.2801
+Epoch 18/20
+
+Epoch 00018: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0018.ckpt
+22340/22340 - 1487s - loss: 0.2210 - accuracy: 0.2958 - categorical_accuracy: 0.2958 - val_loss: 0.2300 - val_accuracy: 0.2706 - val_categorical_accuracy: 0.2706
+Epoch 19/20
+
+Epoch 00019: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0019.ckpt
+22340/22340 - 1490s - loss: 0.2207 - accuracy: 0.2962 - categorical_accuracy: 0.2962 - val_loss: 0.2309 - val_accuracy: 0.2835 - val_categorical_accuracy: 0.2835
+Epoch 20/20
+
+Epoch 00020: saving model to train/1_3layers_algo_20classes_EfficientNetB2/cp-0020.ckpt
+22340/22340 - 1491s - loss: 0.2204 - accuracy: 0.2965 - categorical_accuracy: 0.2965 - val_loss: 0.2297 - val_accuracy: 0.2829 - val_categorical_accuracy: 0.2829
+
+Training time: 12 hours
+
+[LOG] Cp 5
