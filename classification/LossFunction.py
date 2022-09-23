@@ -54,21 +54,19 @@ class BinaryFocalCrossentropy(LossFunctionWrapper):
         self.axis = axis
         self.from_logits = from_logits
 
-def binary_focal_crossentropy(y_true, y_pred, alpha=0.25, gamma=2, from_logits=True, axis=-1):
+def binary_focal_crossentropy(y_true, y_pred, gamma=2, from_logits=True, axis=-1): # batch_size x nr_classes
     y_pred = ops.convert_to_tensor_v2(y_pred)
     if from_logits:
         # Transform logits to probabilities
         def sigmoid(x):
             return 1 / (1 + tf.math.exp(-x))
         y_pred = sigmoid(y_pred)
-    else:
-        # Clip probabilities for numerical stability
-        y_pred = K.clip(y_pred, K.epsilon(), 1 - K.epsilon())
+    y_pred = K.clip(y_pred, K.epsilon(), 1 - K.epsilon())
 
     y_true = math_ops.cast(y_true, y_pred.dtype)
     
-    term_1 = y_true * alpha * tf.math.pow(1 - y_pred, gamma) * tf.math.log(y_pred)
-    term_0 = (1 - y_true) * (1 - alpha) * tf.math.pow(y_pred, gamma) * tf.math.log(1 - y_pred)
+    term_1 = y_true * tf.math.pow(1 - y_pred, gamma) * tf.math.log(y_pred)
+    term_0 = (1 - y_true) * tf.math.pow(y_pred, gamma) * tf.math.log(1 - y_pred)
     focal_ce = -(term_1 + term_0)
 
     return K.mean(focal_ce, axis=axis)
