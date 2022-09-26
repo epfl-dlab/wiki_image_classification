@@ -7,7 +7,7 @@ import sys
 from help_functions import get_top_classes
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import time
-from LossFunction import BinaryFocalCrossentropy
+from focal_loss import BinaryFocalLoss
 
 # Sharing of GPU resources
 # tf.config.gpu.set_per_process_memory_growth(True) # TODO didn't work, got error: AttributeError: module 'tensorflow._api.v2.config' has no attribute 'gpu'
@@ -22,9 +22,10 @@ print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 
 # ================== HYPER-PARAMETERS ==================
-BATCH_SIZE = 32
-EPOCHS = 15
-LOSS_FUNCTION = 'binary_focal_crossentropy'
+LOSS_FUNCTION = 'binary_crossentropy'
+# LOSS_FUNCTION = 'binary_focal_crossentropy'
+BATCH_SIZE = 512
+EPOCHS = 20
 
 # config: nr_classes, labels, class_weights, basemodel, image_dimension, results_and_checkpoints_folder, data_folder
 i = sys.argv[1]
@@ -39,7 +40,9 @@ sys.stdout = log_file
 # ======================================================
 
 
-print(f'\nBATCH SIZE: {BATCH_SIZE}\n')
+print(f'\nBATCH SIZE: {BATCH_SIZE}')
+print(f'\LOSS_FUNCTION SIZE: {LOSS_FUNCTION}')
+print(f'\EPOCHS SIZE: {EPOCHS}\n')
 
 
 # ================= LOAD & AUGMENT DATA ================
@@ -70,6 +73,7 @@ else:
 train_generator = datagen.flow_from_dataframe(
         dataframe=train_df, 
         directory='/scratch/WIT_Dataset/images/', 
+        seed=7,
         subset='training',
         color_mode='rgb',
         x_col='url', 
@@ -81,6 +85,7 @@ train_generator = datagen.flow_from_dataframe(
 validation_generator = datagen.flow_from_dataframe(
         dataframe=train_df, 
         directory='/scratch/WIT_Dataset/images/', 
+        seed=7,
         subset='validation',
         color_mode='rgb',
         x_col='url', 
@@ -96,8 +101,6 @@ for k in name_id_map.keys():
 class_indices = train_generator.class_indices
 CLASS_LABELS = list(class_indices.keys())
 # ======================================================
-
-print('[LOG] Cp 3')
 
 
 # ====================== CREATE MODEL ==================
@@ -144,7 +147,7 @@ def create_model(name):
     # Binary Focal Cross Entropy
     elif LOSS_FUNCTION == 'binary_focal_crossentropy':
         model.compile(optimizer=tf.keras.optimizers.Adam(),
-                    loss=BinaryFocalCrossentropy(),
+                    loss=BinaryFocalLoss(gamma=2, from_logits=False),
                     metrics=['accuracy', 'categorical_accuracy'])
 
     model.summary()
@@ -167,10 +170,6 @@ if config['class_weights'] == True:
         class_weight[train_generator.class_indices[l]] = w
     print(weights)
 # ======================================================
-
-
-
-print('[LOG] Cp 4')
 
 
 
@@ -211,8 +210,6 @@ else:
 end = time.time()
 total_time_in_hours = round((end - start) / 3600)
 print(f'\nTraining time: {total_time_in_hours} hours\n')
-
-print('[LOG] Cp 5')
 
 # ================= PLOT TRAINING METRICS ==============
 # Plot training metrics: loss & accuracy
