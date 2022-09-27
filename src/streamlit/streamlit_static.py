@@ -102,14 +102,16 @@ def main():
         st.session_state.counter = 0
         st.session_state.filesize = 1
         st.session_state.previous_disabled = True
-        st.session_state.dataset = "files_0.10.json.bz2"
+        st.session_state.dataset = "files_42_10000_heuristics_simple.json.bz2"
         load_dataset()
         st.write("")
 
     with st.sidebar:
         st.selectbox(
             "Dataset",
-            options=os.listdir(STREAMLIT_PATH),
+            options=list(
+                filter(lambda f: f.endswith("bz2"), os.listdir(STREAMLIT_PATH))
+            ),
             key="dataset",
             on_change=load_dataset,
         )
@@ -129,6 +131,7 @@ def main():
         # Blank vertical space
         for _ in range(10):
             st.text("")
+        # Hard to compress within streamlit, need to do it manually afterwards
         st.download_button(
             "Download",
             data=server_state[st.session_state.dataset].to_json(),
