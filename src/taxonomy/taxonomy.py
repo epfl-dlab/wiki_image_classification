@@ -124,7 +124,7 @@ class Taxonomy:
             self.G.nodes[category]["head"] = head
         return head
 
-    def get_label(self, category, how="heuristics", debug=False):
+    def get_label(self, category, how="heuristics_v0", debug=False):
         """
         Get the label corresponding to a specific category, passed as string.
 
@@ -132,7 +132,7 @@ class Taxonomy:
             how (string): decision scheme to recursively query parents.
                 all: all parents are queried
                 naive: hop only to lower-depth parents
-                heuristics: decision based on the set of heuristics described in ??
+                heuristics: decision based on the set of heuristics described in (Salvi, 2022)
         """
         assert isinstance(category, str)
 
@@ -187,7 +187,7 @@ class Taxonomy:
                         continue
                 return curr_node["labels"]
 
-            elif how == "heuristics" or how == "heuristics_simple":
+            elif how == "heuristics_v0":
                 depth = curr_node["depth"]
 
                 # 1 Hidden category
@@ -253,13 +253,7 @@ class Taxonomy:
                 # 2.3. Hop to common_heads if they belong to parents and are not meaningless
                 for common_head in common_heads:
                     if (
-                        how == "heuristics"
-                        and common_head in nx.descendants(self.G, category)
-                        or (
-                            how == "heuristics_simple"
-                            and self.G.nodes.get(common_head, {}).get("depth", 1e9)
-                            < depth
-                        )
+                        self.G.nodes.get(common_head, {}).get("depth", 1e9) < depth
                     ) and not (common_head.isnumeric() or common_head in null_heads):
                         self.G_h.add_edge(category, common_head)
                         curr_node["labels"].update(
