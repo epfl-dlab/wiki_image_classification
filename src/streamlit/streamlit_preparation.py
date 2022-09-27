@@ -5,8 +5,6 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from wiki_image_classification.src.config import STREAMLIT_PATH
-
 sys.path.append("./")
 sys.path.append("../../")
 
@@ -67,12 +65,13 @@ if __name__ == "__main__":
     how = args.how if args.how else "heuristics"
     files_sample = files.sample(n, random_state=seed)
     tqdm.pandas()
-    files_sample[["labels", "log"]] = files_sample.progress_apply(
+    files_sample["labels_true"] = [[] for _ in range(len(files_sample))]
+    files_sample[["labels_pred", "log"]] = files_sample.progress_apply(
         lambda x: queryFile(x, how=how), axis=1, result_type="expand"
     )
     # Dict storing evaluations
     printt("Saving file..")
-    files_sample["labels"] = files_sample.apply(
-        lambda x: {label: None for label in x.labels}, axis=1
+    files_sample["labels_pred"] = files_sample.apply(
+        lambda x: {label: None for label in x.labels_pred}, axis=1
     )
     files_sample.to_json(STREAMLIT_PATH + f"files_{seed}_{n}_{how}.json.bz2")
