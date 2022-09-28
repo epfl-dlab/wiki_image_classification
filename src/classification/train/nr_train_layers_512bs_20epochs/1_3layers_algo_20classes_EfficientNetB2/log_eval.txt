@@ -1,0 +1,65 @@
+
+
+
+=============== EVALUATION ====================
+
+Found 760000 non-validated image filenames belonging to 42 classes.
+Found 39614 validated image filenames belonging to 20 classes.
+1238/1238 - 161s
+
+Mean number of label assignments per image in ground-truth: 2.1267
+Mean number of label assignments per image in predictions: 0.9759
+
+               precision    recall  f1-score  support index
+Architecture    0.000000  0.000000  0.000000    680.0     0
+Art             0.478261  0.009151  0.017959   1202.0     1
+Biology         0.814815  0.269113  0.404598    327.0     2
+Culture         0.590376  0.150149  0.239410  10050.0     3
+Entertainment   0.739726  0.033920  0.064865   1592.0     4
+Events          0.523490  0.034271  0.064330   2276.0     5
+History         0.529352  0.074290  0.130294   7040.0     6
+Landscapes      0.000000  0.000000  0.000000    255.0     7
+Language        0.666667  0.018370  0.035754    871.0     8
+Music           0.323529  0.029333  0.053790    375.0     9
+Nature          0.667499  0.300707  0.414626   6222.0    10
+Objects         0.606420  0.102332  0.175113   8492.0    11
+People          0.619165  0.510490  0.559600   8341.0    12
+Places          0.676451  0.630385  0.652606  15830.0    13
+Plants          0.536723  0.376238  0.442375    505.0    14
+Politics        0.557471  0.048793  0.089732   1988.0    15
+Science         0.500000  0.002577  0.005128    388.0    16
+Society         0.549452  0.292681  0.381921  14046.0    17
+Sports          0.673440  0.248927  0.363494   1864.0    18
+Technology      0.642336  0.046218  0.086232   1904.0    19
+micro avg       0.626468  0.287461  0.394090  84248.0  None
+macro avg       0.534759  0.158897  0.209091  84248.0  None
+weighted avg    0.599624  0.287461  0.349604  84248.0  None
+samples avg     0.479957  0.340531  0.370050  84248.0  None
+
+Unweighted avg. F1-score of all classes: 0.20909137449615595
+Unweighted avg. F1-score of top 5 classes: 0.41384149491105104
+Unweighted avg. F1-score of the rest: 0.1408413343578576
+
+
+------- Per-class accuracy: --------
+
+Architecture 0/680 == 0.0
+Art 11/1202 == 0.009
+Biology 88/327 == 0.269
+Culture 1509/10050 == 0.15
+Entertainment 54/1592 == 0.034
+Events 78/2276 == 0.034
+History 523/7040 == 0.074
+Landscapes 0/255 == 0.0
+Language 16/871 == 0.018
+Music 11/375 == 0.029
+Nature 1871/6222 == 0.301
+Objects 869/8492 == 0.102
+People 4258/8341 == 0.51
+Places 9979/15830 == 0.63
+Plants 190/505 == 0.376
+Politics 97/1988 == 0.049
+Science 1/388 == 0.003
+Society 4111/14046 == 0.293
+Sports 464/1864 == 0.249
+Technology 88/1904 == 0.046

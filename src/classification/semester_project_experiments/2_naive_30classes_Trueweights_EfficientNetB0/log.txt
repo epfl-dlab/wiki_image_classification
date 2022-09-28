@@ -1,0 +1,92 @@
+Found 570000 non-validated image filenames belonging to 33 classes.
+['Places' 'Culture' 'History' 'Society' 'Nature' 'People' 'Politics'
+ 'Sports' 'Objects' 'Entertainment' 'Technology' 'Science' 'Events'
+ 'Plants' 'Language' 'Animals' 'Music' 'Literature' 'Biology' 'Physics'
+ 'Astronomy' 'Art' 'Marine organisms' 'Chemistry' 'Electrical eng'
+ 'Mathematics' 'Landscapes' 'Mechanical eng' 'Earth sciences'
+ 'Engineering']
+Found 29995 validated image filenames belonging to 30 classes.
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb0 (Functional)  (None, 2, 2, 1280)        4049571   
+_________________________________________________________________
+flatten (Flatten)            (None, 5120)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               655488    
+_________________________________________________________________
+dense_1 (Dense)              (None, 30)                3870      
+=================================================================
+Total params: 4,708,929
+Trainable params: 659,358
+Non-trainable params: 4,049,571
+_________________________________________________________________
+train/2_naive_30classes_Trueweights_EfficientNetB0/cp-0015.ckpt
+
+  
+                  precision    recall  f1-score  support index
+Animals            0.310345  0.095745  0.146341     94.0     0
+Art                0.000000  0.000000  0.000000     33.0     1
+Astronomy          0.147059  0.212766  0.173913     47.0     2
+Biology            0.000000  0.000000  0.000000     49.0     3
+Chemistry          0.000000  0.000000  0.000000     25.0     4
+Culture            1.000000  0.000107  0.000214   9355.0     5
+Earth sciences     0.000000  0.000000  0.000000     10.0     6
+Electrical eng     0.000000  0.000000  0.000000     12.0     7
+Engineering        0.000000  0.000000  0.000000      4.0     8
+Entertainment      0.000000  0.000000  0.000000    795.0     9
+Events             0.000000  0.000000  0.000000    458.0    10
+History            0.000000  0.000000  0.000000   7216.0    11
+Landscapes         0.000000  0.000000  0.000000     13.0    12
+Language           0.000000  0.000000  0.000000    215.0    13
+Literature         0.000000  0.000000  0.000000     81.0    14
+Marine organisms   0.000000  0.000000  0.000000     36.0    15
+Mathematics        1.000000  0.363636  0.533333     11.0    16
+Mechanical eng     0.000000  0.000000  0.000000      9.0    17
+Music              0.000000  0.000000  0.000000     85.0    18
+Nature             0.795455  0.013550  0.026646   5166.0    19
+Objects            1.000000  0.001067  0.002132    937.0    20
+People             0.166667  0.004407  0.008588   2042.0    21
+Physics            0.000000  0.000000  0.000000     35.0    22
+Places             0.687500  0.006623  0.013119  13288.0    23
+Plants             0.538462  0.072351  0.127563    387.0    24
+Politics           0.000000  0.000000  0.000000   1074.0    25
+Science            0.000000  0.000000  0.000000    622.0    26
+Society            0.000000  0.000000  0.000000   6555.0    27
+Sports             0.350000  0.006843  0.013423   1023.0    28
+Technology         0.000000  0.000000  0.000000    675.0    29
+micro avg          0.419593  0.004508  0.008921  50352.0  None
+macro avg          0.199850  0.025903  0.034842  50352.0  None
+weighted avg       0.486389  0.004508  0.008429  50352.0  None
+samples avg        0.004253  0.005120  0.004408  50352.0  None
+Animals 9/94 == 0.096
+Art 0/33 == 0.0
+Astronomy 10/47 == 0.213
+Biology 0/49 == 0.0
+Chemistry 0/25 == 0.0
+Culture 1/9355 == 0.0
+Earth sciences 0/10 == 0.0
+Electrical eng 0/12 == 0.0
+Engineering 0/4 == 0.0
+Entertainment 0/795 == 0.0
+Events 0/458 == 0.0
+History 0/7216 == 0.0
+Landscapes 0/13 == 0.0
+Language 0/215 == 0.0
+Literature 0/81 == 0.0
+Marine organisms 0/36 == 0.0
+Mathematics 4/11 == 0.364
+Mechanical eng 0/9 == 0.0
+Music 0/85 == 0.0
+Nature 70/5166 == 0.014
+Objects 1/937 == 0.001
+People 9/2042 == 0.004
+Physics 0/35 == 0.0
+Places 88/13288 == 0.007
+Plants 28/387 == 0.072
+Politics 0/1074 == 0.0
+Science 0/622 == 0.0
+Society 0/6555 == 0.0
+Sports 7/1023 == 0.007
+Technology 0/675 == 0.0
