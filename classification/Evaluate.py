@@ -21,6 +21,7 @@ sys.stdout = log_file
 print('\n\n\n=============== EVALUATION ====================\n')
 # ======================================================
 
+BEST_WEIGHTS = config['results_and_checkpoints_folder'] + '/cp-0004.ckpt'
 
 
 
@@ -68,7 +69,7 @@ def create_model(name):
         efficient_net = EfficientNetB2(include_top=False, weights='imagenet', classes=config['nr_classes'],
                                            input_shape=(config['image_dimension'], config['image_dimension'], 3))
 
-    efficient_net.trainable=False
+    # efficient_net.trainable=False
 
     model = Sequential([
         efficient_net,
@@ -76,18 +77,19 @@ def create_model(name):
         layers.Dense(128, activation='relu'),
         layers.Dense(config['nr_classes'], activation='sigmoid')
     ])
+    # compile() configures the model for training, not necessary when only evaluating
+    # model.compile(optimizer=tf.keras.optimizers.Adam(),
+    #               loss='binary_crossentropy',
+    #               metrics=['accuracy', 'categorical_accuracy'])
 
-    model.compile(optimizer=tf.keras.optimizers.Adam(),
-                  loss='binary_crossentropy',
-                  metrics=['accuracy', 'categorical_accuracy'])
-
-    model.summary()
+    # model.summary()
     return model
 model = create_model(name=config['basemodel'])
 
-latest = tf.train.latest_checkpoint(config['results_and_checkpoints_folder'])
-print(latest)
-model.load_weights(latest)
+# latest = tf.train.latest_checkpoint(config['results_and_checkpoints_folder'])
+best_weights = BEST_WEIGHTS
+
+model.load_weights(best_weights)
 # ======================================================
 
 

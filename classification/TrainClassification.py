@@ -180,11 +180,19 @@ print(checkpoint_path)
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                 save_best_only=True,
+                                                 monitor='val_loss',
                                                  save_weights_only=True,
                                                  verbose=1)
 history_callback = tf.keras.callbacks.CSVLogger(f"{config['results_and_checkpoints_folder']}/history.csv", 
                                                 separator=',', 
                                                 append=True)
+early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
+                                                           min_delta=0,
+                                                           patience=3,
+                                                           verbose=0,
+                                                           mode='auto',
+                                                           restore_best_weights=True)
 
 # Save the weights using the `checkpoint_path` format
 model.save_weights(checkpoint_path.format(epoch=0))
@@ -195,7 +203,7 @@ if config['class_weights'] == True:
     verbose=2,
     validation_data=validation_generator,
     epochs=EPOCHS,
-    callbacks=[cp_callback, history_callback],
+    callbacks=[cp_callback, history_callback, early_stopping_callback],
     class_weight=class_weight)
 else:
     history = model.fit(
@@ -203,7 +211,7 @@ else:
     verbose=2,
     validation_data=validation_generator,
     epochs=EPOCHS,
-    callbacks=[cp_callback, history_callback])
+    callbacks=[cp_callback, history_callback, early_stopping_callback])
 # ======================================================
 
 
