@@ -101,7 +101,8 @@ from sklearn.metrics import classification_report
 
 predictions = model.predict(test, verbose=2)
 threshold = 0.5
-y_pred = 1 * (predictions > threshold)
+# y_pred = 1 * (predictions > threshold)
+y_pred = predictions
 y_true = np.zeros(y_pred.shape)
 for row_idx, row in enumerate(test.classes):
     for idx in row:
@@ -109,7 +110,6 @@ for row_idx, row in enumerate(test.classes):
 np.save(file=config['results_and_checkpoints_folder'] + '/y_pred', arr=y_pred)
 np.save(file=config['results_and_checkpoints_folder'] + '/y_true', arr=y_true)
 # ======================================================
-
 
 
 # ============== CONFUSION MATRICES ===================
