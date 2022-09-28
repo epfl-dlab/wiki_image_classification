@@ -21,7 +21,7 @@ sys.stdout = log_file
 print('\n\n\n=============== EVALUATION ====================\n')
 # ======================================================
 
-BEST_WEIGHTS = config['results_and_checkpoints_folder'] + '/cp-0004.ckpt'
+BEST_WEIGHTS = config['results_and_checkpoints_folder'] + '/checkpoints' + '/cp-0004.ckpt'
 
 
 
@@ -106,6 +106,8 @@ y_true = np.zeros(y_pred.shape)
 for row_idx, row in enumerate(test.classes):
     for idx in row:
         y_true[row_idx, idx] = 1
+np.save(file=config['results_and_checkpoints_folder'] + '/y_pred', arr=y_pred)
+np.save(file=config['results_and_checkpoints_folder'] + '/y_true', arr=y_true)
 # ======================================================
 
 
