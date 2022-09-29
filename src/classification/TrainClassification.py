@@ -1,5 +1,6 @@
 ﻿import tensorflow as tf
 import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
 import json
 import os
@@ -47,7 +48,6 @@ print(f'\EPOCHS SIZE: {EPOCHS}\n')
 
 # ================= LOAD & AUGMENT DATA ================
 train_df = pd.read_json(config['data_folder'] + '/train_df.json.bz2', compression='bz2')
-
 top_classes = get_top_classes(config['nr_classes'], train_df)#['Places', 'Culture', 'History', 'Society', 'Nature', 'People', 'Politics', 'Sports', 'Objects', 'Entertainment']
 print(f"Top {config['nr_classes']} classes: {top_classes}")
 
@@ -153,22 +153,6 @@ def create_model(name):
     model.summary()
     return model
 model = create_model(name=config['basemodel'])
-
-# Calculate class weights: https://www.tensorflow.org/tutorials/structured_data/imbalanced_data#calculate_class_weights
-if config['class_weights'] == True:
-    weights = train_df[["labels", "title"]].explode("labels")\
-            .groupby("labels").agg("count").reset_index()
-    total = weights.title.sum()
-    weights['proportion'] = weights.title.apply(lambda r: r/total)
-    weights['weight'] = weights.title.apply(lambda r: (1/r)*(total/41)) # 
-    # weights['weight'] = weights.page_title.apply(lambda r: np.log((1/r)*(total/2)))
-
-    weights = weights[['labels', 'proportion', 'weight']]
-    class_weight={}
-    for l in name_id_map.keys():
-        w = weights[weights.labels==l].weight.iloc[0]
-        class_weight[train_generator.class_indices[l]] = w
-    print(weights)
 # ======================================================
 
 
@@ -193,11 +177,22 @@ early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                            verbose=0,
                                                            mode='auto',
                                                            restore_best_weights=True)
-
 # Save the weights using the `checkpoint_path` format
 model.save_weights(checkpoint_path.format(epoch=0))
 
 if config['class_weights'] == True:
+    # Calculate class weights: https://www.tensorflow.org/tutorials/structured_data/imbalanced_data#calculate_class_weights
+    weights = train_df[["labels", "title"]].explode("labels")\
+            .groupby("labels").agg("count").reset_index()
+    total = weights.title.sum()
+    weights['proportion'] = weights.title.apply(lambda r: r/total)
+    weights['weight'] = weights.title.apply(lambda r: (1/r)*(total/41)) # 
+    # weights['weight'] = weights.page_title.apply(lambda r: np.log((1/r)*(total/2)))
+    weights = weights[['labels', 'proportion', 'weight']]
+    class_weight={}
+    for l in name_id_map.keys():
+        w = weights[weights.labels==l].weight.iloc[0]
+        class_weight[train_generator.class_indices[l]] = w
     history = model.fit(
     train_generator,
     verbose=2,
@@ -205,6 +200,7 @@ if config['class_weights'] == True:
     epochs=EPOCHS,
     callbacks=[cp_callback, history_callback, early_stopping_callback],
     class_weight=class_weight)
+
 else:
     history = model.fit(
     train_generator,
@@ -218,6 +214,20 @@ else:
 end = time.time()
 total_time_in_hours = round((end - start) / 3600)
 print(f'\nTraining time: {total_time_in_hours} hours\n')
+
+
+
+
+
+# ===== FIND OPTIMAL THRESHOLDS (using val set) ========
+thresholds = np.linspace(0, 1, 0.001)
+val_y = model.predict
+
+
+# ======================================================
+
+
+
 
 # ================= PLOT TRAINING METRICS ==============
 # Plot training metrics: loss & accuracy

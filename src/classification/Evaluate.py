@@ -101,15 +101,34 @@ from sklearn.metrics import classification_report
 
 predictions = model.predict(test, verbose=2)
 threshold = 0.5
-# y_pred = 1 * (predictions > threshold)
+y_pred = 1 * (predictions > threshold)
 y_pred = predictions
 y_true = np.zeros(y_pred.shape)
 for row_idx, row in enumerate(test.classes):
     for idx in row:
         y_true[row_idx, idx] = 1
-np.save(file=config['results_and_checkpoints_folder'] + '/y_pred', arr=y_pred)
-np.save(file=config['results_and_checkpoints_folder'] + '/y_true', arr=y_true)
+# np.save(file=config['results_and_checkpoints_folder'] + '/y_pred', arr=predictions)
+# np.save(file=config['results_and_checkpoints_folder'] + '/y_true', arr=y_true)
 # ======================================================
+
+
+
+# ========== PLOT PREDICTIONS AND THRESHOLDS ==========
+# Inspiration from https://www.kaggle.com/code/iafoss/pretrained-resnet34-with-rgby-0-460-public-lb/notebook
+fig, axs = plt.subplots(5, 4, figsize=(12, 12))
+fig.tight_layout(h_pad=2.0)
+nr_classes = predictions.shape[1]
+labels = list(test.class_indices.keys())
+bins = np.linspace(0, 1, 75)
+for i, ax, label in zip(range(nr_classes), axs.flatten(), labels):
+    ax.hist(predictions[y_true[:, i] == 0][:, i], bins, alpha=0.5, label='false', log=True)
+    ax.hist(predictions[y_true[:, i] == 1][:, i], bins, alpha=0.5, label='true', log=True)
+    plt.axvline(x=thresholds[i], color='k', linestyle='--')
+    ax.legend(loc='upper right')
+    ax.set_title(label)
+plt.savefig(config['results_and_checkpoints_folder'] + '/prediction_thresholds.png')
+# =====================================================
+
 
 
 # ============== CONFUSION MATRICES ===================
