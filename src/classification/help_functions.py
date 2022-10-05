@@ -1,4 +1,3 @@
-from distutils.log import error
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
@@ -7,7 +6,100 @@ from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from focal_loss import BinaryFocalLoss
+from sklearn.metrics import f1_score
 
+
+def get_optimal_threshold(y_true, probs, thresholds, labels, N=3, strat_size=0.4):
+    """
+    Calculates the best threshold per class by calculating the median of the optimal thresholds
+    over stratified subsets of the training set.
+
+    Input:  N          - number of stratifications
+            strat_size - size of the stratification, between 0.05 and 0.5
+            y_true     - binary matrix with the ground-truth values (nr_images, nr_labels)
+            probs      - matrix containing the prediction probabilities (nr_images, nr_labels)
+            thresholds - possible thresholds (e.g. [0.05, 0.10, 0.15, ..., 0.95])
+            labels     - labes [Art, Architecture, ...]
+    Output: best_thresholds (nr_labels, )
+
+    Inspiration: GHOST paper.
+    """
+
+    def to_label(probs, threshold):
+        return (probs >= threshold) * 1
+
+    nr_images = y_true.shape[0]
+    
+    best_thresholds = np.zeros((len(labels), N))
+
+    fig, axs = plt.subplots(5, 4, figsize=(12, 12))
+    fig.tight_layout(h_pad=3.0, w_pad=3.0)
+
+    for i in range(N):
+        subset_indices = np.random.choice(a=np.arange(nr_images), size=int(np.round(nr_images*0.2)), replace=False)
+
+        for label_idx, ax in zip(range(len(labels)), axs.flatten()):
+            f1_scores = [f1_score(y_true=y_true[subset_indices, label_idx], y_pred=to_label(probs[subset_indices, label_idx], t)) for t in thresholds]
+            best_thresholds[label_idx, i] = thresholds[np.argmax(f1_scores)]
+            # ax.axvline(x=best_thresholds[label_idx, i], color='k', linestyle='--')
+            ax.plot(thresholds, f1_scores)
+            ax.set_title(labels[label_idx])
+            ax.set_xlabel('Threshold')
+            ax.set_ylabel('F1-score')
+
+    optim_thresholds = np.median(best_thresholds, axis=1)
+
+    for label_idx, ax in zip(range(len(optim_thresholds)), axs.flatten()):
+        ax.axvline(x=optim_thresholds[label_idx], color='k', linestyle='--')
+
+    fig, axs = plt.subplots(5, 4, figsize=(12, 12))
+    fig.tight_layout(h_pad=3.0, w_pad=3.0)
+    bins = np.linspace(0, 1, 50)
+
+    for label_idx, ax in zip(range(len(labels)), axs.flatten()):
+        ax.hist(probs[y_true[:, label_idx] == 0][:, label_idx], bins, alpha=0.5, label='false', log=True)
+        ax.hist(probs[y_true[:, label_idx] == 1][:, label_idx], bins, alpha=0.5, label='true', log=True)
+        ax.axvline(x=optim_thresholds[label_idx], color='k', linestyle='--')
+        ax.legend(loc='upper right')
+        ax.set_title(labels[label_idx])
+        ax.set_xlabel('Threshold')
+        ax.set_ylabel('Count')
+
+    return optim_thresholds
+
+
+def plot_probs_and_best_threshold(y_true, probs, labels):
+    def to_label(probs, threshold):
+        return (probs >= threshold) * 1
+
+    thresholds = np.linspace(start=0, stop=1, num=101)
+    
+    best_thresholds = np.zeros((len(labels, )))
+
+    # F1-scores per threshold
+    fig, axs = plt.subplots(5, 4, figsize=(12, 12))
+    fig.tight_layout(h_pad=3.0, w_pad=3.0)
+    for label_idx, ax in zip(range(len(labels)), axs.flatten()):
+        f1_scores = [f1_score(y_true=y_true[:, label_idx], y_pred=to_label(probs[:, label_idx], t)) for t in thresholds]
+        best_thresholds[label_idx] = thresholds[np.argmax(f1_scores)]
+        ax.axvline(x=best_thresholds[label_idx], color='k', linestyle='--')
+        ax.plot(thresholds, f1_scores)
+        ax.set_title(labels[label_idx])
+        ax.set_xlabel('Threshold')
+        ax.set_ylabel('F1-score')
+
+    # Prediction probabilities for ground-truth TRUE and FALSE
+    fig, axs = plt.subplots(5, 4, figsize=(12, 12))
+    fig.tight_layout(h_pad=3.0, w_pad=3.0)
+    bins = np.linspace(0, 1, 75)
+    for label_idx, ax in zip(range(len(labels)), axs.flatten()):
+        ax.hist(probs[y_true[:, label_idx] == 0][:, label_idx], bins, alpha=0.5, label='false', log=True)
+        ax.hist(probs[y_true[:, label_idx] == 1][:, label_idx], bins, alpha=0.5, label='true', log=True)
+        ax.axvline(x=best_thresholds[label_idx], color='k', linestyle='--')
+        ax.legend(loc='upper right')
+        ax.set_title(labels[label_idx])
+        ax.set_xlabel('Threshold')
+        ax.set_ylabel('Count')
 
 def get_top_classes(nr_classes, df):
     """Returns the nr_classes classes with greater number of samples from the multiclass df."""
@@ -19,10 +111,11 @@ def get_top_classes(nr_classes, df):
                                         class_mode='categorical', 
                                         validate_filenames=False)
 
-    y_true = get_y_true(_data.samples, _data.class_indices, _data.classes)
+    y_true = get_y_true(shape=(_data.samples, len(_data.class_indices)), classes=_data.classes)
 
     sorted_indices = np.argsort(np.sum(y_true, axis=0))[::-1]
     return np.array(list(_data.class_indices.keys()))[sorted_indices[:nr_classes]]
+
 
 
 def create_model(n_labels, image_dimension, model_name, number_trainable_layers, loss='binary_crossentropy'):
@@ -73,8 +166,21 @@ def create_model(n_labels, image_dimension, model_name, number_trainable_layers,
     return model
 
 
-def get_y_true(samples, class_indices, classes):
-    y_true = np.zeros((samples, len(class_indices))) # nr_rows=nr_images; nr_columns=nr_classes
+# def get_y_true(samples, class_indices, classes):
+#     y_true = np.zeros((samples, len(class_indices))) # nr_rows=nr_images; nr_columns=nr_classes
+#     for row_idx, row in enumerate(classes):
+#         for idx in row:
+#             y_true[row_idx, idx] = 1
+#     return y_true
+
+def get_y_true(shape, classes):
+    """
+    Gets the ground-truth in a binary matrix format from the sparse matrix given by ImageGenerator.
+    Input:  shape   - (nr_images x nr_labels)
+            classes - sparse matrix (array of arrays) given by ImageGenerator
+    Output: y_true  - binary matrix of dimension shape
+    """
+    y_true = np.zeros(shape) # nr_rows=nr_images; nr_columns=nr_classes
     for row_idx, row in enumerate(classes):
         for idx in row:
             y_true[row_idx, idx] = 1
@@ -97,48 +203,6 @@ def compute_class_weights(y_true):
     class_labels = range(len(class_weights))
     return dict(zip(class_labels, class_weights))
 
-# def get_y_true(classes, preset_nr_classes=0):
-#     """Gets one-hot encoded matrix of format (nr_images)x(nr_classes)."""
-#     nr_images = len(classes)
-#     if not preset_nr_classes:
-#         nr_classes = len(set([item for sublist in classes for item in sublist]))
-#     else:
-#         nr_classes = preset_nr_classes
-#     y_true = np.zeros((nr_images, nr_classes))
-#     for row_idx, row in enumerate(classes):
-#         for idx in row:
-#             y_true[row_idx, idx] = 1
-#     return y_true
-
-def balance_test(classes, class_names, test_df):
-        """ 
-        Constructs a sort of more balanced test set in a dummy way by adding to it only the images that contain 
-        the - for the moment - most uncommon class.
-        Inputs:
-            - classes: [[]]
-            - class_names: list with all labels: 
-            - test_df: dataframe with rows containing image files and labels
-        """
-        y_true = get_y_true(classes)
-        sorted_indices = np.argsort(np.sum(y_true, axis=0))
-        sorted_class_names = np.array(list(class_names))[sorted_indices]
-        least_common_class = sorted_class_names[0]
-        balanced_classes = []
-        row_ids = []
-        counter = 0 
-        for index, row in test_df.iterrows():
-            counter += 1
-            if counter % 10 == 0:
-                y_true = get_y_true(balanced_classes, 40)
-                sorted_indices = np.argsort(np.sum(y_true, axis=0))
-                sorted_class_names = np.array(class_names)[sorted_indices]
-                least_common_class = sorted_class_names[0]
-            if least_common_class in row.labels:
-                balanced_classes.append(row.labels)
-                row_ids.append(index)
-
-        return test_df.loc[row_ids, :]
-
 
 def plot_distribution(dataframe, filename, minimal_nr_images=0):
     _generator = ImageDataGenerator() 
@@ -149,7 +213,7 @@ def plot_distribution(dataframe, filename, minimal_nr_images=0):
                                             class_mode='categorical', 
                                             validate_filenames=False)
 
-    y_true = get_y_true(_data.samples, _data.class_indices, _data.classes)
+    y_true = get_y_true(shape=(_data.samples, len(_data.class_indices)), classes=_data.classes)
 
     sorted_indices = np.argsort(np.sum(y_true, axis=0))
     sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
