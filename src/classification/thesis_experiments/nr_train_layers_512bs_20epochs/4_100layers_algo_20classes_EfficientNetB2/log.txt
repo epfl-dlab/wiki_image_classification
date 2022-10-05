@@ -1,0 +1,65 @@
+{'nr_classes': 20, 'number_trainable_layers': 100, 'class_weights': False, 'augment': False, 'basemodel': 'EfficientNetB2', 'image_dimension': 64, 'results_and_checkpoints_folder': 'thesis_experiments/4_100layers_algo_20classes_EfficientNetB2', 'data_folder': 'data/split_dataframes_heuristic_labels_20220914'}
+
+BATCH SIZE: 512
+\LOSS_FUNCTION SIZE: binary_crossentropy
+\EPOCHS SIZE: 20
+
+Found 760000 non-validated image filenames belonging to 42 classes.
+Top 20 classes: ['Places' 'Society' 'Culture' 'People' 'Objects' 'History' 'Nature'
+ 'Events' 'Politics' 'Technology' 'Sports' 'Entertainment' 'Art'
+ 'Language' 'Architecture' 'Plants' 'Science' 'Music' 'Biology'
+ 'Landscapes']
+Found 714849 validated image filenames belonging to 20 classes.
+Found 37623 validated image filenames belonging to 20 classes.
+
+Number of layers in basemodel: 339
+Number of trainable layers: 100
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 6,900,894
+Non-trainable params: 1,591,279
+_________________________________________________________________
+thesis_experiments/4_100layers_algo_20classes_EfficientNetB2/cp-{epoch:04d}.ckpt
+Epoch 1/20
+
+Epoch 00001: val_loss improved from inf to 0.22353, saving model to thesis_experiments/4_100layers_algo_20classes_EfficientNetB2/cp-0001.ckpt
+1397/1397 - 12787s - loss: 0.2310 - accuracy: 0.2799 - categorical_accuracy: 0.2799 - val_loss: 0.2235 - val_accuracy: 0.2933 - val_categorical_accuracy: 0.2933
+Epoch 2/20
+
+Epoch 00002: val_loss improved from 0.22353 to 0.22168, saving model to thesis_experiments/4_100layers_algo_20classes_EfficientNetB2/cp-0002.ckpt
+1397/1397 - 8729s - loss: 0.2216 - accuracy: 0.2964 - categorical_accuracy: 0.2964 - val_loss: 0.2217 - val_accuracy: 0.2822 - val_categorical_accuracy: 0.2822
+Epoch 3/20
+
+Epoch 00003: val_loss improved from 0.22168 to 0.22139, saving model to thesis_experiments/4_100layers_algo_20classes_EfficientNetB2/cp-0003.ckpt
+1397/1397 - 8677s - loss: 0.2180 - accuracy: 0.3042 - categorical_accuracy: 0.3042 - val_loss: 0.2214 - val_accuracy: 0.3111 - val_categorical_accuracy: 0.3111
+Epoch 4/20
+
+Epoch 00004: val_loss improved from 0.22139 to 0.21988, saving model to thesis_experiments/4_100layers_algo_20classes_EfficientNetB2/cp-0004.ckpt
+1397/1397 - 1145s - loss: 0.2149 - accuracy: 0.3104 - categorical_accuracy: 0.3104 - val_loss: 0.2199 - val_accuracy: 0.3069 - val_categorical_accuracy: 0.3069
+Epoch 5/20
+
+Epoch 00005: val_loss did not improve from 0.21988
+1397/1397 - 1134s - loss: 0.2117 - accuracy: 0.3167 - categorical_accuracy: 0.3167 - val_loss: 0.2205 - val_accuracy: 0.3056 - val_categorical_accuracy: 0.3056
+Epoch 6/20
+
+Epoch 00006: val_loss did not improve from 0.21988
+1397/1397 - 1133s - loss: 0.2083 - accuracy: 0.3228 - categorical_accuracy: 0.3228 - val_loss: 0.2213 - val_accuracy: 0.3032 - val_categorical_accuracy: 0.3032
+Epoch 7/20
+
+Epoch 00007: val_loss did not improve from 0.21988
+1397/1397 - 1133s - loss: 0.2047 - accuracy: 0.3303 - categorical_accuracy: 0.3303 - val_loss: 0.2228 - val_accuracy: 0.3035 - val_categorical_accuracy: 0.3035
+
+Training time: 10 hours
+

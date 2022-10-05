@@ -21,9 +21,6 @@ sys.stdout = log_file
 print('\n\n\n=============== EVALUATION ====================\n')
 # ======================================================
 
-BEST_WEIGHTS = config['results_and_checkpoints_folder'] + '/checkpoints' + '/cp-0004.ckpt'
-
-
 
 # ====================== LOAD TEST SET =================
 test_df = pd.read_json(config['data_folder'] + '/test_df.json.bz2', compression='bz2')
@@ -85,11 +82,8 @@ def create_model(name):
     # model.summary()
     return model
 model = create_model(name=config['basemodel'])
-
-# latest = tf.train.latest_checkpoint(config['results_and_checkpoints_folder'])
-best_weights = BEST_WEIGHTS
-
-model.load_weights(best_weights)
+latest = tf.train.latest_checkpoint(config['results_and_checkpoints_folder'])
+model.load_weights(latest)
 # ======================================================
 
 
@@ -123,7 +117,7 @@ bins = np.linspace(0, 1, 75)
 for i, ax, label in zip(range(nr_classes), axs.flatten(), labels):
     ax.hist(predictions[y_true[:, i] == 0][:, i], bins, alpha=0.5, label='false', log=True)
     ax.hist(predictions[y_true[:, i] == 1][:, i], bins, alpha=0.5, label='true', log=True)
-    plt.axvline(x=thresholds[i], color='k', linestyle='--')
+    # plt.axvline(x=thresholds[i], color='k', linestyle='--') # TODO upload thresholds from training!!!
     ax.legend(loc='upper right')
     ax.set_title(label)
 plt.savefig(config['results_and_checkpoints_folder'] + '/prediction_thresholds.png')

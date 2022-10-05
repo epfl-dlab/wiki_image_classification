@@ -1,0 +1,15 @@
+thesis_experiments/imbalance_techniques_32bs_15epochs/0_algo_Falseaugment_20classes_Falseweights_EfficientNetB2/checkpoints/cp-0015.ckpt
+Found 760000 non-validated image filenames belonging to 42 classes.
+Top 20 labels: ['Places' 'Society' 'Culture' 'People' 'Objects' 'History' 'Nature'
+ 'Events' 'Politics' 'Technology' 'Sports' 'Entertainment' 'Art'
+ 'Language' 'Architecture' 'Plants' 'Science' 'Music' 'Biology'
+ 'Landscapes']
+Found 714849 validated image filenames belonging to 20 classes.
+\Time to load data and model weights: 0 hours
+
+22340/22340 - 13856s
+(714849, 20)
+\Time to predict on training data: 4 hours
+
+\Time to create y_true matrix: 0 hours
+

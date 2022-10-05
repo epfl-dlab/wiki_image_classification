@@ -10,11 +10,6 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import time
 from focal_loss import BinaryFocalLoss
 
-# Sharing of GPU resources
-# tf.config.gpu.set_per_process_memory_growth(True) # TODO didn't work, got error: AttributeError: module 'tensorflow._api.v2.config' has no attribute 'gpu'
-# tf.config.threading.set_intra_op_parallelism_threads(10) 
-# tf.config.threading.set_inter_op_parallelism_threads(10) 
-
 start = time.time()
 
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
@@ -24,7 +19,6 @@ print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 # ================== HYPER-PARAMETERS ==================
 LOSS_FUNCTION = 'binary_crossentropy'
-# LOSS_FUNCTION = 'binary_focal_crossentropy'
 BATCH_SIZE = 512
 EPOCHS = 20
 
@@ -41,6 +35,7 @@ sys.stdout = log_file
 # ======================================================
 
 
+print(config)
 print(f'\nBATCH SIZE: {BATCH_SIZE}')
 print(f'\LOSS_FUNCTION SIZE: {LOSS_FUNCTION}')
 print(f'\EPOCHS SIZE: {EPOCHS}\n')
@@ -214,17 +209,6 @@ else:
 end = time.time()
 total_time_in_hours = round((end - start) / 3600)
 print(f'\nTraining time: {total_time_in_hours} hours\n')
-
-
-
-
-
-# ===== FIND OPTIMAL THRESHOLDS (using val set) ========
-thresholds = np.linspace(0, 1, 0.001)
-val_y = model.predict
-
-
-# ======================================================
 
 
 

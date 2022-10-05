@@ -1,0 +1,58 @@
+               precision    recall  f1-score  support index
+Architecture    0.000000  0.000000  0.000000    680.0     0
+Art             0.607477  0.054077  0.099312   1202.0     1
+Biology         0.697987  0.318043  0.436975    327.0     2
+Culture         0.619600  0.191244  0.292275  10050.0     3
+Entertainment   0.607287  0.094221  0.163132   1592.0     4
+Events          0.476987  0.100176  0.165577   2276.0     5
+History         0.614668  0.075000  0.133688   7040.0     6
+Landscapes      0.000000  0.000000  0.000000    255.0     7
+Language        0.678571  0.021814  0.042269    871.0     8
+Music           0.268657  0.048000  0.081448    375.0     9
+Nature          0.677306  0.371745  0.480025   6222.0    10
+Objects         0.648847  0.155794  0.251258   8492.0    11
+People          0.632463  0.554969  0.591188   8341.0    12
+Places          0.709476  0.609665  0.655795  15830.0    13
+Plants          0.591760  0.312871  0.409326    505.0    14
+Politics        0.563953  0.048793  0.089815   1988.0    15
+Science         0.000000  0.000000  0.000000    388.0    16
+Society         0.534617  0.434857  0.479604  14046.0    17
+Sports          0.634146  0.446352  0.523929   1864.0    18
+Technology      0.615970  0.085084  0.149515   1904.0    19
+micro avg       0.631078  0.335996  0.438518  84248.0  None
+macro avg       0.508989  0.196135  0.252257  84248.0  None
+weighted avg    0.614514  0.335996  0.399541  84248.0  None
+samples avg     0.525828  0.389820  0.416036  84248.0  None
+
+Unweighted avg. F1-score of all classes: 0.25225661982173286
+Unweighted avg. F1-score of top 5 classes: 0.45018732617426166
+Unweighted avg. F1-score of the rest: 0.1862797177042233
+
+
+------- Per-class accuracy: --------
+
+Architecture 0/680 == 0.0
+Art 65/1202 == 0.054
+Biology 104/327 == 0.318
+Culture 1922/10050 == 0.191
+Entertainment 150/1592 == 0.094
+Events 228/2276 == 0.1
+History 528/7040 == 0.075
+Landscapes 0/255 == 0.0
+Language 19/871 == 0.022
+Music 18/375 == 0.048
+Nature 2313/6222 == 0.372
+Objects 1323/8492 == 0.156
+People 4629/8341 == 0.555
+Places 9651/15830 == 0.61
+Plants 158/505 == 0.313
+Politics 97/1988 == 0.049
+Science 0/388 == 0.0
+Society 6108/14046 == 0.435
+Sports 832/1864 == 0.446
+Technology 162/1904 == 0.085
+Found 760000 validated image filenames belonging to 42 classes.
+
+Mean number of label assignments per image in ground-truth: 2.1267
+Mean number of label assignments per image in predictions: 1.1323
+

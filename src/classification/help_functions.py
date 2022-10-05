@@ -2,10 +2,11 @@ from distutils.log import error
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
-from tensorflow.keras.applications import EfficientNetB0
+from tensorflow.keras.applications import EfficientNetB0, EfficientNetB1, EfficientNetB2
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from focal_loss import BinaryFocalLoss
 
 
 def get_top_classes(nr_classes, df):
@@ -24,17 +25,32 @@ def get_top_classes(nr_classes, df):
     return np.array(list(_data.class_indices.keys()))[sorted_indices[:nr_classes]]
 
 
-def create_model(n_labels, image_dimension, model_name='EfficientNetB0'):
+def create_model(n_labels, image_dimension, model_name, number_trainable_layers, loss='binary_crossentropy'):
     """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
     if model_name == 'EfficientNetB0':
         base_model = EfficientNetB0(include_top=False, 
                                     weights='imagenet', 
                                     classes=n_labels,
                                     input_shape=(image_dimension, image_dimension, 3))
-    else:
-        raise error
+    elif model_name == 'EfficientNetB1':
+        base_model = EfficientNetB1(include_top=False, 
+                                    weights='imagenet', 
+                                    classes=n_labels,
+                                    input_shape=(image_dimension, image_dimension, 3))
+    elif model_name == 'EfficientNetB2':
+        base_model = EfficientNetB2(include_top=False, 
+                                    weights='imagenet', 
+                                    classes=n_labels,
+                                    input_shape=(image_dimension, image_dimension, 3))
 
-    base_model.trainable=False
+    print(f'\nNumber of layers in basemodel: {len(base_model.layers)}')
+    # Fine tune from this layer onwards
+    # fine_tune_at = round((1 - config['percent_trainable_layers']) * len(efficient_net.layers))
+    fine_tune_at = len(base_model.layers) - number_trainable_layers
+ 
+    print(f'Number of trainable layers: {len(base_model.layers) - fine_tune_at}\n')
+    for layer in base_model.layers[:fine_tune_at]:
+        layer.trainable = False
 
     model = Sequential([
         base_model,
@@ -43,11 +59,17 @@ def create_model(n_labels, image_dimension, model_name='EfficientNetB0'):
         layers.Dense(n_labels, activation='sigmoid')
     ])
 
-    model.compile(optimizer=tf.keras.optimizers.Adam(),
-                  loss='binary_crossentropy',
-                  metrics=['accuracy'])
+    if loss == 'binary_crossentropy':
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                    loss='binary_crossentropy',
+                    metrics=['accuracy', 'categorical_accuracy'])
+    # Binary Focal Cross Entropy
+    elif loss == 'binary_focal_crossentropy':
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                    loss=BinaryFocalLoss(gamma=2, from_logits=False),
+                    metrics=['accuracy', 'categorical_accuracy'])
 
-    print(model.summary())
+    model.summary()
     return model
 
 
@@ -116,22 +138,7 @@ def balance_test(classes, class_names, test_df):
                 row_ids.append(index)
 
         return test_df.loc[row_ids, :]
-    
-# def plot_distribution(classes, class_names=[], description='None', plot_log=False, lims=()):
-#     y_true = get_y_true(classes)
-#     sorted_indices = np.argsort(np.sum(y_true, axis=0))
-#     sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
-#     plt.figure(figsize=(12, 15))
-#     plt.title('Number of images per class' + description)
-#     if plot_log:
-#         plt.xscale('log')
-#     if lims:
-#         plt.xlim(lims)
-#     plt.xlabel('Count')
-#     plt.grid(True)
-#     plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.65)
-#     if class_names:
-#         plt.yticks(range(y_true.shape[1]), np.array(list(class_names))[sorted_indices])
+
 
 def plot_distribution(dataframe, filename, minimal_nr_images=0):
     _generator = ImageDataGenerator() 
