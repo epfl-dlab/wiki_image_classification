@@ -88,18 +88,19 @@ def plot_probs_and_best_threshold(y_true, probs, labels):
         ax.set_xlabel('Threshold')
         ax.set_ylabel('F1-score')
 
-    # Prediction probabilities for ground-truth TRUE and FALSE
-    fig, axs = plt.subplots(5, 4, figsize=(12, 12))
-    fig.tight_layout(h_pad=3.0, w_pad=3.0)
-    bins = np.linspace(0, 1, 75)
-    for label_idx, ax in zip(range(len(labels)), axs.flatten()):
-        ax.hist(probs[y_true[:, label_idx] == 0][:, label_idx], bins, alpha=0.5, label='false', log=True)
-        ax.hist(probs[y_true[:, label_idx] == 1][:, label_idx], bins, alpha=0.5, label='true', log=True)
-        ax.axvline(x=best_thresholds[label_idx], color='k', linestyle='--')
-        ax.legend(loc='upper right')
-        ax.set_title(labels[label_idx])
-        ax.set_xlabel('Threshold')
-        ax.set_ylabel('Count')
+    # # Prediction probabilities for ground-truth TRUE and FALSE
+    # fig, axs = plt.subplots(5, 4, figsize=(12, 12))
+    # fig.tight_layout(h_pad=3.0, w_pad=3.0)
+    # bins = np.linspace(0, 1, 75)
+    # for label_idx, ax in zip(range(len(labels)), axs.flatten()):
+    #     ax.hist(probs[y_true[:, label_idx] == 0][:, label_idx], bins, alpha=0.5, label='false', log=True)
+    #     ax.hist(probs[y_true[:, label_idx] == 1][:, label_idx], bins, alpha=0.5, label='true', log=True)
+    #     ax.axvline(x=best_thresholds[label_idx], color='k', linestyle='--')
+    #     ax.legend(loc='upper right')
+    #     ax.set_title(labels[label_idx])
+    #     ax.set_xlabel('Threshold')
+    #     ax.set_ylabel('Count')
+
 
 def get_top_classes(nr_classes, df):
     """Returns the nr_classes classes with greater number of samples from the multiclass df."""
@@ -115,7 +116,6 @@ def get_top_classes(nr_classes, df):
 
     sorted_indices = np.argsort(np.sum(y_true, axis=0))[::-1]
     return np.array(list(_data.class_indices.keys()))[sorted_indices[:nr_classes]]
-
 
 
 def create_model(n_labels, image_dimension, model_name, number_trainable_layers, loss='binary_crossentropy'):
@@ -165,13 +165,6 @@ def create_model(n_labels, image_dimension, model_name, number_trainable_layers,
     model.summary()
     return model
 
-
-# def get_y_true(samples, class_indices, classes):
-#     y_true = np.zeros((samples, len(class_indices))) # nr_rows=nr_images; nr_columns=nr_classes
-#     for row_idx, row in enumerate(classes):
-#         for idx in row:
-#             y_true[row_idx, idx] = 1
-#     return y_true
 
 def get_y_true(shape, classes):
     """
