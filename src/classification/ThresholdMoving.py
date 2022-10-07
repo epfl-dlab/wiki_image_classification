@@ -10,7 +10,7 @@ tf.config.threading.set_intra_op_parallelism_threads(10)
 tf.config.threading.set_inter_op_parallelism_threads(10) 
 gpus = tf.config.list_physical_devices('GPU')
 if gpus:
-    # Restrict TensorFlow to only use the faAirst GPU
+    # Restrict TensorFlow to only use the first GPU
     try:
         tf.config.set_visible_devices(gpus[0], 'GPU')
         logical_gpus = tf.config.list_logical_devices('GPU')

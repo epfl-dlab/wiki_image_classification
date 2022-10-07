@@ -1,14 +1,25 @@
-﻿import tensorflow as tf
-import pandas as pd
-import numpy as np
-from matplotlib import pyplot as plt
-import json
-import os
+﻿import os
 import sys
-from help_functions import get_top_classes
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import json
 import time
-from focal_loss import BinaryFocalLoss
+import pandas as pd
+import tensorflow as tf
+import help_functions as hf
+
+from matplotlib import pyplot as plt
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# tf.config.threading.set_intra_op_parallelism_threads(10) 
+# tf.config.threading.set_inter_op_parallelism_threads(10) 
+# gpus = tf.config.list_physical_devices('GPU')
+# if gpus:
+#     # Restrict TensorFlow to only use the first GPU
+#     try:
+#         tf.config.set_visible_devices(gpus[0], 'GPU')
+#         logical_gpus = tf.config.list_logical_devices('GPU')
+#         print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
+#     except RuntimeError as e:
+#         print(e)
 
 start = time.time()
 
@@ -19,8 +30,9 @@ print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 # ================== HYPER-PARAMETERS ==================
 LOSS_FUNCTION = 'binary_crossentropy'
-BATCH_SIZE = 512
-EPOCHS = 20
+BATCH_SIZE = 32
+EPOCHS = 15
+DATA_FOLDER = 'data/split_dataframes_heuristic_labels_20221006'
 
 # config: nr_classes, labels, class_weights, basemodel, image_dimension, results_and_checkpoints_folder, data_folder
 i = sys.argv[1]
@@ -34,16 +46,15 @@ log_file = open(config['results_and_checkpoints_folder'] + '/log.txt', 'w')
 sys.stdout = log_file
 # ======================================================
 
-
 print(config)
 print(f'\nBATCH SIZE: {BATCH_SIZE}')
-print(f'\LOSS_FUNCTION SIZE: {LOSS_FUNCTION}')
-print(f'\EPOCHS SIZE: {EPOCHS}\n')
+print(f'LOSS_FUNCTION SIZE: {LOSS_FUNCTION}')
+print(f'EPOCHS SIZE: {EPOCHS}\n')
 
 
 # ================= LOAD & AUGMENT DATA ================
-train_df = pd.read_json(config['data_folder'] + '/train_df.json.bz2', compression='bz2')
-top_classes = get_top_classes(config['nr_classes'], train_df)#['Places', 'Culture', 'History', 'Society', 'Nature', 'People', 'Politics', 'Sports', 'Objects', 'Entertainment']
+train_df = pd.read_json(DATA_FOLDER + '/train_df.json.bz2', compression='bz2')
+top_classes = hf.get_top_classes(config['nr_classes'], train_df)#['Places', 'Culture', 'History', 'Society', 'Nature', 'People', 'Politics', 'Sports', 'Objects', 'Entertainment']
 print(f"Top {config['nr_classes']} classes: {top_classes}")
 
 # Only keep rows which have either of the top classes
@@ -51,6 +62,14 @@ ids_x_labels = train_df.labels.apply(lambda classes_list: any([True for a_class 
 training_set_x_labels = train_df[ids_x_labels]
 training_set_x_labels['labels'] = train_df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
 train_df = training_set_x_labels.copy()
+
+# Same for the validation set:
+val_stop_df = pd.read_json(DATA_FOLDER + '/val_stop_df.json.bz2')
+ids_x_labels = val_stop_df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
+val_x_labels = val_stop_df[ids_x_labels]
+val_x_labels['labels'] = val_stop_df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
+val_stop_df = val_x_labels.copy()
+
 
 width, height = config['image_dimension'], config['image_dimension']
 target_size = (height, width)
@@ -63,13 +82,12 @@ if config['augment'] == True:
                                 fill_mode='nearest',
                                 validation_split=0.05) 
 else:
-    datagen = ImageDataGenerator(validation_split=0.05)
+    datagen = ImageDataGenerator()
 
 train_generator = datagen.flow_from_dataframe(
         dataframe=train_df, 
         directory='/scratch/WIT_Dataset/images/', 
         seed=7,
-        subset='training',
         color_mode='rgb',
         x_col='url', 
         y_col='labels', 
@@ -78,10 +96,9 @@ train_generator = datagen.flow_from_dataframe(
         target_size=target_size)
 
 validation_generator = datagen.flow_from_dataframe(
-        dataframe=train_df, 
+        dataframe=val_stop_df, 
         directory='/scratch/WIT_Dataset/images/', 
         seed=7,
-        subset='validation',
         color_mode='rgb',
         x_col='url', 
         y_col='labels', 
@@ -98,56 +115,12 @@ CLASS_LABELS = list(class_indices.keys())
 # ======================================================
 
 
+
 # ====================== CREATE MODEL ==================
-from tensorflow.keras.applications import EfficientNetB0, EfficientNetB1, EfficientNetB2
-from tensorflow.keras import layers
-from tensorflow.keras.models import Sequential
-
-def create_model(name):
-    if name == 'EfficientNetB0':
-        efficient_net = EfficientNetB0(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
-                                           input_shape=(width, height, 3))
-    elif name == 'EfficientNetB1':
-        efficient_net = EfficientNetB1(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
-                                           input_shape=(width, height, 3))
-    elif name == 'EfficientNetB2':
-        efficient_net = EfficientNetB2(include_top=False, weights='imagenet', classes=len(CLASS_LABELS),
-                                           input_shape=(width, height, 3))
-
-    print(f'\nNumber of layers in basemodel: {len(efficient_net.layers)}')
-    # Fine tune from this layer onwards
-    # fine_tune_at = round((1 - config['percent_trainable_layers']) * len(efficient_net.layers))
-    number_trainable_layers = config['number_trainable_layers']
-    fine_tune_at = len(efficient_net.layers) - number_trainable_layers
- 
-    print(f'Number of trainable layers: {len(efficient_net.layers) - fine_tune_at}\n')
-    for layer in efficient_net.layers[:fine_tune_at]:
-        layer.trainable = False
-
-    model = Sequential([
-        efficient_net,
-        layers.Flatten(),
-        layers.Dense(128, activation='relu'),
-        layers.Dense(len(CLASS_LABELS), activation='sigmoid')
-    ])
-
-    # Losses:
-    #   - binary cross-entropy: https://www.tensorflow.org/api_docs/python/tf/keras/losses/BinaryCrossentropy
-    #   - binary focal cross-entropy: https://www.tensorflow.org/api_docs/python/tf/keras/losses/BinaryFocalCrossentropy
-
-    if LOSS_FUNCTION == 'binary_crossentropy':
-        model.compile(optimizer=tf.keras.optimizers.Adam(),
-                    loss='binary_crossentropy',
-                    metrics=['accuracy', 'categorical_accuracy'])
-    # Binary Focal Cross Entropy
-    elif LOSS_FUNCTION == 'binary_focal_crossentropy':
-        model.compile(optimizer=tf.keras.optimizers.Adam(),
-                    loss=BinaryFocalLoss(gamma=2, from_logits=False),
-                    metrics=['accuracy', 'categorical_accuracy'])
-
-    model.summary()
-    return model
-model = create_model(name=config['basemodel'])
+model = hf.create_model(n_labels=config['nr_classes'], 
+                        image_dimension=config['image_dimension'],
+                        model_name=config['basemodel'], 
+                        number_trainable_layers=config['number_trainable_layers'])
 # ======================================================
 
 
@@ -209,7 +182,6 @@ else:
 end = time.time()
 total_time_in_hours = round((end - start) / 3600)
 print(f'\nTraining time: {total_time_in_hours} hours\n')
-
 
 
 

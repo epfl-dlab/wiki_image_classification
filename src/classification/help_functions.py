@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import tensorflow as tf
 from matplotlib import pyplot as plt
 from tensorflow.keras.applications import EfficientNetB0, EfficientNetB1, EfficientNetB2
@@ -7,7 +8,8 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from focal_loss import BinaryFocalLoss
 from sklearn.metrics import f1_score
-
+import seaborn as sns
+from matplotlib.colors import LogNorm
 
 def get_optimal_threshold(y_true, probs, thresholds, labels, N=3, strat_size=0.4):
     """
@@ -195,6 +197,99 @@ def compute_class_weights(y_true):
     class_weights = [n_samples / (n_classes * freq) if freq > 0 else 1 for freq in class_count]
     class_labels = range(len(class_weights))
     return dict(zip(class_labels, class_weights))
+
+
+def imbalance_ratio(y_true, class_names):
+    """
+    Computes the unweighted imbalance ratio (IR) of the dataset.
+    IR = N_majority / N_minority
+    In our specific case, the majority class is 0s and the minority class is 1s.
+    
+    Input:  y_true - ground-truth array of format (nr_images x nr_classes)
+    Output: imbalance_ratio - integer
+    """
+    sum_of_1s = y_true.sum(axis=0)
+    sum_of_0s = y_true.shape[0] - y_true.sum(axis=0)
+    per_class_ir = sum_of_0s / sum_of_1s
+    per_class_ir = dict(zip(list(class_names), per_class_ir))
+    mean_imbalance_ratio = np.array(list(per_class_ir.values())).mean()
+    print(f'Per-class imbalance ratio (IR):\n{per_class_ir}\n')
+    print(f'Unweighted mean imbalance ratio: {np.round(mean_imbalance_ratio, 2)}')
+    return mean_imbalance_ratio
+
+
+def undersample(y_true, class_names, df):
+    """ 
+    Constructs a more balanced test set in a dummy way by adding to it only the images that contain 
+    the - for the moment - most uncommon class.
+    Inputs:
+        - classes: [[]]
+        - class_names: list with all labels: 
+        - test_df: dataframe with rows containing image files and labels
+    """
+    sorted_indices = np.argsort(np.sum(y_true, axis=0))
+    sorted_class_names = np.array(list(class_names))[sorted_indices]
+    least_common_class = sorted_class_names[0]
+    balanced_classes = []
+    row_ids = []
+    counter = 0 
+    for index, row in df.iterrows():
+        counter += 1
+        if counter % 10 == 0:
+            y_true = get_y_true(balanced_classes, 40)
+            sorted_indices = np.argsort(np.sum(y_true, axis=0))
+            sorted_class_names = np.array(class_names)[sorted_indices]
+            least_common_class = sorted_class_names[0]
+        if least_common_class in row.labels:
+            balanced_classes.append(row.labels)
+            row_ids.append(index)
+
+    return df.loc[row_ids, :]
+
+
+def get_flow(df_file, nr_classes, image_dimension):
+    df = pd.read_json(df_file, compression='bz2')
+    top_classes = get_top_classes(nr_classes, df) 
+    # Only keep rows which have either of the top classes
+    ids_x_labels = df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
+    df_x_labels = df[ids_x_labels]
+    df_x_labels['labels'] = df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
+    df = df_x_labels.copy()
+
+    datagen = ImageDataGenerator() 
+    flow = datagen.flow_from_dataframe(
+            dataframe=df, 
+            directory='/scratch/WIT_Dataset/images',
+            color_mode='rgb',
+            x_col='url', 
+            y_col='labels', 
+            class_mode='categorical', 
+            target_size=(image_dimension, image_dimension),
+            shuffle=False)
+    return flow
+
+
+def plot_confusion_matrices(confusion_matrix, label_names, data_folder):
+    def print_confusion_matrix(confusion_matrix, axes, class_label, class_names, fontsize=14):
+        # From https://stackoverflow.com/questions/62722416/plot-confusion-matrix-for-multilabel-classifcation-python
+        df_cm = pd.DataFrame(confusion_matrix, index=class_names, columns=class_names)
+        try:
+            heatmap = sns.heatmap(df_cm, annot=True, fmt="d", cbar=False, ax=axes, cmap='YlGnBu', norm=LogNorm())
+        except ValueError:
+            raise ValueError('Confusion matrix values must be integers.')
+        heatmap.yaxis.set_ticklabels(heatmap.yaxis.get_ticklabels(), rotation=0, ha='right', fontsize=fontsize)
+        heatmap.xaxis.set_ticklabels(heatmap.xaxis.get_ticklabels(), rotation=45, ha='right', fontsize=fontsize)
+        axes.set_ylabel('True label', fontsize=8)
+        axes.set_xlabel('Predicted label', fontsize=8)
+        axes.set_title(class_label)
+
+    fig, ax = plt.subplots(5, 4, figsize=(10, 10))
+        
+    for axes, cfs_matrix, label in zip(ax.flatten(), confusion_matrix, label_names):
+        print_confusion_matrix(cfs_matrix, axes, label, ['N', 'P'])
+        
+    fig.tight_layout()
+    plt.savefig(data_folder + '/confusion_matrix.png')
 
 
 def plot_distribution(dataframe, filename, minimal_nr_images=0):
