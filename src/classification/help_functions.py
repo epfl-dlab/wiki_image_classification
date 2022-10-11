@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import time
 import tensorflow as tf
 from matplotlib import pyplot as plt
 from tensorflow.keras.applications import EfficientNetB0, EfficientNetB1, EfficientNetB2
@@ -213,42 +214,14 @@ def imbalance_ratio(y_true, class_names):
     per_class_ir = sum_of_0s / sum_of_1s
     per_class_ir = dict(zip(list(class_names), per_class_ir))
     mean_imbalance_ratio = np.array(list(per_class_ir.values())).mean()
-    print(f'Per-class imbalance ratio (IR):\n{per_class_ir}\n')
+    # print(f'Per-class imbalance ratio (IR):\n{per_class_ir}\n')
     print(f'Unweighted mean imbalance ratio: {np.round(mean_imbalance_ratio, 2)}')
-    return mean_imbalance_ratio
+    return per_class_ir, mean_imbalance_ratio
 
 
-def undersample(y_true, class_names, df):
-    """ 
-    Constructs a more balanced test set in a dummy way by adding to it only the images that contain 
-    the - for the moment - most uncommon class.
-    Inputs:
-        - classes: [[]]
-        - class_names: list with all labels: 
-        - test_df: dataframe with rows containing image files and labels
-    """
-    sorted_indices = np.argsort(np.sum(y_true, axis=0))
-    sorted_class_names = np.array(list(class_names))[sorted_indices]
-    least_common_class = sorted_class_names[0]
-    balanced_classes = []
-    row_ids = []
-    counter = 0 
-    for index, row in df.iterrows():
-        counter += 1
-        if counter % 10 == 0:
-            y_true = get_y_true(balanced_classes, 40)
-            sorted_indices = np.argsort(np.sum(y_true, axis=0))
-            sorted_class_names = np.array(class_names)[sorted_indices]
-            least_common_class = sorted_class_names[0]
-        if least_common_class in row.labels:
-            balanced_classes.append(row.labels)
-            row_ids.append(index)
-
-    return df.loc[row_ids, :]
-
-
-def get_flow(df_file, nr_classes, image_dimension):
-    df = pd.read_json(df_file, compression='bz2')
+def get_flow(nr_classes, image_dimension, df_file='', df=None):
+    if df_file:
+        df = pd.read_json(df_file, compression='bz2')
     top_classes = get_top_classes(nr_classes, df) 
     # Only keep rows which have either of the top classes
     ids_x_labels = df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
@@ -266,7 +239,81 @@ def get_flow(df_file, nr_classes, image_dimension):
             class_mode='categorical', 
             target_size=(image_dimension, image_dimension),
             shuffle=False)
+    
     return flow
+
+
+def undersample(y_true, label_names, kept_pctg, image_path):
+    """
+    Undersamples using a non-random algorithm, that removes the images with least cost
+    until kept_pctg (e.g. 90%) of the data is left. This "cost" is defined as the sum of
+    "label_costs", where label_cost = 1/label_count_through_data.
+
+    Inputs:
+        - y_true: ground-truth one-hot encoded array of format (nr_images x nr_classes)
+        - label_names: array of strings, e.g. ['Architecture', 'Art', 'Science', ...]
+        - kept_pctg: float strictly between 0 and 1
+        - image_path: string containing path where the IR image will be saved
+    Output:
+        - indices_to_remove: a list of strings, containing the indices to be removed from the 
+                             original dataframe in order to balance it
+    """
+    assert(kept_pctg > 0 and kept_pctg < 1)
+
+    ir_original = imbalance_ratio(y_true=y_true, class_names=label_names)
+
+    def remove_row(array, random=False, big_number=40_000):
+        """
+        Remove the row with the minimal cost (or just a random row containing the currently
+        most common class).
+        Output:
+            - tuple containing the updated array, and the row values that was removed from the array.
+        """
+        if random:
+            # Remove a random row that contains the most common label
+            most_common_label_idx = np.argmax(np.sum(array, axis=0))
+            print(f'Most common label: {label_names[most_common_label_idx]}')
+            all_rows_with_label = np.where(array[:, most_common_label_idx] == 1)[0]
+            row_idx = np.random.choice(all_rows_with_label)
+        else:
+            # Compute cost of all labels, where cost = big_number / label_count
+            label_costs = big_number / array.sum(axis=0)
+            # Compute cost of all rows, where row_cost = sum(cost of all labels in row)
+            row_costs = (label_costs * array).sum(axis=1)
+            # Select and remove the row with minimal cost
+            row_idx = np.argmin(row_costs)
+            array = np.delete(array, row_idx, axis=0)
+        return array, array[row_idx, :]
+
+    original_nr_rows = y_true.shape[0]
+    y_true_copy = np.copy(y_true)
+    indices_to_remove = []
+
+    while y_true_copy.shape[0] > original_nr_rows * kept_pctg:
+        (y_true_copy, removed_row) = remove_row(y_true_copy)
+        # All indices of rows in y_true that match with the removed row.
+        matching_indices_to_remove = np.where((y_true == removed_row).all(axis=1))[0]
+        # Below, take the indices which have not been already added to indices_to_remove
+        idx_to_remove = np.setdiff1d(matching_indices_to_remove, indices_to_remove)
+        if idx_to_remove.size:
+            indices_to_remove.append(idx_to_remove[0])
+    ir_heuristics = imbalance_ratio(y_true=y_true_copy, class_names=label_names)
+
+    plt.figure(figsize=(12, 6))
+    x_axis = np.arange(len(ir_original[0].keys()))
+    plt.bar(x_axis-0.1, ir_original[0].values(), width=0.2, label='Original')
+    plt.bar(x_axis+0.1, ir_heuristics[0].values(), width=0.2, label='Undersampled')
+    plt.legend(fontsize=12)
+    _ = plt.xticks(x_axis, ir_original[0].keys(), rotation=75, fontsize=14)
+    plt.title('Mean imbalance ratio per label')
+    plt.ylabel('Imbalance ratio')
+    plt.xlabel('Label')
+    try:
+        plt.savefig(image_path + '/imbalance_ratios.png')
+    except:
+        print('Could not save image')
+
+    return indices_to_remove
 
 
 def plot_confusion_matrices(confusion_matrix, label_names, data_folder):
@@ -290,6 +337,16 @@ def plot_confusion_matrices(confusion_matrix, label_names, data_folder):
         
     fig.tight_layout()
     plt.savefig(data_folder + '/confusion_matrix.png')
+
+
+def print_time(start):
+    end = time.time()
+    try:
+        total_time_in_hours = round((end - start) / 3600, 2)
+        print(f'Time passed: {total_time_in_hours} hours\n')
+        print(time.strftime("%H:%M:%S", time.localtime()))
+    except:
+        print('failed to print time')
 
 
 def plot_distribution(dataframe, filename, minimal_nr_images=0):

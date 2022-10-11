@@ -1,0 +1,45 @@
+{'epochs': 15, 'augment': False, 'basemodel': 'EfficientNetB2', 'nr_classes': 20, 'batch_size': 512, 'undersample': True, 'data_folder': 'data/split_dataframes_heuristic_labels_20221006', 'loss_function': 'binary_crossentropy', 'class_weights': False, 'image_dimension': 64, 'number_trainable_layers': 0, 'results_folder': 'thesis_experiments/0_undersample__bs_512'}
+0.0 hours
+
+Found 760000 non-validated image filenames belonging to 42 classes.
+Found 752497 validated image filenames belonging to 20 classes.
+LOG: finished getting the first flow
+0.01 hours
+
+Unweighted mean imbalance ratio: 40.16
+Unweighted mean imbalance ratio: 32.01
+LOG: found rows to remove to balance
+6.76 hours
+
+Found 609535 non-validated image filenames belonging to 42 classes.
+Found 603495 validated image filenames belonging to 20 classes.
+LOG: got the new balanced flow
+0.01 hours
+
+Found 50000 non-validated image filenames belonging to 40 classes.
+Found 49514 validated image filenames belonging to 20 classes.
+LOG: Got the validation flow
+0.0 hours
+
+LOG: creating and training model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 0
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 723,604
+Non-trainable params: 7,768,569
+_________________________________________________________________
+Epoch 1/15
