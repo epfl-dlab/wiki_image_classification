@@ -256,8 +256,7 @@ def undersample(y_true, label_names, kept_pctg, image_path):
 
     def remove_row(label_costs, row_costs):
         """
-        Remove the row with the minimal cost (or just a random row containing the currently
-        most common class).
+        Remove the row with the minimal cost.
         Output:
             - tuple containing the index of the removed row (i.e. image), and the updated row and label costs.
         """

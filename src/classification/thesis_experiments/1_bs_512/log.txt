@@ -56,3 +56,17 @@ Epoch 6/15
 
 Epoch 00006: val_loss improved from 0.23212 to 0.23166, saving model to thesis_experiments/1_bs_512/cp-0006.ckpt
 23516/23516 - 1571s - loss: 0.2311 - accuracy: 0.2710 - categorical_accuracy: 0.2710 - val_loss: 0.2317 - val_accuracy: 0.2644 - val_categorical_accuracy: 0.2644
+Epoch 7/15
+
+Epoch 00007: val_loss did not improve from 0.23166
+23516/23516 - 1567s - loss: 0.2310 - accuracy: 0.2711 - categorical_accuracy: 0.2711 - val_loss: 0.2321 - val_accuracy: 0.2744 - val_categorical_accuracy: 0.2744
+Epoch 8/15
+
+Epoch 00008: val_loss did not improve from 0.23166
+23516/23516 - 1549s - loss: 0.2306 - accuracy: 0.2718 - categorical_accuracy: 0.2718 - val_loss: 0.2319 - val_accuracy: 0.2728 - val_categorical_accuracy: 0.2728
+Epoch 9/15
+
+Epoch 00009: val_loss did not improve from 0.23166
+23516/23516 - 1548s - loss: 0.2305 - accuracy: 0.2717 - categorical_accuracy: 0.2717 - val_loss: 0.2317 - val_accuracy: 0.2638 - val_categorical_accuracy: 0.2638
+Time passed: 4.61 hours
+16:28:32
