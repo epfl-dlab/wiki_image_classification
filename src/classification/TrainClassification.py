@@ -1,5 +1,4 @@
-﻿from curses import start_color
-import os
+﻿import os
 import sys
 import json
 import time
@@ -182,5 +181,5 @@ _ = plt.subplot(1, 3, 3)
 _ = plt.plot(range(epochs), val_loss, label='Validation Loss', color='orange')
 _ = plt.legend(loc='upper right')
 _ = plt.title('Validation Loss')
-_ = plt.savefig(config['results_folder'] + '/training_metrics.png')
+hf.save_img(config['results_folder'] + '/training_metrics.png')
 # ======================================================

@@ -12,7 +12,7 @@ from sklearn.metrics import f1_score
 import seaborn as sns
 from matplotlib.colors import LogNorm
 
-def get_optimal_threshold(y_true, probs, thresholds, labels, N=3, strat_size=0.4):
+def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3, strat_size=0.4):
     """
     Calculates the best threshold per class by calculating the median of the optimal thresholds
     over stratified subsets of the training set.
@@ -55,6 +55,8 @@ def get_optimal_threshold(y_true, probs, thresholds, labels, N=3, strat_size=0.4
     for label_idx, ax in zip(range(len(optim_thresholds)), axs.flatten()):
         ax.axvline(x=optim_thresholds[label_idx], color='k', linestyle='--')
 
+    save_img(image_path + '/optimal_threshold.png')
+
     fig, axs = plt.subplots(5, 4, figsize=(12, 12))
     fig.tight_layout(h_pad=3.0, w_pad=3.0)
     bins = np.linspace(0, 1, 50)
@@ -67,6 +69,8 @@ def get_optimal_threshold(y_true, probs, thresholds, labels, N=3, strat_size=0.4
         ax.set_title(labels[label_idx])
         ax.set_xlabel('Threshold')
         ax.set_ylabel('Count')
+
+    save_img(image_path + '/probs.png')
 
     return optim_thresholds
 
@@ -90,19 +94,6 @@ def plot_probs_and_best_threshold(y_true, probs, labels):
         ax.set_title(labels[label_idx])
         ax.set_xlabel('Threshold')
         ax.set_ylabel('F1-score')
-
-    # # Prediction probabilities for ground-truth TRUE and FALSE
-    # fig, axs = plt.subplots(5, 4, figsize=(12, 12))
-    # fig.tight_layout(h_pad=3.0, w_pad=3.0)
-    # bins = np.linspace(0, 1, 75)
-    # for label_idx, ax in zip(range(len(labels)), axs.flatten()):
-    #     ax.hist(probs[y_true[:, label_idx] == 0][:, label_idx], bins, alpha=0.5, label='false', log=True)
-    #     ax.hist(probs[y_true[:, label_idx] == 1][:, label_idx], bins, alpha=0.5, label='true', log=True)
-    #     ax.axvline(x=best_thresholds[label_idx], color='k', linestyle='--')
-    #     ax.legend(loc='upper right')
-    #     ax.set_title(labels[label_idx])
-    #     ax.set_xlabel('Threshold')
-    #     ax.set_ylabel('Count')
 
 
 def get_top_classes(nr_classes, df):
@@ -262,56 +253,52 @@ def undersample(y_true, label_names, kept_pctg, image_path):
 
     ir_original = imbalance_ratio(y_true=y_true, class_names=label_names)
 
-    def remove_row(array, random=False, big_number=40_000):
+    def remove_row(label_costs, row_costs):
         """
         Remove the row with the minimal cost (or just a random row containing the currently
         most common class).
         Output:
-            - tuple containing the updated array, and the row values that was removed from the array.
+            - tuple containing the index of the removed row (i.e. image), and the updated row and label costs.
         """
-        if random:
-            # Remove a random row that contains the most common label
-            most_common_label_idx = np.argmax(np.sum(array, axis=0))
-            print(f'Most common label: {label_names[most_common_label_idx]}')
-            all_rows_with_label = np.where(array[:, most_common_label_idx] == 1)[0]
-            row_idx = np.random.choice(all_rows_with_label)
-        else:
-            # Compute cost of all labels, where cost = big_number / label_count
-            label_costs = big_number / array.sum(axis=0)
-            # Compute cost of all rows, where row_cost = sum(cost of all labels in row)
-            row_costs = (label_costs * array).sum(axis=1)
-            # Select and remove the row with minimal cost
-            row_idx = np.argmin(row_costs)
-            array = np.delete(array, row_idx, axis=0)
-        return array, array[row_idx, :]
+        # Select and remove the row with minimal cost
+        row_idx = np.argmin(row_costs)
+        # Update label_costs and row_costs for the next iteration
+        label_costs -= row_costs[row_idx] 
+        row_costs = np.delete(row_costs, row_idx)
+        return row_idx, label_costs, row_costs
 
     original_nr_rows = y_true.shape[0]
     y_true_copy = np.copy(y_true)
     indices_to_remove = []
 
+    BIG_NUMBER = 40_000
+    label_costs = BIG_NUMBER / y_true_copy.sum(axis=0)
+    row_costs = row_costs = (label_costs * y_true_copy).sum(axis=1)
+
+
     while y_true_copy.shape[0] > original_nr_rows * kept_pctg:
-        (y_true_copy, removed_row) = remove_row(y_true_copy)
+        (row_idx, label_costs, row_costs) = remove_row(y_true_copy, label_costs, row_costs)
         # All indices of rows in y_true that match with the removed row.
-        matching_indices_to_remove = np.where((y_true == removed_row).all(axis=1))[0]
+        matching_indices_to_remove = np.where((y_true == y_true_copy[row_idx]).all(axis=1))[0]
+        y_true_copy = np.delete(y_true_copy, row_idx, axis=0)
         # Below, take the indices which have not been already added to indices_to_remove
-        idx_to_remove = np.setdiff1d(matching_indices_to_remove, indices_to_remove)
-        if idx_to_remove.size:
-            indices_to_remove.append(idx_to_remove[0])
+        try:
+            idx_to_remove = np.setdiff1d(matching_indices_to_remove, indices_to_remove)[0]
+            indices_to_remove.append(idx_to_remove)
+        except:
+            print('Failed to get index to remove')
     ir_heuristics = imbalance_ratio(y_true=y_true_copy, class_names=label_names)
 
     plt.figure(figsize=(12, 6))
     x_axis = np.arange(len(ir_original[0].keys()))
-    plt.bar(x_axis-0.1, ir_original[0].values(), width=0.2, label='Original')
-    plt.bar(x_axis+0.1, ir_heuristics[0].values(), width=0.2, label='Undersampled')
+    plt.bar(x_axis-0.1, ir_original[0].values(), width=0.2, label=f'Original; macro-avg: {np.round(ir_original[1], 1)}')
+    plt.bar(x_axis+0.1, ir_heuristics[0].values(), width=0.2, label=f'Undersampled, macro-avg: {np.round(ir_heuristics[1], 2)}')
     plt.legend(fontsize=12)
     _ = plt.xticks(x_axis, ir_original[0].keys(), rotation=75, fontsize=14)
     plt.title('Mean imbalance ratio per label')
     plt.ylabel('Imbalance ratio')
     plt.xlabel('Label')
-    try:
-        plt.savefig(image_path + '/imbalance_ratios.png')
-    except:
-        print('Could not save image')
+    save_img(image_path, '/imbalance_ratios.png')
 
     return indices_to_remove
 
@@ -336,17 +323,28 @@ def plot_confusion_matrices(confusion_matrix, label_names, data_folder):
         print_confusion_matrix(cfs_matrix, axes, label, ['N', 'P'])
         
     fig.tight_layout()
-    plt.savefig(data_folder + '/confusion_matrix.png')
+    save_img(data_folder + '/confusion_matrix.png')
 
 
-def print_time(start):
+def print_time(start, ms=False):
     end = time.time()
     try:
-        total_time_in_hours = round((end - start) / 3600, 2)
-        print(f'Time passed: {total_time_in_hours} hours\n')
-        print(time.strftime("%H:%M:%S", time.localtime()))
+        if ms:
+            total_time_in_ms = round((end - start) * 1000, 3)
+            print(f'Time passed: {total_time_in_ms} ms\n')
+        else:
+            total_time_in_hours = round((end - start) / 3600, 2)
+            print(f'Time passed: {total_time_in_hours} hours')
+            print(time.strftime("%H:%M:%S", time.localtime()))
     except:
         print('failed to print time')
+
+
+def save_img(image_path):
+    try:
+        plt.savefig(image_path, bbox_inches='tight')
+    except:
+        print(f'ERROR: Could not save image {image_path}')
 
 
 def plot_distribution(dataframe, filename, minimal_nr_images=0):
@@ -376,6 +374,5 @@ def plot_distribution(dataframe, filename, minimal_nr_images=0):
     _ = plt.xlabel('Count', fontsize=13)
     _ = plt.ylabel('Labels', fontsize=13)
     _ = plt.grid(True)
-
-    plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
-    plt.savefig(filename)
+    _ = plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
+    save_img(filename)
