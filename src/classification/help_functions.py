@@ -11,6 +11,7 @@ from focal_loss import BinaryFocalLoss
 from sklearn.metrics import f1_score
 import seaborn as sns
 from matplotlib.colors import LogNorm
+from sklearn.metrics import classification_report
 
 def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3, strat_size=0.4):
     """
@@ -345,6 +346,36 @@ def save_img(image_path):
         plt.savefig(image_path, bbox_inches='tight')
     except:
         print(f'ERROR: Could not save image {image_path}')
+
+
+def get_metrics(y_true, y_pred, label_names, image_path):
+    print(f'\nMean number of label assignments per image in ground-truth: {np.sum(y_true) / y_true.shape[0]:.4f}')
+    print(f'Mean number of label assignments per image in predictions: {np.sum(y_pred) / y_pred.shape[0]:.4f}\n')
+
+    n_labels = y_pred.shape[1]
+    metrics_df = pd.DataFrame(classification_report(y_true, y_pred, target_names=label_names, output_dict=True)).transpose()
+    metrics_df['index'] = np.concatenate((np.arange(start=0, stop=n_labels), [None, None, None, None]))
+    print(metrics_df)
+
+    # F1-scores
+    sorted_indices_f1score = np.argsort(metrics_df['f1-score'][0:n_labels])
+    sorted_f1score_per_class = metrics_df['f1-score'][0:n_labels][sorted_indices_f1score]
+
+    print(f'\nUnweighted avg. F1-score of all classes: {np.sum(sorted_f1score_per_class) / len(sorted_f1score_per_class)}')
+    print(f'Unweighted avg. F1-score of top 5 classes: {np.sum(sorted_f1score_per_class[-4:]) / 5}')
+    print(f'Unweighted avg. F1-score of the rest: {np.sum(sorted_f1score_per_class[0:-4]) / (len(sorted_f1score_per_class) - 5)}\n')
+
+    if image_path:
+        _ = plt.figure(figsize=(8, 14))
+                        
+        _ = plt.title('F1-score per class')
+        _ = plt.barh(range(y_true.shape[1]), sorted_f1score_per_class, color='blue', alpha=0.6)
+        _ = plt.yticks(ticks=range(n_labels), labels=np.array(label_names)[sorted_indices_f1score])
+        _ = plt.xlabel('F1-score')
+        _ = plt.grid(True)
+        save_img(image_path)
+
+    return metrics_df['f1-score'][0:n_labels]
 
 
 def plot_distribution(dataframe, filename, minimal_nr_images=0):
