@@ -1,0 +1,171 @@
+Found 50000 non-validated image filenames belonging to 40 classes.
+Found 49514 validated image filenames belonging to 20 classes.
+
+Number of layers in basemodel: 339
+Number of trainable layers: 0
+
+Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 5632)              0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 128)               721024    
+_________________________________________________________________
+dense_3 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 723,604
+Non-trainable params: 7,768,569
+_________________________________________________________________
+thesis_experiments/1_bs_512/checkpoints/cp-0006.ckpt
+Predicting on test set:
+
+1548/1548 - 94s
+Found 50000 non-validated image filenames belonging to 40 classes.
+Found 49514 validated image filenames belonging to 20 classes.
+Predicting on validation set:
+
+1548/1548 - 83s
+METRICS FOR THRESHOLD 0.5
+
+Mean number of label assignments per image in ground-truth: 2.1286
+Mean number of label assignments per image in predictions: 0.8968
+
+               precision    recall  f1-score   support index
+Architecture    0.000000  0.000000  0.000000     814.0     0
+Art             0.090909  0.000667  0.001325    1499.0     1
+Biology         0.870229  0.268235  0.410072     425.0     2
+Culture         0.601269  0.091237  0.158434   12462.0     3
+Entertainment   0.692308  0.004757  0.009449    1892.0     4
+Events          0.448454  0.028571  0.053720    3045.0     5
+History         0.549133  0.032698  0.061722    8716.0     6
+Landscapes      0.000000  0.000000  0.000000     326.0     7
+Language        1.000000  0.001869  0.003731    1070.0     8
+Music           0.400000  0.004662  0.009217     429.0     9
+Nature          0.687036  0.244931  0.361121    7941.0    10
+Objects         0.634711  0.073733  0.132118   10416.0    11
+People          0.619802  0.477954  0.539713   10478.0    12
+Places          0.671582  0.621420  0.645528   19935.0    13
+Plants          0.498891  0.321888  0.391304     699.0    14
+Politics        0.619718  0.017440  0.033924    2523.0    15
+Science         0.000000  0.000000  0.000000     450.0    16
+Society         0.529257  0.286880  0.372078   17530.0    17
+Sports          0.607516  0.251839  0.356072    2311.0    18
+Technology      0.643678  0.023017  0.044444    2433.0    19
+micro avg       0.623440  0.262653  0.369596  105394.0  None
+macro avg       0.508225  0.137590  0.179199  105394.0  None
+weighted avg    0.595971  0.262653  0.317458  105394.0  None
+samples avg     0.423911  0.312636  0.334591  105394.0  None
+
+Unweighted avg. F1-score of all classes: 0.17919860467280505
+Unweighted avg. F1-score of top 5 classes: 0.39732347130546214
+Unweighted avg. F1-score of the rest: 0.10649031579525267
+
+METRICS WHEN HAVING PER-CLASS THRESHOLDS
+
+Mean number of label assignments per image in ground-truth: 2.1286
+Mean number of label assignments per image in predictions: 3.9157
+
+               precision    recall  f1-score   support index
+Architecture    0.071262  0.374693  0.119749     814.0     0
+Art             0.127870  0.378919  0.191214    1499.0     1
+Biology         0.762712  0.317647  0.448505     425.0     2
+Culture         0.338119  0.742738  0.464694   12462.0     3
+Entertainment   0.133352  0.258457  0.175931    1892.0     4
+Events          0.226143  0.334647  0.269898    3045.0     5
+History         0.278439  0.647315  0.389385    8716.0     6
+Landscapes      0.062555  0.217791  0.097194     326.0     7
+Language        0.063407  0.432710  0.110607    1070.0     8
+Music           0.162500  0.151515  0.156815     429.0     9
+Nature          0.489007  0.473366  0.481060    7941.0    10
+Objects         0.315587  0.731855  0.441005   10416.0    11
+People          0.538105  0.686009  0.603121   10478.0    12
+Places          0.587980  0.822523  0.685751   19935.0    13
+Plants          0.444183  0.540773  0.487742     699.0    14
+Politics        0.244744  0.309156  0.273205    2523.0    15
+Science         0.030534  0.008889  0.013769     450.0    16
+Society         0.402175  0.883799  0.552798   17530.0    17
+Sports          0.405510  0.452185  0.427578    2311.0    18
+Technology      0.282609  0.229758  0.253457    2433.0    19
+micro avg       0.367437  0.675930  0.476077  105394.0  None
+macro avg       0.298340  0.449737  0.332174  105394.0  None
+weighted avg    0.402867  0.675930  0.492124  105394.0  None
+samples avg     0.406761  0.709498  0.474368  105394.0  None
+
+Unweighted avg. F1-score of all classes: 0.33217392216654973
+Unweighted avg. F1-score of top 5 classes: 0.46588256738505096
+Unweighted avg. F1-score of the rest: 0.2876043737603826
+
+METRICS FOR THRESHOLD 0.5
+
+Mean number of label assignments per image in ground-truth: 2.1286
+Mean number of label assignments per image in predictions: 0.8968
+
+               precision    recall  f1-score   support index
+Architecture    0.000000  0.000000  0.000000     814.0     0
+Art             0.090909  0.000667  0.001325    1499.0     1
+Biology         0.870229  0.268235  0.410072     425.0     2
+Culture         0.601269  0.091237  0.158434   12462.0     3
+Entertainment   0.692308  0.004757  0.009449    1892.0     4
+Events          0.448454  0.028571  0.053720    3045.0     5
+History         0.549133  0.032698  0.061722    8716.0     6
+Landscapes      0.000000  0.000000  0.000000     326.0     7
+Language        1.000000  0.001869  0.003731    1070.0     8
+Music           0.400000  0.004662  0.009217     429.0     9
+Nature          0.687036  0.244931  0.361121    7941.0    10
+Objects         0.634711  0.073733  0.132118   10416.0    11
+People          0.619802  0.477954  0.539713   10478.0    12
+Places          0.671582  0.621420  0.645528   19935.0    13
+Plants          0.498891  0.321888  0.391304     699.0    14
+Politics        0.619718  0.017440  0.033924    2523.0    15
+Science         0.000000  0.000000  0.000000     450.0    16
+Society         0.529257  0.286880  0.372078   17530.0    17
+Sports          0.607516  0.251839  0.356072    2311.0    18
+Technology      0.643678  0.023017  0.044444    2433.0    19
+micro avg       0.623440  0.262653  0.369596  105394.0  None
+macro avg       0.508225  0.137590  0.179199  105394.0  None
+weighted avg    0.595971  0.262653  0.317458  105394.0  None
+samples avg     0.423911  0.312636  0.334591  105394.0  None
+
+Unweighted avg. F1-score of all classes: 0.17919860467280505
+Unweighted avg. F1-score of top 5 classes: 0.39732347130546214
+Unweighted avg. F1-score of the rest: 0.10649031579525267
+
+METRICS WHEN HAVING PER-CLASS THRESHOLDS
+
+Mean number of label assignments per image in ground-truth: 2.1286
+Mean number of label assignments per image in predictions: 3.9157
+
+               precision    recall  f1-score   support index
+Architecture    0.071262  0.374693  0.119749     814.0     0
+Art             0.127870  0.378919  0.191214    1499.0     1
+Biology         0.762712  0.317647  0.448505     425.0     2
+Culture         0.338119  0.742738  0.464694   12462.0     3
+Entertainment   0.133352  0.258457  0.175931    1892.0     4
+Events          0.226143  0.334647  0.269898    3045.0     5
+History         0.278439  0.647315  0.389385    8716.0     6
+Landscapes      0.062555  0.217791  0.097194     326.0     7
+Language        0.063407  0.432710  0.110607    1070.0     8
+Music           0.162500  0.151515  0.156815     429.0     9
+Nature          0.489007  0.473366  0.481060    7941.0    10
+Objects         0.315587  0.731855  0.441005   10416.0    11
+People          0.538105  0.686009  0.603121   10478.0    12
+Places          0.587980  0.822523  0.685751   19935.0    13
+Plants          0.444183  0.540773  0.487742     699.0    14
+Politics        0.244744  0.309156  0.273205    2523.0    15
+Science         0.030534  0.008889  0.013769     450.0    16
+Society         0.402175  0.883799  0.552798   17530.0    17
+Sports          0.405510  0.452185  0.427578    2311.0    18
+Technology      0.282609  0.229758  0.253457    2433.0    19
+micro avg       0.367437  0.675930  0.476077  105394.0  None
+macro avg       0.298340  0.449737  0.332174  105394.0  None
+weighted avg    0.402867  0.675930  0.492124  105394.0  None
+samples avg     0.406761  0.709498  0.474368  105394.0  None
+
+Unweighted avg. F1-score of all classes: 0.33217392216654973
+Unweighted avg. F1-score of top 5 classes: 0.46588256738505096
+Unweighted avg. F1-score of the rest: 0.2876043737603826
+
