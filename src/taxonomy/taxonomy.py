@@ -1,302 +1,152 @@
-import logging
-import pickle
-import sys
+class Label:
+    def __init__(self, name, categories):
+        self.name = name
+        self.own_categories = categories
+        self.categories = categories
+        self.childrens = []
 
-import networkx as nx
-import numpy as np
-import pandas as pd
-from iteration_utilities import duplicates, unique_everseen
+    def add_children(self, children):
+        queue = [children]
+        while queue:
+            curr = queue.pop()
+            self.categories += curr.categories
+            queue.extend(curr.childrens)
 
-sys.path.append("./")
-sys.path.append("../../")
+        self.childrens.append(children)
 
-from src.config import *
-from src.taxonomy.head.headParsing import find_head
-
-logger = logging.getLogger("taxonomy")
+    def add_childrens(self, childrens):
+        for children in childrens:
+            self.add_children(children)
 
 
 class Taxonomy:
-    def __init__(self, G=None):
-        if G:
-            self.G = G
+    def __init__(self, version=None):
+        if version:
+            self.version = version
+            self.set_taxonomy(version)
 
-    def load_categories(self, path):
-        """
-        Load categories from path and build the category graph.
-        """
-        self.build_category_graph(pd.read_parquet(path))
+    def set_taxonomy(self, version):
+        self.version = version
+        if version == "v0.0":
+            self.taxonomy = Label("All", [])
 
-    def build_category_graph(self, categories):
-        """
-        Build the category graph, starting from the DataFrame extracted by processing dumps
-        """
-        categories = categories.set_index("title")
-        # Build DiGraph from adjacency matrix
-        G = nx.DiGraph(categories.parents.to_dict())
-        nx.set_node_attributes(
-            G,
-            dict(
-                zip(
-                    categories.index,
-                    categories[["id", "hiddencat"]].to_dict(orient="records"),
-                )
-            ),
-        )
-        depth = {
-            node: len(sps)
-            for node, sps in nx.shortest_path(G, target="CommonsRoot").items()
-        }
-        nx.set_node_attributes(G, depth, name="depth")
-        G.remove_node("")
-        self.G = G
-
-    def dump_graph(self, path, clean=False):
-        """
-        Save the edge list in a file
-        """
-        assert ".pkl" in path
-        G = self.G if not clean else self.G_h
-        with open(path, "wb") as f:
-            pickle.dump(G, f)
-
-    def load_graph(self, path, clean=False):
-        """
-        Load the edge list from a file
-        """
-        assert ".pkl" in path
-        with open(path, "rb") as f:
-            G = pickle.load(f)
-
-        if clean:
-            self.G_h = G
-        else:
-            self.G = G
-
-    def reset_labels(self):
-        """
-        Reset labels and discovery status for each node.
-        """
-        nx.set_node_attributes(
-            self.G, {node: {"visited": False, "labels": set()} for node in self.G.nodes}
-        )
-        self.visited_nodes = 0
-        self.G_h = nx.DiGraph()
-
-    def set_taxonomy(self, mapping="content_extended"):
-        """
-        Set an ORES-like taxonomy, mapping labels to high-level categories.
-        """
-        assert isinstance(mapping, dict) or isinstance(mapping, str)
-
-        if isinstance(mapping, dict):
-            self.mapping = mapping
-
-        # elif(mapping == 'content_general'):
-        #     self.mapping = {'Nature': ['Animalia', 'Fossils', 'Landscapes', 'Marine organisms', 'Plantae', 'Weather'],
-        #                     'Society/Culture': ['Art', 'Belief', 'Entertainment', 'Events', 'Flags', 'Food', 'History',
-        #                                         'Language', 'Literature', 'Music', 'Objects', 'People', 'Places', 'Politics', 'Sports'],
-        #                     'Science': ['Astronomy', 'Biology', 'Chemistry', 'Earth sciences', 'Mathematics',
-        #                                 'Medicine', 'Physics', 'Technology'],
-        #                     'Engineering': ['Architecture', 'Chemical engineering', 'Civil engineering', 'Electrical engineering',
-        #                                     'Environmental engineering', 'Geophysical engineering', 'Mechanical engineering', 'Process engineering']}
-
-        elif mapping == "content_extended":
-            self.mapping = FULL_MAPPING
-        else:
-            raise ValueError("Invalid mapping")
-
-        self.reset_labels()
-        for label, categories in self.mapping.items():
-            for category in categories:
-                self.visited_nodes += 1
-                self.G.nodes[category]["visited"] = True
-                self.G.nodes[category]["labels"].add(label)
-
-    def get_head(self, category):
-        """
-        Get or compute the lexical head of a given category.
-        """
-        if "head" in self.G.nodes[category]:
-            head = self.G.nodes[category]["head"]
-        else:
-            head = find_head(category)
-            self.G.nodes[category]["head"] = head
-        return head
-
-    def get_label(self, category, how="heuristics_v0", debug=False):
-        """
-        Get the label corresponding to a specific category, passed as string.
-
-        Params:
-            how (string): decision scheme to recursively query parents.
-                all: all parents are queried
-                naive: hop only to lower-depth parents
-                heuristics: decision based on the set of heuristics described in (Salvi, 2022)
-        """
-        assert isinstance(category, str)
-
-        try:
-            curr_node = self.G.nodes[category]
-        except KeyError:
-            debug and logger.warning("Red link, skipping category " + category)
-            return set()
-
-        # Temporary solution to non-connected categories (due to missing template expansion)
-        if "depth" not in curr_node:
-            debug and logger.warning(
-                f"Non connected category {category}, returning empty set"
-            )
-            return set()
-
-        if curr_node["visited"]:
-            debug and logger.debug(
-                "Found " + category + " with label " + str(curr_node["labels"])
-            )
-            return curr_node["labels"]
-
-        else:
-            curr_node["visited"] = True
-            self.visited_nodes += 1
-            debug and logger.debug(
-                str(self.visited_nodes)
-                + " - Searching for "
-                + category
-                + " (depth "
-                + str(curr_node.get("depth", None))
-                + "), with parents "
-                + str(list(self.G.neighbors(category)))
-                + "..."
-            )
-
-            if how == "all":
-                for parent in self.G.neighbors(category):
-                    curr_node["labels"].update(self.get_label(parent, how, debug))
-                return curr_node["labels"]
-
-            elif how == "naive":
-                depth = curr_node["depth"]
-                for parent in self.G.neighbors(category):
-                    try:
-                        if self.G.nodes[parent]["depth"] < depth:
-                            curr_node["labels"].update(
-                                self.get_label(parent, how, debug)
-                            )
-                    # Not connected category (temp fix to template expansion)
-                    except KeyError:
-                        continue
-                return curr_node["labels"]
-
-            elif how == "heuristics_v0":
-                depth = curr_node["depth"]
-
-                # 1 Hidden category
-                if curr_node["hiddencat"]:
-                    debug and logger.debug("Hidden category, returning empty set")
-                    return set()
-
-                # 2 Lexical head
-
-                # 2.1. Check for meaningless head (time-related + Commons-related)
-                null_heads = [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
-                    "Spring",
-                    "Summer",
-                    "Autumn",
-                    "Winter",
-                    "Century",
-                    "Categories",
-                    "Category",
+            nature = Label("Nature", ["Nature"])
+            nature.add_childrens(
+                [
+                    Label("Animals", ["Animalia"]),
+                    Label("Fossils", ["Fossils"]),
+                    Label("Landscapes", ["Landscapes"]),
+                    Label("Marine organisms", ["Marine organisms"]),
+                    Label("Plants", ["Plantae"]),
+                    Label("Weather", ["Weather"]),
                 ]
-                heads = [self.get_head(category)]
-                if heads[0].isnumeric() or heads[0] in null_heads:
-                    debug and logger.debug(
-                        "Head " + heads[0] + " not meaningful, returning empty set"
-                    )
-                    return set()
+            )
+            test = Label("Test", ["Test"])
+            test.add_children(Label("Test1", ["Test1"]))
+            test.add_children(Label("Test2", ["Test2"]))
+            nature.add_children(test)
+            self.taxonomy.add_children(nature)
 
-                # Get heads of all parents
-                for parent in self.G.neighbors(category):
-                    heads.append(self.get_head(parent))
-                debug and logger.debug("Heads: " + str(heads))
+            society_culture = Label("Society/Culture", ["Society", "Culture"])
+            society_culture.add_childrens(
+                [
+                    Label("Art", ["Art"]),
+                    Label("Belief", ["Belief"]),
+                    Label("Entertainment", ["Entertainment"]),
+                    Label("Events", ["Events"]),
+                    Label("Flags", ["Flags"]),
+                    Label("Food", ["Food"]),
+                    Label("History", ["History"]),
+                    Label("Language", ["Language"]),
+                    Label("Literature", ["Literature"]),
+                    Label("Music", ["Music"]),
+                    Label("Objects", ["Objects"]),
+                    Label("People", ["People"]),
+                    Label("Places", ["Places"]),
+                    Label("Politics", ["Politics"]),
+                    Label("Sports", ["Sports"]),
+                ]
+            )
+            self.taxonomy.add_children(society_culture)
 
-                # 2.2. Try to match over complete lexical heads or subsets
-                while 1:
-                    common_heads = list(unique_everseen(duplicates(heads)))
+            science = Label("Science", ["Science"])
+            science.add_childrens(
+                [
+                    Label("Astronomy", ["Astronomy"]),
+                    Label("Biology", ["Biology"]),
+                    Label("Chemistry", ["Chemistry"]),
+                    Label("Earth sciences", ["Earth sciences"]),
+                    Label("Mathematics", ["Mathematics"]),
+                    Label("Medicine", ["Medicine"]),
+                    Label("Physics", ["Physics"]),
+                    Label("Technology", ["Technology"]),
+                ]
+            )
+            self.taxonomy.add_children(science)
 
-                    # Break if found a common head or all the heads are already 1 word long
-                    if (
-                        common_heads
-                        or (cmax := max(map(lambda x: len(x.split()), heads))) == 1
-                    ):
-                        break
+            engineering = Label("Engineering", ["Engineering"])
+            engineering.add_childrens(
+                [
+                    Label("Architecture", ["Architecture"]),
+                    Label("Chemical eng", ["Chemical engineering"]),
+                    Label("Civil eng", ["Civil engineering"]),
+                    Label("Electrical eng", ["Electrical engineering"]),
+                    Label("Environmental eng", ["Environmental engineering"]),
+                    Label("Geophysical eng", ["Geophysical engineering"]),
+                    Label("Mechanical eng", ["Mechanical engineering"]),
+                    Label("Process eng", ["Process engineering"]),
+                ]
+            )
+            self.taxonomy.add_children(engineering)
+        else:
+            raise ValueError("Invalid taxonomy version")
 
-                    # Remove 1 word from the longest composite heads
-                    for i, head in enumerate(heads):
-                        head_words = head.split()
-                        if len(head_words) == cmax:
-                            heads[i] = " ".join(head_words[1:]).capitalize()
-                    debug and logger.debug("Lexical heads: " + str(heads))
-                debug and logger.debug("\tFound common heads: " + str(common_heads))
+    def get_flat_mapping(self):
+        mapping = {}
 
-                # 2.3. Hop to common_heads if they belong to parents and are not meaningless
-                for common_head in common_heads:
-                    if (
-                        self.G.nodes.get(common_head, {}).get("depth", 1e9) < depth
-                    ) and not (common_head.isnumeric() or common_head in null_heads):
-                        self.G_h.add_edge(category, common_head)
-                        curr_node["labels"].update(
-                            self.get_label(common_head, how, debug)
-                        )
-                    else:
-                        debug and logger.debug(
-                            "Common head "
-                            + str(common_head)
-                            + " not found or time-related"
-                        )
+        def dfs(node):
+            mapping[node.name] = node.categories
+            for children in node.childrens:
+                dfs(children)
 
-                # Will be empty if no common_head is found, if the common_heads are
-                # all not valid category names, hidden categories or already visited
-                # (including the current category)
-                if curr_node["labels"]:
-                    return curr_node["labels"]
+        dfs(self.taxonomy)
+        del mapping["All"]
+        return mapping
 
-                # 3. is_a or subcategory_of (temp: depth check)
-                for parent in self.G.neighbors(category):
-                    try:
-                        if self.G.nodes[parent]["depth"] < depth:
-                            self.G_h.add_edge(category, parent)
-                            curr_node["labels"].update(
-                                self.get_label(parent, how, debug)
-                            )
-                        else:
-                            debug and logger.debug(
-                                "["
-                                + category
-                                + "] Skipping parent "
-                                + parent
-                                + " (depth "
-                                + str(self.G.nodes[parent]["depth"])
-                                + ")"
-                            )
-                    # Not connected category (temp fix to template expansion)
-                    except KeyError:
-                        debug and logger.warning(
-                            "[" + category + "] Parent " + parent + " not connected."
-                        )
-                        continue
-                return curr_node["labels"]
+    def get_all_labels(self):
+        labels = []
 
-            else:
-                raise ValueError('Invalid "how" option')
+        def dfs(node):
+            labels.append(node.name)
+            for children in node.childrens:
+                dfs(children)
+
+        dfs(self.taxonomy)
+        del labels[0]
+        return labels
+
+    def get_all_leafs(self):
+        leafs = []
+
+        def dfs(node):
+            if not node.childrens:
+                leafs.append(node.name)
+            for children in node.childrens:
+                dfs(children)
+
+        dfs(self.taxonomy)
+        return leafs
+
+    def get_all_clusters(self, max_level=None):
+        clusters = []
+
+        def dfs(node, level):
+            if node.childrens:
+                clusters.append(node.name)
+            if max_level is None or level < max_level:
+                for children in node.childrens:
+                    dfs(children, level + 1)
+
+        dfs(self.taxonomy, 0)
+        del clusters[0]
+        return clusters

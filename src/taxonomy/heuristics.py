@@ -1,0 +1,288 @@
+import logging
+import pickle
+import sys
+
+import networkx as nx
+import numpy as np
+import pandas as pd
+from iteration_utilities import duplicates, unique_everseen
+
+sys.path.append("./")
+sys.path.append("../../")
+
+from src.config import *
+from src.taxonomy.head.headParsing import find_head
+from src.taxonomy.taxonomy import Taxonomy
+
+logger = logging.getLogger("taxonomy")
+
+
+class Heuristics:
+    def __init__(self, G=None):
+        if G:
+            self.G = G
+
+    def load_categories(self, path):
+        """
+        Load categories from path and build the category graph.
+        """
+        self.build_category_graph(pd.read_parquet(path))
+
+    def build_category_graph(self, categories):
+        """
+        Build the category graph, starting from the DataFrame extracted by processing dumps
+        """
+        categories = categories.set_index("title")
+        # Build DiGraph from adjacency matrix
+        G = nx.DiGraph(categories.parents.to_dict())
+        nx.set_node_attributes(
+            G,
+            dict(
+                zip(
+                    categories.index,
+                    categories[["id", "hiddencat"]].to_dict(orient="records"),
+                )
+            ),
+        )
+        depth = {
+            node: len(sps)
+            for node, sps in nx.shortest_path(G, target="CommonsRoot").items()
+        }
+        nx.set_node_attributes(G, depth, name="depth")
+        G.remove_node("")
+        self.G = G
+
+    def dump_graph(self, path, clean=False):
+        """
+        Save the edge list in a file
+        """
+        assert ".pkl" in path
+        G = self.G if not clean else self.G_h
+        with open(path, "wb") as f:
+            pickle.dump(G, f)
+
+    def load_graph(self, path, clean=False):
+        """
+        Load the edge list from a file
+        """
+        assert ".pkl" in path
+        with open(path, "rb") as f:
+            G = pickle.load(f)
+
+        if clean:
+            self.G_h = G
+        else:
+            self.G = G
+
+    def reset_labels(self):
+        """
+        Reset labels and discovery status for each node.
+        """
+        nx.set_node_attributes(
+            self.G, {node: {"visited": False, "labels": set()} for node in self.G.nodes}
+        )
+        self.visited_nodes = 0
+        self.G_h = nx.DiGraph()
+
+    def set_taxonomy(self, version):
+        """
+        Set an ORES-like taxonomy, mapping labels to high-level categories.
+        """
+        self.taxonomy = Taxonomy()
+        self.taxonomy.set_version(version)
+        self.mapping = self.taxonomy.get_flat_mapping()
+
+        self.reset_labels()
+        for label, categories in self.mapping.items():
+            for category in categories:
+                self.visited_nodes += 1
+                self.G.nodes[category]["visited"] = True
+                self.G.nodes[category]["labels"].add(label)
+
+    def get_head(self, category):
+        """
+        Get or compute the lexical head of a given category.
+        """
+        if "head" in self.G.nodes[category]:
+            head = self.G.nodes[category]["head"]
+        else:
+            head = find_head(category)
+            self.G.nodes[category]["head"] = head
+        return head
+
+    def get_label(self, category, how="heuristics_v0", debug=False):
+        """
+        Get the label corresponding to a specific category, passed as string.
+
+        Params:
+            how (string): decision scheme to recursively query parents.
+                all: all parents are queried
+                naive: hop only to lower-depth parents
+                heuristics: decision based on the set of heuristics described in (Salvi, 2022)
+        """
+        assert isinstance(category, str)
+
+        try:
+            curr_node = self.G.nodes[category]
+        except KeyError:
+            debug and logger.warning("Red link, skipping category " + category)
+            return set()
+
+        # Temporary solution to non-connected categories (due to missing template expansion)
+        if "depth" not in curr_node:
+            debug and logger.warning(
+                f"Non connected category {category}, returning empty set"
+            )
+            return set()
+
+        if curr_node["visited"]:
+            debug and logger.debug(
+                "Found " + category + " with label " + str(curr_node["labels"])
+            )
+            return curr_node["labels"]
+
+        else:
+            curr_node["visited"] = True
+            self.visited_nodes += 1
+            debug and logger.debug(
+                str(self.visited_nodes)
+                + " - Searching for "
+                + category
+                + " (depth "
+                + str(curr_node.get("depth", None))
+                + "), with parents "
+                + str(list(self.G.neighbors(category)))
+                + "..."
+            )
+
+            if how == "all":
+                for parent in self.G.neighbors(category):
+                    curr_node["labels"].update(self.get_label(parent, how, debug))
+                return curr_node["labels"]
+
+            elif how == "naive":
+                depth = curr_node["depth"]
+                for parent in self.G.neighbors(category):
+                    try:
+                        if self.G.nodes[parent]["depth"] < depth:
+                            curr_node["labels"].update(
+                                self.get_label(parent, how, debug)
+                            )
+                    # Not connected category (temp fix to template expansion)
+                    except KeyError:
+                        continue
+                return curr_node["labels"]
+
+            elif how == "heuristics_v0":
+                depth = curr_node["depth"]
+
+                # 1 Hidden category
+                if curr_node["hiddencat"]:
+                    debug and logger.debug("Hidden category, returning empty set")
+                    return set()
+
+                # 2 Lexical head
+
+                # 2.1. Check for meaningless head (time-related + Commons-related)
+                null_heads = [
+                    "January",
+                    "February",
+                    "March",
+                    "April",
+                    "May",
+                    "June",
+                    "July",
+                    "August",
+                    "September",
+                    "October",
+                    "November",
+                    "December",
+                    "Spring",
+                    "Summer",
+                    "Autumn",
+                    "Winter",
+                    "Century",
+                    "Categories",
+                    "Category",
+                ]
+                heads = [self.get_head(category)]
+                if heads[0].isnumeric() or heads[0] in null_heads:
+                    debug and logger.debug(
+                        "Head " + heads[0] + " not meaningful, returning empty set"
+                    )
+                    return set()
+
+                # Get heads of all parents
+                for parent in self.G.neighbors(category):
+                    heads.append(self.get_head(parent))
+                debug and logger.debug("Heads: " + str(heads))
+
+                # 2.2. Try to match over complete lexical heads or subsets
+                while 1:
+                    common_heads = list(unique_everseen(duplicates(heads)))
+
+                    # Break if found a common head or all the heads are already 1 word long
+                    if (
+                        common_heads
+                        or (cmax := max(map(lambda x: len(x.split()), heads))) == 1
+                    ):
+                        break
+
+                    # Remove 1 word from the longest composite heads
+                    for i, head in enumerate(heads):
+                        head_words = head.split()
+                        if len(head_words) == cmax:
+                            heads[i] = " ".join(head_words[1:]).capitalize()
+                    debug and logger.debug("Lexical heads: " + str(heads))
+                debug and logger.debug("\tFound common heads: " + str(common_heads))
+
+                # 2.3. Hop to common_heads if they belong to parents and are not meaningless
+                for common_head in common_heads:
+                    if (
+                        self.G.nodes.get(common_head, {}).get("depth", 1e9) < depth
+                    ) and not (common_head.isnumeric() or common_head in null_heads):
+                        self.G_h.add_edge(category, common_head)
+                        curr_node["labels"].update(
+                            self.get_label(common_head, how, debug)
+                        )
+                    else:
+                        debug and logger.debug(
+                            "Common head "
+                            + str(common_head)
+                            + " not found or time-related"
+                        )
+
+                # Will be empty if no common_head is found, if the common_heads are
+                # all not valid category names, hidden categories or already visited
+                # (including the current category)
+                if curr_node["labels"]:
+                    return curr_node["labels"]
+
+                # 3. is_a or subcategory_of (temp: depth check)
+                for parent in self.G.neighbors(category):
+                    try:
+                        if self.G.nodes[parent]["depth"] < depth:
+                            self.G_h.add_edge(category, parent)
+                            curr_node["labels"].update(
+                                self.get_label(parent, how, debug)
+                            )
+                        else:
+                            debug and logger.debug(
+                                "["
+                                + category
+                                + "] Skipping parent "
+                                + parent
+                                + " (depth "
+                                + str(self.G.nodes[parent]["depth"])
+                                + ")"
+                            )
+                    # Not connected category (temp fix to template expansion)
+                    except KeyError:
+                        debug and logger.warning(
+                            "[" + category + "] Parent " + parent + " not connected."
+                        )
+                        continue
+                return curr_node["labels"]
+
+            else:
+                raise ValueError('Invalid "how" option')
