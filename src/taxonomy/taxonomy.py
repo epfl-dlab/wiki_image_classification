@@ -27,7 +27,24 @@ class Taxonomy:
 
     def set_taxonomy(self, version):
         self.version = version
-        if version == "v0.0":
+        if version == "test":
+            self.taxonomy = Label("All", [])
+
+            first = Label("First", ["first"])
+            test = Label("Test", ["Test"])
+            test.add_children(Label("Test1", ["Test1"]))
+            test.add_children(Label("Test2", ["Test2"]))
+            first.add_children(test)
+            self.taxonomy.add_children(first)
+
+            second = Label("Second", ["second"])
+            ttest = Label("Try", ["TTest"])
+            ttest.add_children(Label("TTest1", ["TTest1"]))
+            ttest.add_children(Label("TTest2", ["TTest2"]))
+            first.add_children(ttest)
+            self.taxonomy.add_children(second)
+
+        elif version == "v0.0":
             self.taxonomy = Label("All", [])
 
             nature = Label("Nature", ["Nature"])
@@ -41,10 +58,6 @@ class Taxonomy:
                     Label("Weather", ["Weather"]),
                 ]
             )
-            test = Label("Test", ["Test"])
-            test.add_children(Label("Test1", ["Test1"]))
-            test.add_children(Label("Test2", ["Test2"]))
-            nature.add_children(test)
             self.taxonomy.add_children(nature)
 
             society_culture = Label("Society/Culture", ["Society", "Culture"])
