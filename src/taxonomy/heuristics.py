@@ -1,6 +1,7 @@
 import logging
 import pickle
 import sys
+from operator import itemgetter
 
 import networkx as nx
 import numpy as np
@@ -107,17 +108,27 @@ class Heuristics:
         self.heuristics_version = heuristics_version
         if heuristics_version == "naive":
             self.heuristics = [self._depth_check]
-        elif heuristics_version == "head+depthJ":
+        elif heuristics_version == "headJ+depth":
             self.heuristics = [
                 lambda category, debug: self._head_matching(
-                    category, jump=True, debug=debug
+                    category, jump=True, multiple_words=True, debug=debug
                 ),
                 self._depth_check,
             ]
         elif heuristics_version == "head+depth":
             self.heuristics = [
                 lambda category, debug: self._head_matching(
-                    category, jump=False, debug=debug
+                    category, jump=False, multiple_words=False, debug=debug
+                ),
+                self._depth_check,
+            ]
+        elif heuristics_version == "head+headJ+depth":
+            self.heuristics = [
+                lambda category, debug: self._head_matching(
+                    category, jump=False, multiple_words=False, debug=debug
+                ),
+                lambda category, debug: self._head_matching(
+                    category, jump=True, multiple_words=True, debug=debug
                 ),
                 self._depth_check,
             ]
@@ -135,7 +146,7 @@ class Heuristics:
             self.G.nodes[category]["head"] = head
         return head
 
-    def _head_matching(self, category, jump, debug=False):
+    def _head_matching(self, category, jump, multiple_words, debug=False):
         """
         Head matching heuristic: parent categories are queried if
         they have the same lexical head as the current category.
@@ -150,6 +161,7 @@ class Heuristics:
             heads. The matched heads, in case of a jump, are queried
             only if their depth is lower than the current category
             (proxy for is_ancestor check, too slow to be used).
+            When jumping, we allow heads composed of multiple words.
         debug : bool
             If true, print debug information.
 
@@ -159,43 +171,58 @@ class Heuristics:
             List of next categories to query.
         """
 
-        heads = [self.get_head(category)]
+        heads = [[self.get_head(category), category]]
 
         # Get heads of all parents
-        for parent in self.G.neighbors(category):
-            heads.append(self.get_head(parent))
+        parents = self.G.neighbors(category)
+        for parent in parents:
+            if multiple_words:
+                heads.append([self.get_head(parent), parent])
+            else:
+                heads.append(
+                    [self.get_head(parent).split(" ")[-1].capitalize(), parent]
+                )
         debug and logger.debug("Heads: " + str(heads))
 
         # Try to match over complete lexical heads or subsets of them
         while 1:
-            common_heads = list(unique_everseen(duplicates(heads)))
+            common_heads = list(unique_everseen(duplicates(heads, key=itemgetter(0))))
 
             # Break if found a common head or all the heads are already 1 word long
-            if common_heads or (cmax := max(map(lambda x: len(x.split()), heads))) == 1:
+            if (
+                common_heads
+                or (cmax := max(map(lambda x: len(x[0].split()), heads))) == 1
+            ):
                 break
 
             # Remove 1 word from the longest composite heads
-            for i, head in enumerate(heads):
+            for i, (head, parent) in enumerate(heads):
                 head_words = head.split()
                 if len(head_words) == cmax:
-                    heads[i] = " ".join(head_words[1:]).capitalize()
+                    heads[i][0] = " ".join(head_words[1:]).capitalize()
             debug and logger.debug("Lexical heads: " + str(heads))
         debug and logger.debug("\tFound common heads: " + str(common_heads))
 
         # Hop to common_heads if they belong to parents
         next_queries = []
-        for common_head in common_heads:
-            if (
-                self.G.nodes.get(common_head, {}).get("depth", 1e9)
-                < self.G.nodes[category]["depth"]
-            ):
-                next_queries.append(common_head)
-            else:
-                debug and logger.debug(
-                    "Common head "
-                    + str(common_head)
-                    + " not found or too deep, skipping"
-                )
+        if jump:
+            for (common_head, parent) in common_heads:
+                if (
+                    self.G.nodes.get(common_head, {}).get("depth", 1e9)
+                    < self.G.nodes[category]["depth"]
+                ):
+                    next_queries.append(common_head)
+                else:
+                    debug and logger.debug(
+                        "Common head "
+                        + str(common_head)
+                        + " not found or too deep, skipping"
+                    )
+        else:
+            for (head, parent) in heads:
+                common_heads_heads = [common_head[0] for common_head in common_heads]
+                if head in common_heads_heads:
+                    next_queries.append(parent)
 
         return next_queries
 
