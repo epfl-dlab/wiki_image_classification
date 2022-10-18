@@ -11,7 +11,7 @@ sys.path.append("./")
 sys.path.append("../../")
 
 from src.config import *
-from src.taxonomy.head.headParsing import find_head
+from src.taxonomy.head import headParsing
 from src.taxonomy.taxonomy import Taxonomy
 
 logger = logging.getLogger("taxonomy")
@@ -84,12 +84,13 @@ class Heuristics:
         self.visited_nodes = 0
         self.G_h = nx.DiGraph()
 
-    def set_taxonomy(self, version):
+    def set_taxonomy(self, taxonomy_version):
         """
         Set an ORES-like taxonomy, mapping labels to high-level categories.
         """
+        self.taxonomy_version = taxonomy_version
         self.taxonomy = Taxonomy()
-        self.taxonomy.set_version(version)
+        self.taxonomy.set_taxonomy(taxonomy_version)
         self.mapping = self.taxonomy.get_flat_mapping()
 
         self.reset_labels()
@@ -99,6 +100,30 @@ class Heuristics:
                 self.G.nodes[category]["visited"] = True
                 self.G.nodes[category]["labels"].add(label)
 
+    def set_heuristics(self, heuristics_version):
+        """
+        Set heuristics set.
+        """
+        self.heuristics_version = heuristics_version
+        if heuristics_version == "naive":
+            self.heuristics = [self._depth_check]
+        elif heuristics_version == "head+depthJ":
+            self.heuristics = [
+                lambda category, debug: self._head_matching(
+                    category, jump=True, debug=debug
+                ),
+                self._depth_check,
+            ]
+        elif heuristics_version == "head+depth":
+            self.heuristics = [
+                lambda category, debug: self._head_matching(
+                    category, jump=False, debug=debug
+                ),
+                self._depth_check,
+            ]
+        else:
+            raise ValueError("Invalid heuristics version")
+
     def get_head(self, category):
         """
         Get or compute the lexical head of a given category.
@@ -106,11 +131,117 @@ class Heuristics:
         if "head" in self.G.nodes[category]:
             head = self.G.nodes[category]["head"]
         else:
-            head = find_head(category)
+            head = headParsing.find_head(category)
             self.G.nodes[category]["head"] = head
         return head
 
-    def get_label(self, category, how="heuristics_v0", debug=False):
+    def _head_matching(self, category, jump, debug=False):
+        """
+        Head matching heuristic: parent categories are queried if
+        they have the same lexical head as the current category.
+
+        Parameters
+        ----------
+        category : str
+            Category to be processed.
+        jump : bool
+            If true, the next categories to be queried are directly
+            the matched heads instead of the parents with matching
+            heads. The matched heads, in case of a jump, are queried
+            only if their depth is lower than the current category
+            (proxy for is_ancestor check, too slow to be used).
+        debug : bool
+            If true, print debug information.
+
+        Returns
+        ----------
+        list of str
+            List of next categories to query.
+        """
+
+        heads = [self.get_head(category)]
+
+        # Get heads of all parents
+        for parent in self.G.neighbors(category):
+            heads.append(self.get_head(parent))
+        debug and logger.debug("Heads: " + str(heads))
+
+        # Try to match over complete lexical heads or subsets of them
+        while 1:
+            common_heads = list(unique_everseen(duplicates(heads)))
+
+            # Break if found a common head or all the heads are already 1 word long
+            if common_heads or (cmax := max(map(lambda x: len(x.split()), heads))) == 1:
+                break
+
+            # Remove 1 word from the longest composite heads
+            for i, head in enumerate(heads):
+                head_words = head.split()
+                if len(head_words) == cmax:
+                    heads[i] = " ".join(head_words[1:]).capitalize()
+            debug and logger.debug("Lexical heads: " + str(heads))
+        debug and logger.debug("\tFound common heads: " + str(common_heads))
+
+        # Hop to common_heads if they belong to parents
+        next_queries = []
+        for common_head in common_heads:
+            if (
+                self.G.nodes.get(common_head, {}).get("depth", 1e9)
+                < self.G.nodes[category]["depth"]
+            ):
+                next_queries.append(common_head)
+            else:
+                debug and logger.debug(
+                    "Common head "
+                    + str(common_head)
+                    + " not found or too deep, skipping"
+                )
+
+        return next_queries
+
+    def _depth_check(self, category, debug=False):
+        """
+        Depth check heuristic: parent categories are queried if
+        they are at a lower depth than the current category.
+
+        Parameters
+        ----------
+        category : str
+            Category to be processed.
+        debug : bool
+            If true, print debug information.
+
+        Returns
+        ----------
+        list of str
+            List of next categories to query.
+        """
+
+        depth = self.G.nodes[category]["depth"]
+        next_queries = []
+        for parent in self.G.neighbors(category):
+            try:
+                if self.G.nodes[parent]["depth"] < depth:
+                    next_queries.append(parent)
+                else:
+                    debug and logger.debug(
+                        "["
+                        + category
+                        + "] Skipping parent "
+                        + parent
+                        + " (depth "
+                        + str(self.G.nodes[parent]["depth"])
+                        + ")"
+                    )
+            # Not connected category (temp fix to template expansion)
+            except KeyError:
+                debug and logger.warning(
+                    "[" + category + "] Parent " + parent + " not connected."
+                )
+                continue
+        return next_queries
+
+    def query_category(self, category, debug=False):
         """
         Get the label corresponding to a specific category, passed as string.
 
@@ -122,6 +253,8 @@ class Heuristics:
         """
         assert isinstance(category, str)
 
+        ## Basic checks
+        # Red links
         try:
             curr_node = self.G.nodes[category]
         except KeyError:
@@ -135,154 +268,90 @@ class Heuristics:
             )
             return set()
 
+        ## Base case: already visited, return labels
         if curr_node["visited"]:
             debug and logger.debug(
                 "Found " + category + " with label " + str(curr_node["labels"])
             )
             return curr_node["labels"]
 
-        else:
-            curr_node["visited"] = True
-            self.visited_nodes += 1
+        curr_node["visited"] = True
+        self.visited_nodes += 1
+        debug and logger.debug(
+            str(self.visited_nodes)
+            + " - Searching for "
+            + category
+            + " (depth "
+            + str(curr_node.get("depth", None))
+            + "), with parents "
+            + str(list(self.G.neighbors(category)))
+            + "..."
+        )
+
+        ## More basic checks
+        # Hiddencats
+        if curr_node["hiddencat"]:
+            debug and logger.debug("Hidden category, returning empty set")
+            return set()
+
+        # Meaningless head (time-related + Commons-related)
+        null_heads = [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+            # "Spring",
+            # "Summer",
+            # "Autumn",
+            # "Winter",
+            "Century",
+            "Categories",
+            "Category",
+        ]
+        head = self.get_head(category)
+        if head.isnumeric() or head in null_heads:
             debug and logger.debug(
-                str(self.visited_nodes)
-                + " - Searching for "
-                + category
-                + " (depth "
-                + str(curr_node.get("depth", None))
-                + "), with parents "
-                + str(list(self.G.neighbors(category)))
-                + "..."
+                "Head " + head + " not meaningful, returning empty set"
             )
+            return set()
 
-            if how == "all":
-                for parent in self.G.neighbors(category):
-                    curr_node["labels"].update(self.get_label(parent, how, debug))
-                return curr_node["labels"]
+        ## Go through heuristics, stopping as soon as one returns a non-empty set
+        for heuristic in self.heuristics:
+            next_queries = heuristic(category, debug)
+            for next_query in next_queries:
+                self.G_h.add_edge(category, next_query)
+                curr_node["labels"].update(self.query_category(next_query, debug))
 
-            elif how == "naive":
-                depth = curr_node["depth"]
-                for parent in self.G.neighbors(category):
-                    try:
-                        if self.G.nodes[parent]["depth"] < depth:
-                            curr_node["labels"].update(
-                                self.get_label(parent, how, debug)
-                            )
-                    # Not connected category (temp fix to template expansion)
-                    except KeyError:
-                        continue
-                return curr_node["labels"]
+            if curr_node["labels"]:
+                break
 
-            elif how == "heuristics_v0":
-                depth = curr_node["depth"]
+        return curr_node["labels"]
 
-                # 1 Hidden category
-                if curr_node["hiddencat"]:
-                    debug and logger.debug("Hidden category, returning empty set")
-                    return set()
+    def queryFile(self, file, debug=False, logfile=None):
+        """
+        Given one file, a row of the files DataFrame, queries recursively all
+        the categories and returns the final labels.
+        """
 
-                # 2 Lexical head
-
-                # 2.1. Check for meaningless head (time-related + Commons-related)
-                null_heads = [
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
-                    "Spring",
-                    "Summer",
-                    "Autumn",
-                    "Winter",
-                    "Century",
-                    "Categories",
-                    "Category",
-                ]
-                heads = [self.get_head(category)]
-                if heads[0].isnumeric() or heads[0] in null_heads:
-                    debug and logger.debug(
-                        "Head " + heads[0] + " not meaningful, returning empty set"
-                    )
-                    return set()
-
-                # Get heads of all parents
-                for parent in self.G.neighbors(category):
-                    heads.append(self.get_head(parent))
-                debug and logger.debug("Heads: " + str(heads))
-
-                # 2.2. Try to match over complete lexical heads or subsets
-                while 1:
-                    common_heads = list(unique_everseen(duplicates(heads)))
-
-                    # Break if found a common head or all the heads are already 1 word long
-                    if (
-                        common_heads
-                        or (cmax := max(map(lambda x: len(x.split()), heads))) == 1
-                    ):
-                        break
-
-                    # Remove 1 word from the longest composite heads
-                    for i, head in enumerate(heads):
-                        head_words = head.split()
-                        if len(head_words) == cmax:
-                            heads[i] = " ".join(head_words[1:]).capitalize()
-                    debug and logger.debug("Lexical heads: " + str(heads))
-                debug and logger.debug("\tFound common heads: " + str(common_heads))
-
-                # 2.3. Hop to common_heads if they belong to parents and are not meaningless
-                for common_head in common_heads:
-                    if (
-                        self.G.nodes.get(common_head, {}).get("depth", 1e9) < depth
-                    ) and not (common_head.isnumeric() or common_head in null_heads):
-                        self.G_h.add_edge(category, common_head)
-                        curr_node["labels"].update(
-                            self.get_label(common_head, how, debug)
-                        )
-                    else:
-                        debug and logger.debug(
-                            "Common head "
-                            + str(common_head)
-                            + " not found or time-related"
-                        )
-
-                # Will be empty if no common_head is found, if the common_heads are
-                # all not valid category names, hidden categories or already visited
-                # (including the current category)
-                if curr_node["labels"]:
-                    return curr_node["labels"]
-
-                # 3. is_a or subcategory_of (temp: depth check)
-                for parent in self.G.neighbors(category):
-                    try:
-                        if self.G.nodes[parent]["depth"] < depth:
-                            self.G_h.add_edge(category, parent)
-                            curr_node["labels"].update(
-                                self.get_label(parent, how, debug)
-                            )
-                        else:
-                            debug and logger.debug(
-                                "["
-                                + category
-                                + "] Skipping parent "
-                                + parent
-                                + " (depth "
-                                + str(self.G.nodes[parent]["depth"])
-                                + ")"
-                            )
-                    # Not connected category (temp fix to template expansion)
-                    except KeyError:
-                        debug and logger.warning(
-                            "[" + category + "] Parent " + parent + " not connected."
-                        )
-                        continue
-                return curr_node["labels"]
-
-            else:
-                raise ValueError('Invalid "how" option')
+        labels = set()
+        for category in file.categories:
+            debug and logger.debug(f"Starting search for category {category}")
+            cat_labels = self.query_category(category, debug=debug)
+            debug and logger.debug(
+                f"Ending search for category {category} with resulting labels {cat_labels}"
+            )
+            debug and logger.debug(
+                f"---------------------------------------------------"
+            )
+            labels |= cat_labels
+        debug and logger.debug(f"Final labels: {labels}")
+        log = logfile.read() if debug else None
+        return labels, log

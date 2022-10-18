@@ -34,3 +34,4 @@ STREAMLIT_LOG_FILE = "streamlit_preparation.log"
 
 
 TAXONOMY_VERSION = "v0.0"
+HEURISTICS_VERSION = "head+depthJ"

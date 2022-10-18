@@ -131,26 +131,6 @@ def iterativeSampling(
     return balanced_files
 
 
-def queryFile(file, how="heuristics_v0", debug=False):
-    """
-    Given one file, a row of the files DataFrame, queries recursively all
-    the categories and returns the final labels.
-    """
-
-    labels = set()
-    for category in file.categories:
-        debug and logger.debug(f"Starting search for category {category}")
-        cat_labels = heuristics.get_label(category, how=how, debug=debug)
-        debug and logger.debug(
-            f"Ending search for category {category} with resulting labels {cat_labels}"
-        )
-        debug and logger.debug(f"---------------------------------------------------")
-        labels |= cat_labels
-    debug and logger.debug(f"Final labels: {labels}")
-    log = logfile.read() if debug else None
-    return labels, log
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-n", "--n", help="size of the sample")
@@ -163,7 +143,9 @@ if __name__ == "__main__":
 
     files, heuristics = initialize()
     files["labels_pred"] = files.progress_apply(
-        lambda x: queryFile(x, how=how, debug=False), axis=1, result_type="expand"
+        lambda x: heuristics.queryFile(x, how=how, debug=False, logfile=logfile),
+        axis=1,
+        result_type="expand",
     )[0]
 
     # Create a balanced sample
@@ -179,7 +161,9 @@ if __name__ == "__main__":
 
     files_sample["labels_true"] = [[] for _ in range(len(files_sample))]
     files_sample[["labels_pred", "log"]] = files_sample.progress_apply(
-        lambda x: queryFile(x, how=how, debug=True), axis=1, result_type="expand"
+        lambda x: heuristics.queryFile(x, how=how, debug=True, logfile=logfile),
+        axis=1,
+        result_type="expand",
     )
     # Dict storing evaluations
     printt("Saving file..")
