@@ -8,7 +8,8 @@ import streamlit as st
 sys.path.append("./")
 sys.path.append("../../")
 
-from src.taxonomy.taxonomy import Taxonomy
+from src.config import *
+from src.taxonomy.heuristics import Heuristics
 from src.utilities import init_logger
 
 COMMONS_URL = "https://commons.wikimedia.org/wiki/File:"
@@ -29,7 +30,7 @@ def queryFile():
     labels = set()
     for category in file.categories:
         logger.debug(f"Starting search for category {category}")
-        cat_labels = st.session_state.taxonomy.get_label(
+        cat_labels = st.session_state.heuristics.get_label(
             category, how=st.session_state.how.lower()
         )
         # cat_labels = {f'test x {category[0:5]}'}
@@ -98,13 +99,13 @@ if "logger" not in st.session_state:
         st.session_state.filesize = len(st.session_state.files)
 
     # # Initialize taxonomy
-    st.session_state.taxonomy = Taxonomy()
+    st.session_state.heuristics = Heuristics()
     with st.spinner("Initializing taxonomy..."):
-        st.session_state.taxonomy.load_graph(GRAPH_PATH)
+        st.session_state.heuristics.load_graph(GRAPH_PATH)
     with st.spinner("Initializing mapping..."):
-        st.session_state.taxonomy.set_taxonomy(mapping="content_extended")
+        st.session_state.heuristics.set_taxonomy(version=TAXONOMY_VERSION)
     with st.spinner("Initializing lexical parser..."):
-        st.session_state.taxonomy.get_head("CommonsRoot")
+        st.session_state.heuristics.get_head("CommonsRoot")
 
     # Other initializations
     st.session_state.seedNumber = 0

@@ -7,13 +7,12 @@ from tqdm import tqdm
 
 tqdm.pandas()
 from sklearn.preprocessing import MultiLabelBinarizer
-from skmultilearn.model_selection import iterative_train_test_split
 
 sys.path.append("./")
 sys.path.append("../../")
 
 from src.config import *
-from src.taxonomy.taxonomy import Taxonomy
+from src.taxonomy.heuristics import Heuristics
 from src.utilities import init_logger, printt
 
 logger = init_logger(STREAMLIT_PATH + STREAMLIT_LOG_FILE, logger_name="taxonomy")
@@ -24,13 +23,13 @@ def initialize():
     printt("Reading files...")
     files = pd.read_parquet(FILES_PATH)
 
-    taxonomy = Taxonomy()
+    heuristics = Heuristics()
     printt("Loading graph...")
-    taxonomy.load_graph(HGRAPH_PATH)
+    heuristics.load_graph(HGRAPH_PATH)
     printt("Loading mapping...")
-    taxonomy.set_taxonomy(mapping="content_extended")
+    heuristics.set_taxonomy(version=TAXONOMY_VERSION)
 
-    return files, taxonomy
+    return files, heuristics
 
 
 def iterativeSampling(
@@ -132,26 +131,6 @@ def iterativeSampling(
     return balanced_files
 
 
-def queryFile(file, how="heuristics_v0", debug=False):
-    """
-    Given one file, a row of the files DataFrame, queries recursively all
-    the categories and returns the final labels.
-    """
-
-    labels = set()
-    for category in file.categories:
-        debug and logger.debug(f"Starting search for category {category}")
-        cat_labels = taxonomy.get_label(category, how=how, debug=debug)
-        debug and logger.debug(
-            f"Ending search for category {category} with resulting labels {cat_labels}"
-        )
-        debug and logger.debug(f"---------------------------------------------------")
-        labels |= cat_labels
-    debug and logger.debug(f"Final labels: {labels}")
-    log = logfile.read() if debug else None
-    return labels, log
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-n", "--n", help="size of the sample")
@@ -162,9 +141,11 @@ if __name__ == "__main__":
     seed = int(args.seed) if args.seed else 42
     how = args.how if args.how else "heuristics_v0"
 
-    files, taxonomy = initialize()
+    files, heuristics = initialize()
     files["labels_pred"] = files.progress_apply(
-        lambda x: queryFile(x, how=how, debug=False), axis=1, result_type="expand"
+        lambda x: heuristics.queryFile(x, how=how, debug=False, logfile=logfile),
+        axis=1,
+        result_type="expand",
     )[0]
 
     # Create a balanced sample
@@ -180,7 +161,9 @@ if __name__ == "__main__":
 
     files_sample["labels_true"] = [[] for _ in range(len(files_sample))]
     files_sample[["labels_pred", "log"]] = files_sample.progress_apply(
-        lambda x: queryFile(x, how=how, debug=True), axis=1, result_type="expand"
+        lambda x: heuristics.queryFile(x, how=how, debug=True, logfile=logfile),
+        axis=1,
+        result_type="expand",
     )
     # Dict storing evaluations
     printt("Saving file..")

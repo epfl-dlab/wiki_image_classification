@@ -1,7 +1,7 @@
 import stanza
 
 
-def find_tree_head(tree):
+def find_tree_head(tree, multiple_words=False):
     """
     Get head of a Noun Phrase. Based on a simplified version of Michael Collins' 1999 rules.
     Returns the maximal sequence of noun-tagged words, instead of a 1-word head.
@@ -24,11 +24,16 @@ def find_tree_head(tree):
 
     head = []
     for child in tree.children[::-1]:
-
         if child.label in ["NN", "NNS", "NNP", "NNPS", "NNS", "POS", "JJR"]:
-            head += child.leaf_labels()
+            if multiple_words:
+                head += child.leaf_labels()
+            else:
+                return child.leaf_labels()[0]
         elif child.label in ["NML"]:
-            head += child.leaf_labels()[::-1]
+            if multiple_words:
+                head += child.leaf_labels()[::-1]
+            else:
+                return child.leaf_labels()[0]
         elif head:
             break
 
@@ -81,7 +86,7 @@ def align_sentences(categories, sentences):
     return new_sentences
 
 
-def find_head(categories, use_gpu=True):
+def find_head(categories, multiple_words=False, use_gpu=True):
     """
     Find the lexical head of a category, considering only takes the first sentence
     """
@@ -95,6 +100,11 @@ def find_head(categories, use_gpu=True):
 
     doc = find_head.nlp(f"\n\n".join(categories))
     sentences = align_sentences(categories, doc.sentences)
-    heads = list(map(lambda c: find_tree_head(c.constituency).capitalize(), sentences))
+    heads = list(
+        map(
+            lambda c: find_tree_head(c.constituency, multiple_words).capitalize(),
+            sentences,
+        )
+    )
     assert len(heads) == len(categories)
     return heads

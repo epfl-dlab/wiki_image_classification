@@ -12,7 +12,7 @@ sys.path.append("./")
 sys.path.append("../../")
 
 from src.config import *
-from src.taxonomy.taxonomy import Taxonomy
+from src.taxonomy.heuristics import Heuristics
 from src.utilities import printt  # , init_logger
 
 if __name__ == "__main__":
@@ -20,13 +20,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     printt("Loading graph...")
-    taxonomy = Taxonomy()
-    taxonomy.load_graph(HGRAPH_PATH)
+    heuristics = Heuristics()
+    heuristics.load_graph(HGRAPH_PATH)
     printt("Loading mapping...")
-    taxonomy.set_taxonomy(mapping="content_extended")
+    heuristics.set_taxonomy(version=TAXONOMY_VERSION)
 
-    nodes = pd.Series(list(taxonomy.G.nodes))
-    nodes.progress_apply(lambda cat: taxonomy.get_label(cat, how="heuristics_simple"))
+    nodes = pd.Series(list(heuristics.G.nodes))
+    nodes.progress_apply(lambda cat: heuristics.get_label(cat, how="heuristics_simple"))
     printt("Saving graph...")
-    taxonomy.dump_graph(LGRAPH_PATH)
-    taxonomy.dump_graph(LGRAPH_H_PATH, clean=True)
+    heuristics.dump_graph(LGRAPH_PATH)
+    heuristics.dump_graph(LGRAPH_H_PATH, clean=True)

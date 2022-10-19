@@ -12,6 +12,7 @@ sys.path.append("./")
 sys.path.append("../../")
 
 from src.config import *
+from src.taxonomy.taxonomy import Taxonomy
 
 COMMONS_URL = "https://commons.wikimedia.org/wiki/File:"
 UPLOAD_URL = "https://upload.wikimedia.org/wikipedia/commons/"
@@ -38,7 +39,7 @@ def showFile():
     # Special value for NONE (no label), to distinguish between images yet to annotate and real no-label images.
     st.multiselect(
         "Labels (true)",
-        options=["NONE"] + ALL_LABELS,
+        options=["NONE"] + Taxonomy(TAXONOMY_VERSION).get_all_labels(),
         default=file.labels_true,
         key=file.title + "true",
         on_change=evaluate_labels,
