@@ -6,9 +6,10 @@ import pandas as pd
 import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
+from datetime import datetime
 
-# tf.config.threading.set_intra_op_parallelism_threads(10) 
-# tf.config.threading.set_inter_op_parallelism_threads(10) 
+tf.config.threading.set_intra_op_parallelism_threads(10) 
+tf.config.threading.set_inter_op_parallelism_threads(10) 
 gpus = tf.config.list_physical_devices('GPU')
 if gpus:
     # Restrict TensorFlow to only use the first GPU
@@ -29,13 +30,16 @@ start = time.time()
 i = sys.argv[1]
 with open('training_configurations.json', 'r') as fp:
     config = json.load(fp)[str(i)]
+config['resume_training'] = True
 print(config)
 # Save outputs to log file
 old_stdout = sys.stdout
-os.mkdir(config['results_folder'])
-log_file = open(config['results_folder'] + '/log.txt', 'w')
+if not config['resume_training']:
+    os.mkdir(config['results_folder'])
+log_file = open(config['results_folder'] + '/log.txt', 'a')
 sys.stdout = log_file
 # ======================================================
+
 
 print(config)
 
@@ -44,8 +48,8 @@ hf.print_time(start)
 # ================= LOAD DATA ================
 start = time.time()
 train = hf.get_flow(df_file=config['data_folder'] + '/train_df.json.bz2',
-                   nr_classes=config['nr_classes'],
-                   image_dimension=config['image_dimension'])
+                    nr_classes=config['nr_classes'],
+                    image_dimension=config['image_dimension'])
 
 print('LOG: finished getting the first flow')
 hf.print_time(start)
@@ -92,7 +96,8 @@ start = time.time()
 model = hf.create_model(n_labels=config['nr_classes'], 
                         image_dimension=config['image_dimension'],
                         model_name=config['basemodel'], 
-                        number_trainable_layers=config['number_trainable_layers'])
+                        number_trainable_layers=config['number_trainable_layers'],
+                        random_initialization=config['random_initialization'])
 # ======================================================
 
 
@@ -112,12 +117,17 @@ history_callback = tf.keras.callbacks.CSVLogger(f"{config['results_folder']}/his
                                                 append=True)
 early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                            min_delta=0,
-                                                           patience=3,
+                                                           patience=5,
                                                            verbose=0,
                                                            mode='auto',
                                                            restore_best_weights=True)
 # Save the weights using the `checkpoint_path` format
 model.save_weights(checkpoint_path.format(epoch=0))
+
+if config['resume_training'] == True:
+    latest = tf.train.latest_checkpoint(config['results_folder'] + '/checkpoints')
+    print(latest)
+    model.load_weights(latest)
 
 if config['class_weights'] == True:
     pass
@@ -181,5 +191,5 @@ _ = plt.subplot(1, 3, 3)
 _ = plt.plot(range(epochs), val_loss, label='Validation Loss', color='orange')
 _ = plt.legend(loc='upper right')
 _ = plt.title('Validation Loss')
-hf.save_img(config['results_folder'] + '/training_metrics.png')
+hf.save_img(config['results_folder'] + '/training_metrics' + datetime.today().strftime('%Y-%m-%d-%H:%M:%S') + '/.png')
 # ======================================================

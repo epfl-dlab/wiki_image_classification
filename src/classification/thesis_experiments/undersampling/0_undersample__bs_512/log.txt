@@ -1,0 +1,112 @@
+{'epochs': 15, 'augment': False, 'basemodel': 'EfficientNetB2', 'nr_classes': 20, 'batch_size': 512, 'undersample': True, 'data_folder': 'data/split_dataframes_heuristic_labels_20221006', 'loss_function': 'binary_crossentropy', 'class_weights': False, 'image_dimension': 64, 'number_trainable_layers': 0, 'results_folder': 'thesis_experiments/0_undersample__bs_512'}
+Time passed: 0.0 hours
+
+18:40:03
+Found 760000 non-validated image filenames belonging to 42 classes.
+Found 752497 validated image filenames belonging to 20 classes.
+LOG: finished getting the first flow
+Time passed: 0.01 hours
+
+18:40:48
+Unweighted mean imbalance ratio: 40.16
+Unweighted mean imbalance ratio: 32.01
+LOG: found rows to remove to balance
+Time passed: 3.87 hours
+
+22:32:53
+Found 609500 non-validated image filenames belonging to 42 classes.
+Found 603458 validated image filenames belonging to 20 classes.
+LOG: got the new balanced flow
+Time passed: 0.07 hours
+
+22:37:18
+Found 50000 non-validated image filenames belonging to 40 classes.
+Found 49514 validated image filenames belonging to 20 classes.
+LOG: Got the validation flow
+Time passed: 0.0 hours
+
+22:37:22
+LOG: creating and training model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 0
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 723,604
+Non-trainable params: 7,768,569
+_________________________________________________________________
+Epoch 1/15
+
+Epoch 00001: val_loss improved from inf to 0.23399, saving model to thesis_experiments/0_undersample__bs_512/cp-0001.ckpt
+18859/18859 - 11329s - loss: 0.2381 - accuracy: 0.2585 - categorical_accuracy: 0.2585 - val_loss: 0.2340 - val_accuracy: 0.2571 - val_categorical_accuracy: 0.2571
+Epoch 2/15
+
+Epoch 00002: val_loss did not improve from 0.23399
+18859/18859 - 1878s - loss: 0.2342 - accuracy: 0.2646 - categorical_accuracy: 0.2646 - val_loss: 0.2341 - val_accuracy: 0.2834 - val_categorical_accuracy: 0.2834
+Epoch 3/15
+
+Epoch 00003: val_loss improved from 0.23399 to 0.23329, saving model to thesis_experiments/0_undersample__bs_512/cp-0003.ckpt
+18859/18859 - 1266s - loss: 0.2331 - accuracy: 0.2667 - categorical_accuracy: 0.2667 - val_loss: 0.2333 - val_accuracy: 0.2787 - val_categorical_accuracy: 0.2787
+Epoch 4/15
+
+Epoch 00004: val_loss improved from 0.23329 to 0.23307, saving model to thesis_experiments/0_undersample__bs_512/cp-0004.ckpt
+18859/18859 - 1269s - loss: 0.2324 - accuracy: 0.2678 - categorical_accuracy: 0.2678 - val_loss: 0.2331 - val_accuracy: 0.2543 - val_categorical_accuracy: 0.2543
+Epoch 5/15
+
+Epoch 00005: val_loss improved from 0.23307 to 0.23265, saving model to thesis_experiments/0_undersample__bs_512/cp-0005.ckpt
+18859/18859 - 1269s - loss: 0.2319 - accuracy: 0.2695 - categorical_accuracy: 0.2695 - val_loss: 0.2327 - val_accuracy: 0.2760 - val_categorical_accuracy: 0.2760
+Epoch 6/15
+
+Epoch 00006: val_loss did not improve from 0.23265
+18859/18859 - 1270s - loss: 0.2315 - accuracy: 0.2690 - categorical_accuracy: 0.2690 - val_loss: 0.2327 - val_accuracy: 0.2764 - val_categorical_accuracy: 0.2764
+Epoch 7/15
+
+Epoch 00007: val_loss did not improve from 0.23265
+18859/18859 - 1258s - loss: 0.2311 - accuracy: 0.2703 - categorical_accuracy: 0.2703 - val_loss: 0.2330 - val_accuracy: 0.2728 - val_categorical_accuracy: 0.2728
+Epoch 8/15
+
+Epoch 00008: val_loss improved from 0.23265 to 0.23253, saving model to thesis_experiments/0_undersample__bs_512/cp-0008.ckpt
+18859/18859 - 1275s - loss: 0.2310 - accuracy: 0.2703 - categorical_accuracy: 0.2703 - val_loss: 0.2325 - val_accuracy: 0.2532 - val_categorical_accuracy: 0.2532
+Epoch 9/15
+
+Epoch 00009: val_loss did not improve from 0.23253
+18859/18859 - 1268s - loss: 0.2307 - accuracy: 0.2706 - categorical_accuracy: 0.2706 - val_loss: 0.2328 - val_accuracy: 0.2661 - val_categorical_accuracy: 0.2661
+Epoch 10/15
+
+Epoch 00010: val_loss improved from 0.23253 to 0.23219, saving model to thesis_experiments/0_undersample__bs_512/cp-0010.ckpt
+18859/18859 - 1263s - loss: 0.2305 - accuracy: 0.2715 - categorical_accuracy: 0.2715 - val_loss: 0.2322 - val_accuracy: 0.2668 - val_categorical_accuracy: 0.2668
+Epoch 11/15
+
+Epoch 00011: val_loss did not improve from 0.23219
+18859/18859 - 1268s - loss: 0.2304 - accuracy: 0.2715 - categorical_accuracy: 0.2715 - val_loss: 0.2329 - val_accuracy: 0.2726 - val_categorical_accuracy: 0.2726
+Epoch 12/15
+
+Epoch 00012: val_loss did not improve from 0.23219
+18859/18859 - 1270s - loss: 0.2301 - accuracy: 0.2709 - categorical_accuracy: 0.2709 - val_loss: 0.2326 - val_accuracy: 0.2798 - val_categorical_accuracy: 0.2798
+Epoch 13/15
+
+Epoch 00013: val_loss improved from 0.23219 to 0.23211, saving model to thesis_experiments/0_undersample__bs_512/cp-0013.ckpt
+18859/18859 - 1268s - loss: 0.2298 - accuracy: 0.2717 - categorical_accuracy: 0.2717 - val_loss: 0.2321 - val_accuracy: 0.2737 - val_categorical_accuracy: 0.2737
+Epoch 14/15
+
+Epoch 00014: val_loss did not improve from 0.23211
+18859/18859 - 1268s - loss: 0.2297 - accuracy: 0.2722 - categorical_accuracy: 0.2722 - val_loss: 0.2324 - val_accuracy: 0.2622 - val_categorical_accuracy: 0.2622
+Epoch 15/15
+
+Epoch 00015: val_loss did not improve from 0.23211
+18859/18859 - 1268s - loss: 0.2298 - accuracy: 0.2723 - categorical_accuracy: 0.2723 - val_loss: 0.2325 - val_accuracy: 0.2597 - val_categorical_accuracy: 0.2597
+Time passed: 8.25 hours
+
+06:52:28

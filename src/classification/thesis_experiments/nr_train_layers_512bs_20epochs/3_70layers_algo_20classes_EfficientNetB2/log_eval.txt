@@ -1,7 +1,0 @@
-
-
-
-=============== EVALUATION ====================
-
-Found 760000 non-validated image filenames belonging to 42 classes.
-Found 39614 validated image filenames belonging to 20 classes.

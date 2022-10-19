@@ -1,0 +1,178 @@
+{'epochs': 25, 'augment': False, 'basemodel': 'EfficientNetB2', 'nr_classes': 20, 'batch_size': 512, 'undersample': False, 'data_folder': 'data/split_dataframes_heuristic_labels_20221006', 'loss_function': 'binary_crossentropy', 'class_weights': False, 'image_dimension': 64, 'random_initialization': True, 'number_trainable_layers': 339, 'results_folder': 'thesis_experiments/2_random_initialization__bs_512'}
+Time passed: 0.0 hours
+09:25:14
+Found 760000 non-validated image filenames belonging to 42 classes.
+Found 752497 validated image filenames belonging to 20 classes.
+LOG: finished getting the first flow
+Time passed: 0.36 hours
+09:47:04
+Found 50000 non-validated image filenames belonging to 40 classes.
+Found 49514 validated image filenames belonging to 20 classes.
+LOG: Got the validation flow
+Time passed: 0.0 hours
+09:47:10
+LOG: creating and training model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 339
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 8,424,598
+Non-trainable params: 67,575
+_________________________________________________________________
+Epoch 1/25
+
+Epoch 00001: val_loss improved from inf to 0.26836, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0001.ckpt
+23516/23516 - 13508s - loss: 0.2644 - accuracy: 0.1535 - categorical_accuracy: 0.1535 - val_loss: 0.2684 - val_accuracy: 0.1547 - val_categorical_accuracy: 0.1547
+Epoch 2/25
+
+Epoch 00002: val_loss improved from 0.26836 to 0.25896, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0002.ckpt
+23516/23516 - 1691s - loss: 0.2579 - accuracy: 0.1812 - categorical_accuracy: 0.1812 - val_loss: 0.2590 - val_accuracy: 0.1867 - val_categorical_accuracy: 0.1867
+Epoch 3/25
+
+Epoch 00003: val_loss improved from 0.25896 to 0.25820, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0003.ckpt
+23516/23516 - 1688s - loss: 0.2573 - accuracy: 0.1870 - categorical_accuracy: 0.1870 - val_loss: 0.2582 - val_accuracy: 0.1903 - val_categorical_accuracy: 0.1903
+Epoch 4/25
+
+Epoch 00004: val_loss improved from 0.25820 to 0.24917, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0004.ckpt
+23516/23516 - 1689s - loss: 0.2537 - accuracy: 0.2052 - categorical_accuracy: 0.2052 - val_loss: 0.2492 - val_accuracy: 0.2197 - val_categorical_accuracy: 0.2197
+Epoch 5/25
+
+Epoch 00005: val_loss did not improve from 0.24917
+23516/23516 - 1685s - loss: 0.2489 - accuracy: 0.2205 - categorical_accuracy: 0.2205 - val_loss: 0.2518 - val_accuracy: 0.2110 - val_categorical_accuracy: 0.2110
+Epoch 6/25
+
+Epoch 00006: val_loss improved from 0.24917 to 0.24363, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0006.ckpt
+23516/23516 - 1667s - loss: 0.2463 - accuracy: 0.2293 - categorical_accuracy: 0.2293 - val_loss: 0.2436 - val_accuracy: 0.2408 - val_categorical_accuracy: 0.2408
+Epoch 7/25
+
+Epoch 00007: val_loss improved from 0.24363 to 0.24270, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0007.ckpt
+23516/23516 - 1664s - loss: 0.2440 - accuracy: 0.2360 - categorical_accuracy: 0.2360 - val_loss: 0.2427 - val_accuracy: 0.2532 - val_categorical_accuracy: 0.2532
+Epoch 8/25
+
+Epoch 00008: val_loss improved from 0.24270 to 0.24009, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0008.ckpt
+23516/23516 - 1661s - loss: 0.2429 - accuracy: 0.2409 - categorical_accuracy: 0.2409 - val_loss: 0.2401 - val_accuracy: 0.2550 - val_categorical_accuracy: 0.2550
+Epoch 9/25
+
+Epoch 00009: val_loss improved from 0.24009 to 0.23969, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0009.ckpt
+23516/23516 - 1649s - loss: 0.2403 - accuracy: 0.2491 - categorical_accuracy: 0.2491 - val_loss: 0.2397 - val_accuracy: 0.2570 - val_categorical_accuracy: 0.2570
+Epoch 10/25
+
+Epoch 00010: val_loss improved from 0.23969 to 0.23631, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0010.ckpt
+23516/23516 - 1670s - loss: 0.2381 - accuracy: 0.2555 - categorical_accuracy: 0.2555 - val_loss: 0.2363 - val_accuracy: 0.2527 - val_categorical_accuracy: 0.2527
+Epoch 11/25
+
+Epoch 00011: val_loss improved from 0.23631 to 0.23545, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0011.ckpt
+23516/23516 - 1686s - loss: 0.2366 - accuracy: 0.2589 - categorical_accuracy: 0.2589 - val_loss: 0.2355 - val_accuracy: 0.2633 - val_categorical_accuracy: 0.2633
+Epoch 12/25
+
+Epoch 00012: val_loss improved from 0.23545 to 0.23275, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0012.ckpt
+23516/23516 - 1691s - loss: 0.2346 - accuracy: 0.2647 - categorical_accuracy: 0.2647 - val_loss: 0.2327 - val_accuracy: 0.2736 - val_categorical_accuracy: 0.2736
+Epoch 13/25
+
+Epoch 00013: val_loss improved from 0.23275 to 0.23233, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0013.ckpt
+23516/23516 - 1680s - loss: 0.2332 - accuracy: 0.2679 - categorical_accuracy: 0.2679 - val_loss: 0.2323 - val_accuracy: 0.2626 - val_categorical_accuracy: 0.2626
+Epoch 14/25
+
+Epoch 00014: val_loss improved from 0.23233 to 0.23152, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0014.ckpt
+23516/23516 - 1689s - loss: 0.2319 - accuracy: 0.2714 - categorical_accuracy: 0.2714 - val_loss: 0.2315 - val_accuracy: 0.2725 - val_categorical_accuracy: 0.2725
+Epoch 15/25
+
+Epoch 00015: val_loss did not improve from 0.23152
+23516/23516 - 1689s - loss: 0.2306 - accuracy: 0.2737 - categorical_accuracy: 0.2737 - val_loss: 0.2337 - val_accuracy: 0.2772 - val_categorical_accuracy: 0.2772
+Epoch 16/25
+
+Epoch 00016: val_loss improved from 0.23152 to 0.23052, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0016.ckpt
+23516/23516 - 1683s - loss: 0.2295 - accuracy: 0.2766 - categorical_accuracy: 0.2766 - val_loss: 0.2305 - val_accuracy: 0.2711 - val_categorical_accuracy: 0.2711
+Epoch 17/25
+
+Epoch 00017: val_loss improved from 0.23052 to 0.22874, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0017.ckpt
+23516/23516 - 1681s - loss: 0.2292 - accuracy: 0.2762 - categorical_accuracy: 0.2762 - val_loss: 0.2287 - val_accuracy: 0.2747 - val_categorical_accuracy: 0.2747
+Epoch 18/25
+
+Epoch 00018: val_loss did not improve from 0.22874
+23516/23516 - 1675s - loss: 0.2279 - accuracy: 0.2799 - categorical_accuracy: 0.2799 - val_loss: 0.2301 - val_accuracy: 0.2786 - val_categorical_accuracy: 0.2786
+Epoch 19/25
+
+Epoch 00019: val_loss did not improve from 0.22874
+23516/23516 - 1677s - loss: 0.2270 - accuracy: 0.2811 - categorical_accuracy: 0.2811 - val_loss: 0.2291 - val_accuracy: 0.2882 - val_categorical_accuracy: 0.2882
+Epoch 20/25
+
+Epoch 00020: val_loss improved from 0.22874 to 0.22857, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0020.ckpt
+23516/23516 - 1677s - loss: 0.2264 - accuracy: 0.2824 - categorical_accuracy: 0.2824 - val_loss: 0.2286 - val_accuracy: 0.2809 - val_categorical_accuracy: 0.2809
+Epoch 21/25
+
+Epoch 00021: val_loss did not improve from 0.22857
+23516/23516 - 1681s - loss: 0.2260 - accuracy: 0.2835 - categorical_accuracy: 0.2835 - val_loss: 0.2381 - val_accuracy: 0.2798 - val_categorical_accuracy: 0.2798
+Epoch 22/25
+
+Epoch 00022: val_loss did not improve from 0.22857
+23516/23516 - 1683s - loss: 0.2251 - accuracy: 0.2865 - categorical_accuracy: 0.2865 - val_loss: 0.2358 - val_accuracy: 0.2816 - val_categorical_accuracy: 0.2816
+Epoch 23/25
+
+Epoch 00023: val_loss improved from 0.22857 to 0.22655, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0023.ckpt
+23516/23516 - 1698s - loss: 0.2243 - accuracy: 0.2880 - categorical_accuracy: 0.2880 - val_loss: 0.2265 - val_accuracy: 0.2968 - val_categorical_accuracy: 0.2968
+Epoch 24/25
+
+Epoch 00024: val_loss improved from 0.22655 to 0.22601, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0024.ckpt
+23516/23516 - 1696s - loss: 0.2237 - accuracy: 0.2892 - categorical_accuracy: 0.2892 - val_loss: 0.2260 - val_accuracy: 0.2873 - val_categorical_accuracy: 0.2873
+Epoch 25/25
+
+Epoch 00025: val_loss improved from 0.22601 to 0.22589, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0025.ckpt
+23516/23516 - 1695s - loss: 0.2230 - accuracy: 0.2903 - categorical_accuracy: 0.2903 - val_loss: 0.2259 - val_accuracy: 0.2893 - val_categorical_accuracy: 0.2893
+Time passed: 14.97 hours
+{'epochs': 25, 'augment': False, 'basemodel': 'EfficientNetB2', 'nr_classes': 20, 'batch_size': 512, 'undersample': False, 'data_folder': 'data/split_dataframes_heuristic_labels_20221006', 'loss_function': 'binary_crossentropy', 'class_weights': False, 'image_dimension': 64, 'random_initialization': True, 'number_trainable_layers': 339, 'results_folder': 'thesis_experiments/2_random_initialization__bs_512', 'resume_training': True}
+Time passed: 0.0 hours
+09:56:39
+Found 760000 non-validated image filenames belonging to 42 classes.
+Found 752497 validated image filenames belonging to 20 classes.
+LOG: finished getting the first flow
+Time passed: 0.01 hours
+09:57:24
+Found 50000 non-validated image filenames belonging to 40 classes.
+Found 49514 validated image filenames belonging to 20 classes.
+LOG: Got the validation flow
+Time passed: 0.0 hours
+09:57:26
+LOG: creating and training model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 339
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 20)                2580      
+=================================================================
+Total params: 8,492,173
+Trainable params: 8,424,598
+Non-trainable params: 67,575
+_________________________________________________________________
+thesis_experiments/2_random_initialization__bs_512/checkpoints/cp-0025.ckpt
+Epoch 1/25
+
+Epoch 00001: val_loss improved from inf to 0.22568, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0001.ckpt
+23516/23516 - 1701s - loss: 0.2226 - accuracy: 0.2915 - categorical_accuracy: 0.2915 - val_loss: 0.2257 - val_accuracy: 0.2825 - val_categorical_accuracy: 0.2825
+Epoch 2/25
+
+Epoch 00002: val_loss improved from 0.22568 to 0.22537, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0002.ckpt
+23516/23516 - 6284s - loss: 0.2221 - accuracy: 0.2929 - categorical_accuracy: 0.2929 - val_loss: 0.2254 - val_accuracy: 0.2921 - val_categorical_accuracy: 0.2921

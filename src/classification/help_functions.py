@@ -113,19 +113,15 @@ def get_top_classes(nr_classes, df):
     return np.array(list(_data.class_indices.keys()))[sorted_indices[:nr_classes]]
 
 
-def create_model(n_labels, image_dimension, model_name, number_trainable_layers, loss='binary_crossentropy'):
+def create_model(n_labels, image_dimension, model_name, number_trainable_layers, loss='binary_crossentropy', random_initialization=False):
     """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
-    if model_name == 'EfficientNetB0':
-        base_model = EfficientNetB0(include_top=False, 
-                                    weights='imagenet', 
+    assert(model_name == 'EfficientNetB2')
+    if random_initialization:
+        base_model = EfficientNetB2(include_top=False, 
+                                    weights=None, 
                                     classes=n_labels,
                                     input_shape=(image_dimension, image_dimension, 3))
-    elif model_name == 'EfficientNetB1':
-        base_model = EfficientNetB1(include_top=False, 
-                                    weights='imagenet', 
-                                    classes=n_labels,
-                                    input_shape=(image_dimension, image_dimension, 3))
-    elif model_name == 'EfficientNetB2':
+    else:
         base_model = EfficientNetB2(include_top=False, 
                                     weights='imagenet', 
                                     classes=n_labels,
@@ -391,18 +387,20 @@ def plot_distribution(dataframe, filename, minimal_nr_images=0):
     sorted_indices = np.argsort(np.sum(y_true, axis=0))
     sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
 
-    mask_kept = y_true.sum(axis=0)[sorted_indices] > minimal_nr_images
-    mask_removed = y_true.sum(axis=0)[sorted_indices] < minimal_nr_images
-
     _ = plt.figure(figsize=(8, 14))
 
-    _ = plt.barh(np.array(range(y_true.shape[1]))[mask_kept], sorted_images_per_class[mask_kept], color='blue', alpha=0.6)
-    _ = plt.barh(np.array(range(y_true.shape[1]))[mask_removed], sorted_images_per_class[mask_removed], color='red', alpha=0.6)
+    if minimal_nr_images > 0:
+        mask_kept = y_true.sum(axis=0)[sorted_indices] > minimal_nr_images
+        mask_removed = y_true.sum(axis=0)[sorted_indices] < minimal_nr_images
+        _ = plt.barh(np.array(range(y_true.shape[1]))[mask_kept], sorted_images_per_class[mask_kept], color='blue', alpha=0.6)
+        _ = plt.barh(np.array(range(y_true.shape[1]))[mask_removed], sorted_images_per_class[mask_removed], color='red', alpha=0.6)
+        _ = plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
+    else:
+        _ = plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.6)
 
     _ = plt.yticks(range(y_true.shape[1]), np.array(list(_data.class_indices.keys()))[sorted_indices], fontsize=12)
     _ = plt.xscale('log')
     _ = plt.xlabel('Count', fontsize=13)
     _ = plt.ylabel('Labels', fontsize=13)
     _ = plt.grid(True)
-    _ = plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
     save_img(filename)
