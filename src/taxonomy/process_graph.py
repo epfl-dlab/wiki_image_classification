@@ -26,7 +26,7 @@ if __name__ == "__main__":
     heuristics.set_taxonomy(version=TAXONOMY_VERSION)
 
     nodes = pd.Series(list(heuristics.G.nodes))
-    nodes.progress_apply(lambda cat: heuristics.get_label(cat, how="heuristics_simple"))
+    nodes.progress_apply(lambda cat: heuristics.get_label(cat, how=HEURISTICS_VERSION))
     printt("Saving graph...")
     heuristics.dump_graph(LGRAPH_PATH)
     heuristics.dump_graph(LGRAPH_H_PATH, clean=True)

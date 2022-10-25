@@ -18,7 +18,7 @@ sys.path.append("../../../")
 
 from src.config import *
 from src.taxonomy.head.headParsing import find_head
-from src.taxonomy.taxonomy import Heuristics
+from src.taxonomy.heuristics import Heuristics
 from src.utilities import printt
 
 if __name__ == "__main__":
@@ -32,9 +32,9 @@ if __name__ == "__main__":
         os.environ["CUDA_VISIBLE_DEVICES"] = args.cuda
 
     printt("Loading taxonomy...")
-    taxonomy = Heuristics()
-    taxonomy.load_graph(GRAPH_PATH)
-    categories = list(taxonomy.G.nodes)
+    heuristics = Heuristics()
+    heuristics.load_graph(GRAPH_PATH)
+    categories = list(heuristics.G.nodes)
 
     n_chunks = 20
     batch_size = 64
