@@ -176,3 +176,26 @@ Epoch 2/25
 
 Epoch 00002: val_loss improved from 0.22568 to 0.22537, saving model to thesis_experiments/2_random_initialization__bs_512/cp-0002.ckpt
 23516/23516 - 6284s - loss: 0.2221 - accuracy: 0.2929 - categorical_accuracy: 0.2929 - val_loss: 0.2254 - val_accuracy: 0.2921 - val_categorical_accuracy: 0.2921
+Epoch 3/25
+
+Epoch 00003: val_loss did not improve from 0.22537
+23516/23516 - 8607s - loss: 0.2215 - accuracy: 0.2937 - categorical_accuracy: 0.2937 - val_loss: 0.2303 - val_accuracy: 0.2938 - val_categorical_accuracy: 0.2938
+Epoch 4/25
+
+Epoch 00004: val_loss did not improve from 0.22537
+23516/23516 - 1832s - loss: 0.2210 - accuracy: 0.2947 - categorical_accuracy: 0.2947 - val_loss: 0.2262 - val_accuracy: 0.2912 - val_categorical_accuracy: 0.2912
+Epoch 5/25
+
+Epoch 00005: val_loss did not improve from 0.22537
+23516/23516 - 1892s - loss: 0.2208 - accuracy: 0.2958 - categorical_accuracy: 0.2958 - val_loss: 0.2430 - val_accuracy: 0.2916 - val_categorical_accuracy: 0.2916
+Epoch 6/25
+
+Epoch 00006: val_loss did not improve from 0.22537
+23516/23516 - 1913s - loss: 0.2204 - accuracy: 0.2967 - categorical_accuracy: 0.2967 - val_loss: 0.2274 - val_accuracy: 0.2973 - val_categorical_accuracy: 0.2973
+Epoch 7/25
+
+Epoch 00007: val_loss did not improve from 0.22537
+23516/23516 - 1692s - loss: 0.2197 - accuracy: 0.2975 - categorical_accuracy: 0.2975 - val_loss: 0.4890 - val_accuracy: 0.2910 - val_categorical_accuracy: 0.2910
+Time passed: 6.65 hours
+16:36:30
+ERROR: Could not save image thesis_experiments/2_random_initialization__bs_512/training_metrics2022-10-19-16:36:30/.png

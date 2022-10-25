@@ -30,13 +30,11 @@ start = time.time()
 i = sys.argv[1]
 with open('training_configurations.json', 'r') as fp:
     config = json.load(fp)[str(i)]
-config['resume_training'] = True
 print(config)
 # Save outputs to log file
 old_stdout = sys.stdout
-if not config['resume_training']:
-    os.mkdir(config['results_folder'])
-log_file = open(config['results_folder'] + '/log.txt', 'a')
+os.mkdir(config['results_folder'])
+log_file = open(config['results_folder'] + '/log.txt', 'w')
 sys.stdout = log_file
 # ======================================================
 
@@ -117,17 +115,13 @@ history_callback = tf.keras.callbacks.CSVLogger(f"{config['results_folder']}/his
                                                 append=True)
 early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                            min_delta=0,
-                                                           patience=5,
+                                                           patience=15,
                                                            verbose=0,
                                                            mode='auto',
                                                            restore_best_weights=True)
 # Save the weights using the `checkpoint_path` format
 model.save_weights(checkpoint_path.format(epoch=0))
 
-if config['resume_training'] == True:
-    latest = tf.train.latest_checkpoint(config['results_folder'] + '/checkpoints')
-    print(latest)
-    model.load_weights(latest)
 
 if config['class_weights'] == True:
     pass
@@ -191,5 +185,5 @@ _ = plt.subplot(1, 3, 3)
 _ = plt.plot(range(epochs), val_loss, label='Validation Loss', color='orange')
 _ = plt.legend(loc='upper right')
 _ = plt.title('Validation Loss')
-hf.save_img(config['results_folder'] + '/training_metrics' + datetime.today().strftime('%Y-%m-%d-%H:%M:%S') + '/.png')
+hf.save_img(config['results_folder'] + '/training_metrics.png')
 # ======================================================
