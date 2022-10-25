@@ -146,6 +146,17 @@ class Heuristics:
             self.G.nodes[category]["head"] = head
         return head
 
+    def get_embedding(self, category):
+        """
+        Get the BERT sentence-embedding of a category.
+        """
+        if "embedding" in self.G.nodes[category]:
+            return self.G.nodes[category]["embedding"]
+        else:
+            raise ValueError(
+                f"Embedding not found for category {category}. Make sure to run the script process_embedding.py first, and to load the graph{HEGRAPH_PATH}."
+            )
+
     def _head_matching(self, category, jump, multiple_words, debug=False):
         """
         Head matching heuristic: parent categories are queried if
