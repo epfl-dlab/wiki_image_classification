@@ -3,21 +3,19 @@ import os
 import pickle
 import time
 
-import networkx as nx
 import numpy as np
 import pandas as pd
-import stanza
 from tqdm import tqdm
 
 tqdm.pandas()
-
 import sys
+
+from bert_serving.client import BertClient
 
 sys.path.append("./")
 sys.path.append("../../../")
 
 from src.config import *
-from src.taxonomy.head.headParsing import find_head
 from src.taxonomy.heuristics import Heuristics
 from src.utilities import printt
 
@@ -36,14 +34,14 @@ if __name__ == "__main__":
     heuristics.load_graph(GRAPH_PATH)
     categories = list(heuristics.G.nodes)
 
-    n_chunks = 20
+    n_chunks = 100
     batch_size = 64
     categories_chunked = np.array_split(categories, n_chunks)
     starting_chunk = int(args.start) if args.start else 0
     end_chunk = int(args.end) if args.end else n_chunks
     printt("Processing from chunk", starting_chunk, "to chunk", end_chunk)
 
-    find_head("ready", use_gpu=bool(args.cuda))
+    bc = BertClient()
 
     for chunk in range(starting_chunk, end_chunk):
         printt(f"Processing chunk {chunk}")
@@ -51,15 +49,15 @@ if __name__ == "__main__":
             categories_chunked[chunk], len(categories_chunked[chunk]) // batch_size + 1
         )
 
-        heads = (
+        embeddings = (
             pd.Series(categories_batched)
-            .progress_apply(lambda cs: find_head(cs, use_gpu=bool(args.cuda)))
+            .progress_apply(lambda cs: bc.encode(cs.tolist()))
             .explode()
             .values
         )
 
         printt("Saving file...")
-        heads_dict = dict(zip(categories_chunked[chunk], heads))
+        embeddings_dict = dict(zip(categories_chunked[chunk], embeddings))
 
-        with open(HEADS_PATH + f"chunk{chunk}.pkl", "wb") as fp:
-            pickle.dump(heads_dict, fp)
+        with open(EMBEDDINGS_PATH + f"chunk{chunk}.pkl", "wb") as fp:
+            pickle.dump(embeddings_dict, fp)
