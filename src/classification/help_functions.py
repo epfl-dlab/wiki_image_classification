@@ -2,8 +2,9 @@ import numpy as np
 import pandas as pd
 import time
 import tensorflow as tf
+from tensorflow.keras.layers import Input
 from matplotlib import pyplot as plt
-from tensorflow.keras.applications import EfficientNetB0, EfficientNetB1, EfficientNetB2
+from tensorflow.keras.applications import EfficientNetB2
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -207,7 +208,7 @@ def imbalance_ratio(y_true, class_names):
     return per_class_ir, mean_imbalance_ratio
 
 
-def get_flow(nr_classes, image_dimension, df_file='', df=None):
+def get_flow(nr_classes, image_dimension, df_file='', batch_size=32, df=None):
     if df_file:
         df = pd.read_json(df_file, compression='bz2')
     top_classes = get_top_classes(nr_classes, df) 
@@ -222,6 +223,7 @@ def get_flow(nr_classes, image_dimension, df_file='', df=None):
             dataframe=df, 
             directory='/scratch/WIT_Dataset/images',
             color_mode='rgb',
+            batch_size=batch_size,
             x_col='url', 
             y_col='labels', 
             class_mode='categorical', 

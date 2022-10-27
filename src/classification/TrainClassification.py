@@ -33,8 +33,8 @@ with open('training_configurations.json', 'r') as fp:
 print(config)
 # Save outputs to log file
 old_stdout = sys.stdout
-os.mkdir(config['results_folder'])
-log_file = open(config['results_folder'] + '/log.txt', 'w')
+# os.mkdir(config['results_folder'])
+log_file = open(config['results_folder'] + '/log.txt', 'a')
 sys.stdout = log_file
 # ======================================================
 
@@ -46,6 +46,7 @@ hf.print_time(start)
 # ================= LOAD DATA ================
 start = time.time()
 train = hf.get_flow(df_file=config['data_folder'] + '/train_df.json.bz2',
+                    batch_size=config['batch_size'],
                     nr_classes=config['nr_classes'],
                     image_dimension=config['image_dimension'])
 
@@ -115,7 +116,7 @@ history_callback = tf.keras.callbacks.CSVLogger(f"{config['results_folder']}/his
                                                 append=True)
 early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
                                                            min_delta=0,
-                                                           patience=15,
+                                                           patience=100,
                                                            verbose=0,
                                                            mode='auto',
                                                            restore_best_weights=True)
