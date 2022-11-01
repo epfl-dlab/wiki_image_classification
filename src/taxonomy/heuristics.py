@@ -1,6 +1,7 @@
 import logging
 import pickle
 import sys
+from functools import partial
 from operator import itemgetter
 
 import networkx as nx
@@ -114,15 +115,11 @@ class Heuristics:
         for heuristic in heuristics_list:
             if heuristic == "head":
                 self.heuristics.append(
-                    lambda category, debug: self._head_matching(
-                        category, jump=False, multiple_words=False, debug=debug
-                    )
+                    partial(self._head_matching, jump=False, multiple_words=False)
                 )
             elif heuristic == "headJ":
                 self.heuristics.append(
-                    lambda category, debug: self._head_matching(
-                        category, jump=True, multiple_words=True, debug=debug
-                    )
+                    partial(self._head_matching, jump=True, multiple_words=True)
                 )
             elif heuristic == "depth":
                 self.heuristics.append(self._depth_check)
@@ -130,9 +127,7 @@ class Heuristics:
             elif heuristic.startswith("embedding"):
                 threshold = float("0." + heuristic.split("embedding")[1])
                 self.heuristics.append(
-                    lambda category, debug: self._embedding_similarity(
-                        category, threshold, debug
-                    )
+                    partial(self._embedding_similarity, threshold=threshold)
                 )
 
             else:
@@ -419,16 +414,10 @@ class Heuristics:
 
         ## Go through heuristics, stopping as soon as one returns a non-empty set
         for heuristic in self.heuristics:
-            next_queries = heuristic(category, debug)
+            next_queries = heuristic(category, debug=debug)
             for next_query in next_queries:
                 self.G_h.add_edge(category, next_query)
-                try:
-                    curr_node["labels"].update(self.query_category(next_query, debug))
-                except:
-                    logger.error(
-                        f"Error during {heuristic} in {category} while querying {next_query}"
-                    )
-                    raise
+                curr_node["labels"].update(self.query_category(next_query, debug=debug))
 
             if curr_node["labels"]:
                 break
