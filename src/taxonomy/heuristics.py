@@ -7,6 +7,7 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 from iteration_utilities import duplicates, unique_everseen
+from scipy import spatial
 
 sys.path.append("./")
 sys.path.append("../../")
@@ -106,34 +107,36 @@ class Heuristics:
         Set heuristics set.
         """
         self.heuristics_version = heuristics_version
-        if heuristics_version == "naive":
-            self.heuristics = [self._depth_check]
-        elif heuristics_version == "headJ+depth":
-            self.heuristics = [
-                lambda category, debug: self._head_matching(
-                    category, jump=True, multiple_words=True, debug=debug
-                ),
-                self._depth_check,
-            ]
-        elif heuristics_version == "head+depth":
-            self.heuristics = [
-                lambda category, debug: self._head_matching(
-                    category, jump=False, multiple_words=False, debug=debug
-                ),
-                self._depth_check,
-            ]
-        elif heuristics_version == "head+headJ+depth":
-            self.heuristics = [
-                lambda category, debug: self._head_matching(
-                    category, jump=False, multiple_words=False, debug=debug
-                ),
-                lambda category, debug: self._head_matching(
-                    category, jump=True, multiple_words=True, debug=debug
-                ),
-                self._depth_check,
-            ]
-        else:
-            raise ValueError("Invalid heuristics version")
+
+        heuristics_list = heuristics_version.split("+")
+        self.heuristics = []
+
+        for heuristic in heuristics_list:
+            if heuristic == "head":
+                self.heuristics.append(
+                    lambda category, debug: self._head_matching(
+                        category, jump=False, multiple_words=False, debug=debug
+                    )
+                )
+            elif heuristic == "headJ":
+                self.heuristics.append(
+                    lambda category, debug: self._head_matching(
+                        category, jump=True, multiple_words=True, debug=debug
+                    )
+                )
+            elif heuristic == "depth":
+                self.heuristics.append(self._depth_check)
+
+            elif heuristic.startswith("embedding"):
+                threshold = int(heuristic.split("embedding")[1]) / 10
+                self.heuristics.append(
+                    lambda category, debug: self._embedding_similarity(
+                        category, threshold, debug
+                    )
+                )
+
+            else:
+                raise ValueError(f"Invalid heuristic {heuristic}")
 
     def get_head(self, category):
         """
@@ -154,7 +157,7 @@ class Heuristics:
             return self.G.nodes[category]["embedding"]
         else:
             raise ValueError(
-                f"Embedding not found for category {category}. Make sure to run the script process_embedding.py first, and to load the graph{HEGRAPH_PATH}."
+                f"Embedding not found for category {category}. Make sure to run the script process_embedding.py first, and to load the graph {EH_GRAPH_PATH}."
             )
 
     def _head_matching(self, category, jump, multiple_words, debug=False):
@@ -277,6 +280,45 @@ class Heuristics:
                     "[" + category + "] Parent " + parent + " not connected."
                 )
                 continue
+        return next_queries
+
+    def _embedding_similarity(self, category, threshold, debug=False):
+        """
+        Embedding similarity heuristic: parent categories are queried if
+        the cosine similarity of their embedding wrt the one of the current category
+        is above a certain threshold.
+
+        Parameters
+        ----------
+        category : str
+            Category to be processed.
+        threshold : float
+            Threshold for the cosine similarity.
+        debug : bool
+            If true, print debug information.
+
+        Returns
+        ----------
+        list of str
+            List of next categories to query.
+        """
+        embedding = self.get_embedding(category)
+        next_queries = []
+        for parent in self.G.neighbors(category):
+            similarity = spatial.distance.cosine(embedding, self.get_embedding(parent))
+            if similarity < threshold:
+                next_queries.append(parent)
+            else:
+                debug and logger.debug(
+                    "["
+                    + category
+                    + "] Skipping parent "
+                    + parent
+                    + " (similarity "
+                    + str(similarity)
+                    + ")"
+                )
+
         return next_queries
 
     def query_category(self, category, debug=False):
