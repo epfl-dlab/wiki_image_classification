@@ -27,7 +27,7 @@ GRAPH_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-category-graph.pkl.bz2"
 # Graph enriched with heads
 HGRAPH_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads.pkl.bz2"
 # Graph enriched with heads and embeddings
-HEGRAPH_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads-wembeddings.pkl.bz2"
+EH_GRAPH_PATH = "/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wheads-wembeddings.pkl.bz2"
 ####################################
 
 ### Chunks paths
