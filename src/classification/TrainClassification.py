@@ -33,8 +33,8 @@ with open('training_configurations.json', 'r') as fp:
 print(config)
 # Save outputs to log file
 old_stdout = sys.stdout
-# os.mkdir(config['results_folder'])
-log_file = open(config['results_folder'] + '/log.txt', 'a')
+os.mkdir(config['results_folder'])
+log_file = open(config['results_folder'] + '/log.txt', 'w')
 sys.stdout = log_file
 # ======================================================
 

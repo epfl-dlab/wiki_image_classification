@@ -393,10 +393,10 @@ def plot_distribution(dataframe, filename, minimal_nr_images=0):
 
     if minimal_nr_images > 0:
         mask_kept = y_true.sum(axis=0)[sorted_indices] > minimal_nr_images
-        mask_removed = y_true.sum(axis=0)[sorted_indices] < minimal_nr_images
+        # mask_removed = y_true.sum(axis=0)[sorted_indices] < minimal_nr_images
         _ = plt.barh(np.array(range(y_true.shape[1]))[mask_kept], sorted_images_per_class[mask_kept], color='blue', alpha=0.6)
-        _ = plt.barh(np.array(range(y_true.shape[1]))[mask_removed], sorted_images_per_class[mask_removed], color='red', alpha=0.6)
-        _ = plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
+        # _ = plt.barh(np.array(range(y_true.shape[1]))[mask_removed], sorted_images_per_class[mask_removed], color='red', alpha=0.6)
+        # _ = plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
     else:
         _ = plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.6)
 
