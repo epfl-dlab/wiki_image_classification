@@ -6,22 +6,10 @@ import pandas as pd
 import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
-from datetime import datetime
 
-tf.config.threading.set_intra_op_parallelism_threads(10) 
-tf.config.threading.set_inter_op_parallelism_threads(10) 
-gpus = tf.config.list_physical_devices('GPU')
-if gpus:
-    # Restrict TensorFlow to only use the first GPU
-    try:
-        tf.config.set_visible_devices(gpus[0], 'GPU')
-        logical_gpus = tf.config.list_logical_devices('GPU')
-        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
-    except RuntimeError as e:
-        print(e)
+tf.setup_gpu(gpu_nr=1)
 
 start = time.time()
-
 
 # To run this: `python TrainClassification.py 0`
 

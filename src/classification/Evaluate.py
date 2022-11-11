@@ -8,7 +8,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from help_functions import create_model, get_top_classes
 
 # To run this: `python Evaluation.py 0`
-
+tf.setup_gpu(gpu_nr=1)
 
 # ================== HYPER-PARAMETERS ==================
 # config: nr_classes, labels, class_weights, basemodel, image_dimension, results_and_checkpoints_folder, data_folder

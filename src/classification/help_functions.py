@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 import time
 import tensorflow as tf
-from tensorflow.keras.layers import Input
 from matplotlib import pyplot as plt
 from tensorflow.keras.applications import EfficientNetB2
 from tensorflow.keras import layers
@@ -13,6 +12,24 @@ from sklearn.metrics import f1_score
 import seaborn as sns
 from matplotlib.colors import LogNorm
 from sklearn.metrics import classification_report
+
+
+def setup_gpu(gpu_nr):
+    """
+    Limit the code to run on the GPU with number gpu_nr (0 or 1 in iccluster039). 
+    """
+    tf.config.threading.set_intra_op_parallelism_threads(10) 
+    tf.config.threading.set_inter_op_parallelism_threads(10) 
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        # Restrict TensorFlow to only use the first GPU
+        try:
+            tf.config.set_visible_devices(gpus[gpu_nr], 'GPU')
+            logical_gpus = tf.config.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
+        except RuntimeError as e:
+            print(e)
+
 
 def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3, strat_size=0.4):
     """
@@ -189,23 +206,73 @@ def compute_class_weights(y_true):
     return dict(zip(class_labels, class_weights))
 
 
-def imbalance_ratio(y_true, class_names):
+
+def imbalance_ratio_per_label(y_true):
     """
-    Computes the unweighted imbalance ratio (IR) of the dataset.
-    IR = N_majority / N_minority
-    In our specific case, the majority class is 0s and the minority class is 1s.
+    Returns the IRLbl for all labels. Metric introduced in Addressing imbalance in multilabel classification
+    by Charte et al.. The greater the IRLbl, the greater the imbalance in the MLD.
+
+    The formula is: IR(label_i) = nr_samples(label_with_most_samples) / nr_samples(label_i)
+
+    Input: y_true - binary ground-truth array of format (nr_images x nr_classes)
+    Output: IRLbl for all classes.
+    """
+    return np.max(y_true.sum(axis=0)) / y_true.sum(axis=0)
+
+
+def mean_imbalance_ratio(y_true, class_names=[]):
+    """
+    Computes the mean imbalance ratio (meanIR) of the dataset as defined in Charte et al. 
+    2015.
     
     Input:  y_true - ground-truth array of format (nr_images x nr_classes)
-    Output: imbalance_ratio - integer
+    Output: imbalance_ratio
     """
-    sum_of_1s = y_true.sum(axis=0)
-    sum_of_0s = y_true.shape[0] - y_true.sum(axis=0)
-    per_class_ir = sum_of_0s / sum_of_1s
-    per_class_ir = dict(zip(list(class_names), per_class_ir))
-    mean_imbalance_ratio = np.array(list(per_class_ir.values())).mean()
-    # print(f'Per-class imbalance ratio (IR):\n{per_class_ir}\n')
-    print(f'Unweighted mean imbalance ratio: {np.round(mean_imbalance_ratio, 2)}')
-    return per_class_ir, mean_imbalance_ratio
+    IRLbl = imbalance_ratio_per_label(y_true)
+    if class_names:
+        print(dict(zip(list(class_names), np.round(IRLbl, 2))))
+    return np.sum(IRLbl) / len(IRLbl)
+
+
+def scumble(y_true):
+    """
+    SCUMBLE (Score of ConcUrrence among iMBalanced LabEls), metric introduced by Charte
+    et al. in "Dealing with Difficult Minority Labels in Imbalanced Mutilabel Data Sets".
+
+    The output is between 0 and 1; the smaller it is, the less concurrent the labels are,
+    the greater it is, the more concurrent are the labels.
+    
+    Output: 
+        SCUMBLE_D   - integer average SCUMBLE of all instances.
+        SCUMBLE_ins - SCUMBLE metric for every instance
+    """
+    IRLbl = imbalance_ratio_per_label(y_true)
+    L = y_true.shape[1] # nr_classes
+    prod = IRLbl * y_true
+    IRLbl_bar = prod.sum(axis=1) / np.count_nonzero(prod, axis=1) # IRLbl bar, in eq. (3)
+    SCUMBLE_ins = 1 - (1/IRLbl_bar) * np.power(np.prod(prod, where=[prod != 0], axis=1), 1/L)
+    SCUMBLE_D = SCUMBLE_ins.mean() # eq. (4)
+    return SCUMBLE_D, SCUMBLE_ins
+
+
+
+# def mean_imbalance_ratio(y_true, class_names):
+#     """
+#     Computes the unweighted imbalance ratio (IR) of the dataset.
+#     IR = N_majority / N_minority
+#     In our specific case, the majority class is 0s and the minority class is 1s.
+    
+#     Input:  y_true - ground-truth array of format (nr_images x nr_classes)
+#     Output: imbalance_ratio - integer
+#     """
+#     sum_of_1s = y_true.sum(axis=0)
+#     sum_of_0s = y_true.shape[0] - y_true.sum(axis=0)
+#     per_class_ir = sum_of_0s / sum_of_1s
+#     per_class_ir = dict(zip(list(class_names), per_class_ir))
+#     mean_imbalance_ratio = np.array(list(per_class_ir.values())).mean()
+#     # print(f'Per-class imbalance ratio (IR):\n{per_class_ir}\n')
+#     print(f'Unweighted mean imbalance ratio: {np.round(mean_imbalance_ratio, 2)}')
+#     return per_class_ir, mean_imbalance_ratio
 
 
 def get_flow(nr_classes, image_dimension, df_file='', batch_size=32, df=None):
