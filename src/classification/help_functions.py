@@ -327,7 +327,7 @@ def undersample(y_true, label_names, kept_pctg, image_path):
     y_true_copy = np.copy(y_true)
     indices_to_remove = []
 
-    BIG_NUMBER = 40_000
+    BIG_NUMBER = 10_000
     label_costs = BIG_NUMBER / y_true_copy.sum(axis=0)
     row_costs = row_costs = (label_costs * y_true_copy).sum(axis=1)
 
@@ -379,7 +379,7 @@ def oversample(y_true, label_names, add_pctg, image_path):
     y_true_copy = np.copy(y_true)
     indices_to_add = []
 
-    BIG_NUMBER = 40_000
+    BIG_NUMBER = 10_000
     label_rewards = BIG_NUMBER / y_true_copy.sum(axis=0)
     row_rewards = (label_rewards * y_true_copy).sum(axis=1)
 
