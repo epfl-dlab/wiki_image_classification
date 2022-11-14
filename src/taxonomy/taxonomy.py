@@ -111,6 +111,64 @@ class Taxonomy:
                 ]
             )
             self.taxonomy.add_children(engineering)
+        elif version == "v1.1":
+            self.taxonomy = Label("All", [])
+            culture = Label("Culture", ["Culture"])
+            culture.add_childrens(
+                [
+                    Label("History", ["History"]),
+                    Label("Art", ["Art"]),
+                    Label("Language", ["Language"]),
+                    Label("Music", ["Music"]),
+                    Label("Literature", ["Literature"]),
+
+                ]
+            )
+
+            society = Label("Society", ["Society"])
+            society.add_childrens(
+                [
+                    Label("People", ["People"]),
+                    Label("Sports", ["Sports"]),
+                    Label("Politics", ["Politics"]),
+                    Label("Flags", ["Flags"]),
+                    Label("Food", ["Food"]),
+                    Label("Belief", ["Belief"]),
+                    Label("Entertainment", ["Entertainment"]),
+                    # Label("Events", ["Events"]), # TODO: is "Events" even semantically useful?
+                ]
+            )
+
+
+            stem = Label("STEM", ["STEM"])
+            # First, add children that don't have any children themselves
+            stem.add_childrens(
+                [
+                    Label("Architecture", ["Architecture"]),
+                    Label("Biology", ["Biology"]),
+                    Label("Physics", ["Physics"]),
+                    Label("Chemistry", ["Chemistry"]),
+                    Label("Astronomy", ["Astronomy"]),
+                    Label("Mathematics", ["Architecture"]),
+                    Label("Earth sciences", ["Earth sciences"]),
+                    Label("Medicine", ["Architecture"]),
+                    Label("Technology", ["Technology"]),
+                    # Label("Engineering", ["Engineering"]), # TODO: remove this and keep "Technology"?
+                ]
+            )
+            # Now, create Nature, which is a child of STEM, add its children, and add it to STEM
+            nature = Label("Nature", ["Nature"])
+            nature.add_childrens(
+                [
+                    Label("Animals", ["Animalia"]),
+                    Label("Fossils", ["Fossils"]),
+                    Label("Plants", ["Plantae"]),
+                    Label("Weather", ["Weather"]),
+                    Label("Landscapes", ["Landscapes"]),
+                    # Label("Marine organisms", ["Marine organisms"]), # TODO: is this useful?
+                ]
+            )
+            stem.add_children(nature)
         else:
             raise ValueError("Invalid taxonomy version")
 
