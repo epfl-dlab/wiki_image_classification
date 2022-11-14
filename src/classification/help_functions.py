@@ -12,6 +12,7 @@ from sklearn.metrics import f1_score
 import seaborn as sns
 from matplotlib.colors import LogNorm
 from sklearn.metrics import classification_report
+from collections import Counter
 
 
 def setup_gpu(gpu_nr):
@@ -206,7 +207,6 @@ def compute_class_weights(y_true):
     return dict(zip(class_labels, class_weights))
 
 
-
 def imbalance_ratio_per_label(y_true):
     """
     Returns the IRLbl for all labels. Metric introduced in Addressing imbalance in multilabel classification
@@ -230,8 +230,9 @@ def mean_imbalance_ratio(y_true, class_names=[]):
     """
     IRLbl = imbalance_ratio_per_label(y_true)
     if class_names:
-        print(dict(zip(list(class_names), np.round(IRLbl, 2))))
-    return np.sum(IRLbl) / len(IRLbl)
+        ir_dict = dict(zip(list(class_names), np.round(IRLbl, 2)))
+        # print(ir_dict)
+    return np.sum(IRLbl) / len(IRLbl), ir_dict
 
 
 def scumble(y_true):
@@ -255,25 +256,14 @@ def scumble(y_true):
     return SCUMBLE_D, SCUMBLE_ins
 
 
-
-# def mean_imbalance_ratio(y_true, class_names):
-#     """
-#     Computes the unweighted imbalance ratio (IR) of the dataset.
-#     IR = N_majority / N_minority
-#     In our specific case, the majority class is 0s and the minority class is 1s.
-    
-#     Input:  y_true - ground-truth array of format (nr_images x nr_classes)
-#     Output: imbalance_ratio - integer
-#     """
-#     sum_of_1s = y_true.sum(axis=0)
-#     sum_of_0s = y_true.shape[0] - y_true.sum(axis=0)
-#     per_class_ir = sum_of_0s / sum_of_1s
-#     per_class_ir = dict(zip(list(class_names), per_class_ir))
-#     mean_imbalance_ratio = np.array(list(per_class_ir.values())).mean()
-#     # print(f'Per-class imbalance ratio (IR):\n{per_class_ir}\n')
-#     print(f'Unweighted mean imbalance ratio: {np.round(mean_imbalance_ratio, 2)}')
-#     return per_class_ir, mean_imbalance_ratio
-
+def clean_df_and_keep_top_classes(df_file, nr_top_classes):
+    df = pd.read_json(df_file, compression='bz2')
+    top_classes = get_top_classes(nr_top_classes, df)
+    ids_x_labels = df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
+    df_x_labels = df[ids_x_labels]
+    df_x_labels['labels'] = df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
+    df = df_x_labels.copy()
+    return df
 
 def get_flow(nr_classes, image_dimension, df_file='', batch_size=32, df=None):
     if df_file:
@@ -317,7 +307,8 @@ def undersample(y_true, label_names, kept_pctg, image_path):
     """
     assert(kept_pctg > 0 and kept_pctg < 1)
 
-    ir_original = imbalance_ratio(y_true=y_true, class_names=label_names)
+    mean_ir_original, dict_ir_original = mean_imbalance_ratio(y_true=y_true, class_names=label_names)
+
 
     def remove_row(label_costs, row_costs):
         """
@@ -342,7 +333,7 @@ def undersample(y_true, label_names, kept_pctg, image_path):
 
 
     while y_true_copy.shape[0] > original_nr_rows * kept_pctg:
-        (row_idx, label_costs, row_costs) = remove_row(y_true_copy, label_costs, row_costs)
+        (row_idx, label_costs, row_costs) = remove_row(label_costs, row_costs)
         # All indices of rows in y_true that match with the removed row.
         matching_indices_to_remove = np.where((y_true == y_true_copy[row_idx]).all(axis=1))[0]
         y_true_copy = np.delete(y_true_copy, row_idx, axis=0)
@@ -352,20 +343,70 @@ def undersample(y_true, label_names, kept_pctg, image_path):
             indices_to_remove.append(idx_to_remove)
         except:
             print('Failed to get index to remove')
-    ir_heuristics = imbalance_ratio(y_true=y_true_copy, class_names=label_names)
+
+    mean_ir_heuristics, dict_ir_heuristics = mean_imbalance_ratio(y_true=y_true_copy, class_names=label_names)
 
     plt.figure(figsize=(12, 6))
-    x_axis = np.arange(len(ir_original[0].keys()))
-    plt.bar(x_axis-0.1, ir_original[0].values(), width=0.2, label=f'Original; macro-avg: {np.round(ir_original[1], 1)}')
-    plt.bar(x_axis+0.1, ir_heuristics[0].values(), width=0.2, label=f'Undersampled, macro-avg: {np.round(ir_heuristics[1], 2)}')
+    x_axis = np.arange(len(dict_ir_original.keys()))
+    plt.bar(x_axis-0.1, dict_ir_original.values(), width=0.2, label=f'Original; MeanIR: {np.round(mean_ir_original, 1)}')
+    plt.bar(x_axis+0.1, dict_ir_heuristics.values(), width=0.2, label=f'Undersampled, MeanIR: {np.round(mean_ir_heuristics, 2)}')
     plt.legend(fontsize=12)
-    _ = plt.xticks(x_axis, ir_original[0].keys(), rotation=75, fontsize=14)
+    _ = plt.xticks(x_axis, dict_ir_heuristics.keys(), rotation=75, fontsize=14)
     plt.title('Mean imbalance ratio per label')
     plt.ylabel('Imbalance ratio')
     plt.xlabel('Label')
-    save_img(image_path, '/imbalance_ratios.png')
+    save_img(image_path + '/undersampled_imbalance_ratios.png')
 
     return indices_to_remove
+
+
+
+def oversample(y_true, label_names, add_pctg, image_path):
+    """
+    Lets each image have a reward (reward := sum of label rewards in the image, where 
+    label_reward := BIG_NUMBER / label_samples). An image will have high reward when 
+    it has rare labels, and small rewards when it has frequent labels.
+
+    Output:
+        - indices_to_add: a list of the indices to be duplicated and the amount of times 
+    """
+
+    add_pctg = 0.2
+    mean_ir_original, dict_ir_original = mean_imbalance_ratio(y_true=y_true, class_names=label_names)
+
+    original_nr_rows = y_true.shape[0]
+    nr_labels = y_true.shape[1]
+    y_true_copy = np.copy(y_true)
+    indices_to_add = []
+
+    BIG_NUMBER = 40_000
+    label_rewards = BIG_NUMBER / y_true_copy.sum(axis=0)
+    row_rewards = (label_rewards * y_true_copy).sum(axis=1)
+
+    while y_true_copy.shape[0] < original_nr_rows * (1 + add_pctg):
+        best_row = y_true_copy[np.argmax(row_rewards), :].reshape(1, nr_labels)
+        y_true_copy = np.append(y_true_copy, best_row, axis=0)
+        label_rewards = BIG_NUMBER / y_true_copy.sum(axis=0)
+        row_rewards = (label_rewards * y_true_copy).sum(axis=1)
+        idx_to_add = np.where((y_true == best_row).all(axis=1))[0]
+        indices_to_add.append(idx_to_add)
+
+    mean_ir_heuristics, dict_ir_heuristics = mean_imbalance_ratio(y_true=y_true_copy, class_names=label_names)
+
+    plt.figure(figsize=(12, 6))
+    x_axis = np.arange(len(dict_ir_original.keys()))
+    plt.bar(x_axis-0.1, dict_ir_original.values(), width=0.2, label=f'Original; MeanIR: {np.round(mean_ir_original, 1)}')
+    plt.bar(x_axis+0.1, dict_ir_heuristics.values(), width=0.2, label=f'Oersampled, MeanIR: {np.round(mean_ir_heuristics, 2)}')
+    plt.legend(fontsize=12)
+    _ = plt.xticks(x_axis, dict_ir_heuristics.keys(), rotation=75, fontsize=14)
+    plt.title('Mean imbalance ratio per label')
+    plt.ylabel('Imbalance ratio')
+    plt.xlabel('Label')
+    save_img(image_path + '/oversampled_imbalance_ratios.png')
+
+    indices_to_add_hashable = [tuple(el) for el in indices_to_add]
+    return dict(Counter(indices_to_add_hashable))
+
 
 
 def plot_confusion_matrices(confusion_matrix, label_names, data_folder):

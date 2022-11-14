@@ -7,7 +7,7 @@ import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
 
-tf.setup_gpu(gpu_nr=1)
+hf.setup_gpu(gpu_nr=1)
 
 start = time.time()
 
@@ -41,7 +41,6 @@ train = hf.get_flow(df_file=config['data_folder'] + '/train_df.json.bz2',
 print('LOG: finished getting the first flow')
 hf.print_time(start)
 
-# If undersample:
 if config['undersample']:
     start = time.time()
     y_true = hf.get_y_true(shape=(train.samples, len(train.class_indices)), classes=train.classes)
@@ -52,13 +51,29 @@ if config['undersample']:
     print('LOG: found rows to remove to balance')
     hf.print_time(start)
     start = time.time()
-    train_df = pd.read_json(config['data_folder'] + '/train_df.json.bz2', compression='bz2')
-    balanced_df = train_df.reset_index().drop(index=indices_to_remove)
+    train_df = hf.clean_df_and_keep_top_classes(config['data_folder'] + '/train_df.json.bz2', config['nr_classes']) # work around bug found late; the indices that we found in undersampling did not correspond to the ones in df, as the rows in the dataframe with empty labels had been removed
+    balanced_df = train_df.reset_index().drop(index=indices_to_remove) 
     train = hf.get_flow(df=balanced_df,
                         nr_classes=config['nr_classes'],
                         image_dimension=config['image_dimension'])
-    print('LOG: got the new balanced flow')
+    print('LOG: got the new undersampled flow')
     hf.print_time(start)
+elif config['oversample']:
+    hf.print_time(start)
+    y_true = hf.get_y_true(shape=(train.samples, len(train.class_indices)), classes=train.classes)
+    duplicate_indices_dict = hf.oversample(y_true, list(train.class_indices.keys()), 0.2, config['results_folder'])
+    train_df = hf.clean_df_and_keep_top_classes(config['data_folder'] + '/train_df.json.bz2', config['nr_classes']).reset_index()
+    for index_to_duplicate in duplicate_indices_dict:
+        times_to_duplicate = duplicate_indices_dict[index_to_duplicate]
+        train_df = train_df.append([train_df.loc[index_to_duplicate]] * times_to_duplicate, ignore_index=False)
+    train_df = train_df.reset_index() # not necessary but why not
+    train = hf.get_flow(df=train_df,
+                        nr_classes=config['nr_classes'],
+                        image_dimension=config['image_dimension'])
+    print('LOG: got the new oversampled flow')
+    hf.print_time(start)    
+
+
     
 start = time.time()
 
