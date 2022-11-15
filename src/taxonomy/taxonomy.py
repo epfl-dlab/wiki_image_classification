@@ -114,6 +114,7 @@ class Taxonomy:
         elif version == "v1.1":
             self.taxonomy = Label("All", [])
             culture = Label("Culture", ["Culture"])
+            self.taxonomy.add_children(culture)
             culture.add_childrens(
                 [
                     Label("History", ["History"]),
@@ -126,6 +127,7 @@ class Taxonomy:
             )
 
             society = Label("Society", ["Society"])
+            self.taxonomy.add_children(society)
             society.add_childrens(
                 [
                     Label("People", ["People"]),
@@ -141,6 +143,7 @@ class Taxonomy:
 
 
             stem = Label("STEM", ["STEM"])
+            self.taxonomy.add_children(stem)
             # First, add children that don't have any children themselves
             stem.add_childrens(
                 [

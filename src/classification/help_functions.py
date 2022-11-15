@@ -268,12 +268,13 @@ def clean_df_and_keep_top_classes(df_file, nr_top_classes):
 def get_flow(nr_classes, image_dimension, df_file='', batch_size=32, df=None):
     if df_file:
         df = pd.read_json(df_file, compression='bz2')
-    top_classes = get_top_classes(nr_classes, df) 
-    # Only keep rows which have either of the top classes
-    ids_x_labels = df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
-    df_x_labels = df[ids_x_labels]
-    df_x_labels['labels'] = df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
-    df = df_x_labels.copy()
+    if not nr_classes == 'all': 
+        # Only keep rows which have either of the top classes
+        top_classes = get_top_classes(nr_classes, df) 
+        ids_x_labels = df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
+        df_x_labels = df[ids_x_labels]
+        df_x_labels['labels'] = df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
+        df = df_x_labels.copy()
 
     datagen = ImageDataGenerator() 
     flow = datagen.flow_from_dataframe(
