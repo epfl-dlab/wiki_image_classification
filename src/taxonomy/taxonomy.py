@@ -111,6 +111,7 @@ class Taxonomy:
                 ]
             )
             self.taxonomy.add_child(engineering)
+
         elif version == "v1.1":
             self.taxonomy = Label("All", [])
             culture = Label("Culture", ["Culture"])
@@ -170,6 +171,77 @@ class Taxonomy:
             )
             stem.add_child(nature)
             self.taxonomy.add_child(stem)
+
+        elif version == "v1.2":
+            self.taxonomy = Label("All", [])
+
+            stem = Label("STEM", ["STEM"])
+            stem.add_children(
+                [
+                    Label("Biology", ["Biology"]),
+                    Label("Physics", ["Physics"]),
+                    Label("Chemistry", ["Chemistry"]),
+                    Label("Astronomy", ["Astronomy"]),
+                    Label("Mathematics", ["Architecture"]),
+                    Label("Earth sciences", ["Earth sciences"]),
+                    Label("Medicine", ["Architecture"]),
+                    Label("Technology", ["Technology"]),
+                    Label(
+                        "Engineering", ["Engineering"]
+                    ),  # TODO: remove this and keep "Technology"?
+                ]
+            )
+
+            nature = Label("Nature", ["Nature"])
+            nature.add_children(
+                [
+                    Label("Animals", ["Animalia"]),
+                    Label("Fossils", ["Fossils"]),
+                    Label("Plants", ["Plantae"]),
+                    Label("Weather and climate", ["Weather and climate"]),
+                    # Label("Marine organisms", ["Marine organisms"]), # TODO: is this useful?
+                ]
+            )
+            stem.add_child(nature)
+            self.taxonomy.add_child(stem)
+
+            places = Label("Places", ["Places"])
+            places.add_children(
+                [
+                    Label("Architecture", ["Architecture"]),
+                    Label("Landscapes", ["Landscapes"]),
+                    Label("Maps", ["Maps"]),
+                ]
+            )
+            self.taxonomy.add_child(places)
+
+            society = Label("Society", ["Society"])
+            society.add_children(
+                [
+                    Label("People", ["People"]),
+                    Label("Sports", ["Sports"]),
+                    Label("Politics", ["Politics"]),
+                    Label("Events", ["Events"]),
+                    Label("Entertainment", ["Entertainment"]),
+                    Label("Flags", ["Flags"]),
+                ]
+            )
+            self.taxonomy.add_child(society)
+
+            culture = Label("Culture", ["Culture"])
+            culture.add_children(
+                [
+                    Label("History", ["History"]),
+                    Label("Art", ["Art"]),
+                    Label("Language", ["Language"]),
+                    Label("Music", ["Music"]),
+                    Label("Literature", ["Literature"]),
+                    Label("Food", ["Food"]),
+                    Label("Belief", ["Belief"]),
+                ]
+            )
+            self.taxonomy.add_child(culture)
+
         else:
             raise ValueError("Invalid taxonomy version")
 
