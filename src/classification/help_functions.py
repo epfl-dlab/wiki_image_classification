@@ -256,15 +256,6 @@ def scumble(y_true):
     return SCUMBLE_D, SCUMBLE_ins
 
 
-def clean_df_and_keep_top_classes(df_file, nr_top_classes):
-    df = pd.read_json(df_file, compression='bz2')
-    top_classes = get_top_classes(nr_top_classes, df)
-    ids_x_labels = df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
-    df_x_labels = df[ids_x_labels]
-    df_x_labels['labels'] = df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
-    df = df_x_labels.copy()
-    return df
-
 def get_flow(nr_classes, image_dimension, df_file='', batch_size=32, df=None):
     if df_file:
         df = pd.read_json(df_file, compression='bz2')
@@ -288,7 +279,7 @@ def get_flow(nr_classes, image_dimension, df_file='', batch_size=32, df=None):
             target_size=(image_dimension, image_dimension),
             shuffle=False)
     
-    return flow
+    return flow, df
 
 
 def undersample(y_true, label_names, kept_pctg, image_path):
@@ -361,7 +352,6 @@ def undersample(y_true, label_names, kept_pctg, image_path):
     return indices_to_remove
 
 
-
 def oversample(y_true, label_names, add_pctg, image_path):
     """
     Lets each image have a reward (reward := sum of label rewards in the image, where 
@@ -369,7 +359,7 @@ def oversample(y_true, label_names, add_pctg, image_path):
     it has rare labels, and small rewards when it has frequent labels.
 
     Output:
-        - indices_to_add: a list of the indices to be duplicated and the amount of times 
+        - indices_to_add: a dict of the indices to be duplicated and the amount of times 
     """
 
     add_pctg = 0.2
@@ -397,7 +387,7 @@ def oversample(y_true, label_names, add_pctg, image_path):
     plt.figure(figsize=(12, 6))
     x_axis = np.arange(len(dict_ir_original.keys()))
     plt.bar(x_axis-0.1, dict_ir_original.values(), width=0.2, label=f'Original; MeanIR: {np.round(mean_ir_original, 1)}')
-    plt.bar(x_axis+0.1, dict_ir_heuristics.values(), width=0.2, label=f'Oersampled, MeanIR: {np.round(mean_ir_heuristics, 2)}')
+    plt.bar(x_axis+0.1, dict_ir_heuristics.values(), width=0.2, label=f'Oversampled, MeanIR: {np.round(mean_ir_heuristics, 2)}')
     plt.legend(fontsize=12)
     _ = plt.xticks(x_axis, dict_ir_heuristics.keys(), rotation=75, fontsize=14)
     plt.title('Mean imbalance ratio per label')
