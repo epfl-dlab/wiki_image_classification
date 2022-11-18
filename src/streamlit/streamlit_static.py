@@ -70,7 +70,8 @@ def showFile():
     #     unsafe_allow_html=True,
     # )
     # index_map = {None: 0, 0: 2, 1: 1}
-    # for label, value in file.labels.items():
+
+    # for label, value in file.labels_true.items():
     #     st.radio(
     #         label,
     #         ("-", "Correct", "Wrong"),
@@ -84,6 +85,23 @@ def showFile():
     log_dump = file.log.replace("\n", "  \n ")
     with st.expander("Show log"):
         st.write(log_dump)
+
+
+# def create_buttons(file, label):
+#     index_map = {None: 0, 0: 2, 1: 1}
+
+#     st.radio(
+#            label.name,
+#            ("-", "Correct", "Wrong"),
+#            key=file.title + label.name,
+#            index=index_map[file.labels_true[label.name]],
+#            on_change=evaluate_label,
+#            args=(file, label.name),
+#        )
+
+#     for child in label.children:
+#         # indent
+#         create_buttons(file, child)
 
 
 def evaluate_labels(file):

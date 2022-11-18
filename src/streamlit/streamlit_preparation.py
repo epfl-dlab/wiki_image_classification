@@ -19,19 +19,6 @@ logger = init_logger(STREAMLIT_PATH + STREAMLIT_LOG_FILE, logger_name="taxonomy"
 logfile = open(STREAMLIT_PATH + STREAMLIT_LOG_FILE, "w+")
 
 
-def initialize():
-    printt("Reading files...")
-    files = pd.read_parquet(FILES_PATH)
-
-    heuristics = Heuristics()
-    printt("Loading graph...")
-    heuristics.load_graph(HGRAPH_PATH)
-    printt("Loading mapping...")
-    heuristics.set_taxonomy(version=TAXONOMY_VERSION)
-
-    return files, heuristics
-
-
 def iterativeSampling(
     files,
     images_per_class=50,
@@ -122,10 +109,10 @@ def iterativeSampling(
         )
         print(f"Number of images: {len(balanced_files)}")
         print(
-            f"Ratio of images with more than one label (original): {(files[encoder.classes_].sum(axis=1) > 1).sum() / len(files)}"
+            f"Ratio of images with more than one label (original): {(files.labels_pred.apply(len) > 1).sum() / len(files)}"
         )
         print(
-            f"Ratio of images with more than one label (balanced): {(balanced_files[encoder.classes_].sum(axis=1) > 1).sum() / len(balanced_files)}"
+            f"Ratio of images with more than one label (balanced): {(balanced_files.labels_pred.apply(len) > 1).sum() / len(balanced_files)}"
         )
 
     return balanced_files
@@ -139,11 +126,21 @@ if __name__ == "__main__":
     args = parser.parse_args()
     n = int(args.n) if args.n else 1000
     seed = int(args.seed) if args.seed else 42
-    how = args.how if args.how else "heuristics_v0"
+    how = args.how if args.how else HEURISTICS_VERSION
 
-    files, heuristics = initialize()
+    printt("Reading files...")
+    files = pd.read_parquet(FILES_PATH)
+
+    heuristics = Heuristics()
+    printt("Loading graph...")
+    heuristics.load_graph(EH_GRAPH_PATH)
+    printt("Loading mapping...")
+    heuristics.set_taxonomy(taxonomy_version=TAXONOMY_VERSION)
+    heuristics.set_heuristics(heuristics_version=how)
+    printt("Loading done.")
+
     files["labels_pred"] = files.progress_apply(
-        lambda x: heuristics.queryFile(x, how=how, debug=False, logfile=logfile),
+        lambda x: heuristics.queryFile(x, debug=False, logfile=logfile),
         axis=1,
         result_type="expand",
     )[0]
@@ -154,14 +151,17 @@ if __name__ == "__main__":
         images_per_class=50,
         min_images=500,
         mean_noise=0.5,
-        var_noise=1,
+        var_noise=0.5,
         random_state=42,
         verbose=1,
     )
 
-    files_sample["labels_true"] = [[] for _ in range(len(files_sample))]
+    files_sample["labels_true"] = [
+        {label: None for label in heuristics.taxonomy.get_all_labels()}
+        for _ in range(len(files_sample))
+    ]
     files_sample[["labels_pred", "log"]] = files_sample.progress_apply(
-        lambda x: heuristics.queryFile(x, how=how, debug=True, logfile=logfile),
+        lambda x: heuristics.queryFile(x, debug=True, logfile=logfile),
         axis=1,
         result_type="expand",
     )
