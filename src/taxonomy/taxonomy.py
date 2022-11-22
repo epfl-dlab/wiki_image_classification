@@ -182,9 +182,9 @@ class Taxonomy:
                     Label("Physics", ["Physics"]),
                     Label("Chemistry", ["Chemistry"]),
                     Label("Astronomy", ["Astronomy"]),
-                    Label("Mathematics", ["Architecture"]),
+                    Label("Mathematics", ["Mathematics"]),
                     Label("Earth sciences", ["Earth sciences"]),
-                    Label("Medicine", ["Architecture"]),
+                    Label("Medicine", ["Medicine"]),
                     Label("Technology", ["Technology"]),
                     Label(
                         "Engineering", ["Engineering"]

@@ -86,6 +86,11 @@ class Heuristics:
         )
         self.visited_nodes = 0
         self.G_h = nx.DiGraph()
+        for label, categories in self.mapping.items():
+            for category in categories:
+                self.visited_nodes += 1
+                self.G.nodes[category]["visited"] = True
+                self.G.nodes[category]["labels"].add(label)
 
     def set_taxonomy(self, taxonomy_version):
         """
@@ -97,11 +102,6 @@ class Heuristics:
         self.mapping = self.taxonomy.get_flat_mapping()
 
         self.reset_labels()
-        for label, categories in self.mapping.items():
-            for category in categories:
-                self.visited_nodes += 1
-                self.G.nodes[category]["visited"] = True
-                self.G.nodes[category]["labels"].add(label)
 
     def set_heuristics(self, heuristics_version):
         """
@@ -217,12 +217,17 @@ class Heuristics:
         # Hop to common_heads if they belong to parents
         next_queries = []
         if jump:
+            # special exception for jumping
+            no_jump = ["Genera"]
             for (common_head, parent) in common_heads:
                 if (
                     self.G.nodes.get(common_head, {}).get("depth", 1e9)
                     < self.G.nodes[category]["depth"]
                 ):
-                    next_queries.append(common_head)
+                    if common_head not in no_jump:
+                        next_queries.append(common_head)
+                    else:
+                        next_queries.append(parent)
                 else:
                     debug and logger.debug(
                         "[HM] Common head "
