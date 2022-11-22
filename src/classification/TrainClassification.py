@@ -124,10 +124,8 @@ early_stopping_callback = tf.keras.callbacks.EarlyStopping(monitor='val_loss',
 # Save the weights using the `checkpoint_path` format
 model.save_weights(checkpoint_path.format(epoch=0))
 
-
 if config['class_weights'] == True:
     class_weights = hf.compute_class_weights(y_true=hf.get_y_true(train))
-    
     history = model.fit(
     train,
     verbose=2,
@@ -142,10 +140,10 @@ else:
     validation_data=val_stop,
     epochs=config['epochs'],
     callbacks=[cp_callback, history_callback, early_stopping_callback])
+hf.print_time(start)
 # ======================================================
 
 
-hf.print_time(start)
 
 
 # ================= PLOT TRAINING METRICS ==============

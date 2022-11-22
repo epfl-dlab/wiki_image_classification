@@ -167,10 +167,12 @@ def create_model(n_labels, image_dimension, model_name, number_trainable_layers,
                     loss='binary_crossentropy',
                     metrics=['accuracy', 'categorical_accuracy'])
     # Binary Focal Cross Entropy
-    elif loss == 'binary_focal_crossentropy':
+    elif loss == 'focal_loss':
         model.compile(optimizer=tf.keras.optimizers.Adam(),
                     loss=BinaryFocalLoss(gamma=2, from_logits=False),
                     metrics=['accuracy', 'categorical_accuracy'])
+    else:
+        raise ValueError('This loss function is not supported!')
 
     model.summary()
     return model
