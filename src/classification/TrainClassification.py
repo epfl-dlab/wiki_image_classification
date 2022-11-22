@@ -66,7 +66,7 @@ elif config['oversample']:
     start = time.time()
     for index_to_duplicate in duplicate_indices_dict:
         times_to_duplicate = duplicate_indices_dict[index_to_duplicate]
-        train_df = train_df.append([train_df.iloc[index_to_duplicate]] * times_to_duplicate, ignore_index=False)
+        train_df = pd.concat([train_df, pd.DataFrame([train_df.iloc[index_to_duplicate]] * times_to_duplicate)], axis=0, ignore_index=True)
     print('LOG: or here')
     train_df = train_df.reset_index() # not necessary but why not
     print('LOG: starting to get new flow... does it fail here?')

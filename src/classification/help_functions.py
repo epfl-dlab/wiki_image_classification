@@ -361,8 +361,6 @@ def oversample(y_true, label_names, add_pctg, image_path):
     Output:
         - indices_to_add: a dict of the indices to be duplicated and the amount of times 
     """
-
-    add_pctg = 0.2
     mean_ir_original, dict_ir_original = mean_imbalance_ratio(y_true=y_true, class_names=label_names)
 
     original_nr_rows = y_true.shape[0]
@@ -374,13 +372,18 @@ def oversample(y_true, label_names, add_pctg, image_path):
     label_rewards = BIG_NUMBER / y_true_copy.sum(axis=0)
     row_rewards = (label_rewards * y_true_copy).sum(axis=1)
 
+    reps = 20
     while y_true_copy.shape[0] < original_nr_rows * (1 + add_pctg):
+
         best_row = y_true_copy[np.argmax(row_rewards), :].reshape(1, nr_labels)
-        y_true_copy = np.append(y_true_copy, best_row, axis=0)
+        y_true_copy = np.append(y_true_copy, np.tile(best_row, (reps, 1)), axis=0)
+
         label_rewards = BIG_NUMBER / y_true_copy.sum(axis=0)
         row_rewards = (label_rewards * y_true_copy).sum(axis=1)
+
         idx_to_add = np.where((y_true == best_row).all(axis=1))[0]
-        indices_to_add.append(idx_to_add)
+        for _ in range(reps):
+            indices_to_add.append(idx_to_add)
 
     mean_ir_heuristics, dict_ir_heuristics = mean_imbalance_ratio(y_true=y_true_copy, class_names=label_names)
 
@@ -395,7 +398,7 @@ def oversample(y_true, label_names, add_pctg, image_path):
     plt.xlabel('Label')
     save_img(image_path + '/oversampled_imbalance_ratios.png')
 
-    indices_to_add_hashable = [tuple(el) for el in indices_to_add]
+    indices_to_add_hashable = [tuple([el]) for el in indices_to_add]
     return dict(Counter(indices_to_add_hashable))
 
 
