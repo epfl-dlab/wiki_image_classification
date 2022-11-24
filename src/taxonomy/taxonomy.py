@@ -256,8 +256,95 @@ class Taxonomy:
             )
             self.taxonomy.add_child(culture)
 
+        elif version == "v1.3":
+            self.taxonomy = Label("All", [], self.hierarchical)
+
+            stem = Label("STEM", ["STEM"], self.hierarchical)
+
+            natural_sciences = Label(
+                "Natural sciences", ["Natural sciences"], self.hierarchical
+            )
+            natural_sciences.add_children(
+                [
+                    Label("Mahematics", ["Mahematics"], self.hierarchical),
+                    Label("Chemistry", ["Chemistry"], self.hierarchical),
+                    Label("Astronomy", ["Astronomy"], self.hierarchical),
+                ]
+            )
+            stem.add_child(natural_sciences)
+
+            stem.add_children(
+                [
+                    Label("Medicine", ["Medicine"], self.hierarchical),
+                    Label(
+                        "Technology & engineering",
+                        ["Technology", "Engineering"],
+                        self.hierarchical,
+                    ),
+                ]
+            )
+
+            nature = Label("Nature", ["Nature"], self.hierarchical)
+            nature.add_children(
+                [
+                    Label("Plants", ["Plantae"], self.hierarchical),
+                    Label("Animals", ["Animalia"], self.hierarchical),
+                    Label("Fossils", ["Fossils"], self.hierarchical),
+                    Label(
+                        "Weather and climate",
+                        ["Weather and climate"],
+                        self.hierarchical,
+                    ),
+                ]
+            )
+            stem.add_child(nature)
+            self.taxonomy.add_child(stem)
+
+            places = Label("Places", ["Places"], self.hierarchical)
+            places.add_children(
+                [
+                    Label("Architecture", ["Architecture"], self.hierarchical),
+                    Label("Landscapes", ["Landscapes"], self.hierarchical),
+                    Label("Maps", ["Maps"], self.hierarchical),
+                ]
+            )
+            self.taxonomy.add_child(places)
+
+            society = Label("Society", ["Society"], self.hierarchical)
+            society.add_children(
+                [
+                    Label("People", ["People"], self.hierarchical),
+                    Label("Sports", ["Sports"], self.hierarchical),
+                    Label("Politics", ["Politics"], self.hierarchical),
+                    Label("Events", ["Events"], self.hierarchical),
+                    Label("Games", ["Games"], self.hierarchical),
+                    Label("Flags", ["Flags"], self.hierarchical),
+                    Label("Transportation", ["Transport"], self.hierarchical),
+                ]
+            )
+            self.taxonomy.add_child(society)
+
+            culture = Label("Culture", ["Culture"], self.hierarchical)
+            culture.add_children(
+                [
+                    Label("History", ["History"], self.hierarchical),
+                    Label("Art", ["Art"], self.hierarchical),
+                    Label("Music", ["Music"], self.hierarchical),
+                    Label(
+                        "Literature & language",
+                        ["Literature", "Language"],
+                        self.hierarchical,
+                    ),
+                    Label("Food", ["Food"], self.hierarchical),
+                    Label("Belief", ["Belief"], self.hierarchical),
+                ]
+            )
+            self.taxonomy.add_child(culture)
+
         else:
             raise ValueError("Invalid taxonomy version")
+
+        return self.taxonomy
 
     def get_flat_mapping(self):
         mapping = {}

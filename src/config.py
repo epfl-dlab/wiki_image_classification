@@ -43,7 +43,7 @@ STREAMLIT_LOG_FILE = "streamlit_preparation.log"
 
 
 ### Versions (!!!)
-TAXONOMY_VERSION = "v1.2"
+TAXONOMY_VERSION = "v1.3"
 HEURISTICS_VERSION = "headJ+depth"
 ####################################
 
