@@ -4,6 +4,7 @@ import time
 
 import numpy as np
 import pandas as pd
+import streamlit_nested_layout
 from streamlit_server_state import server_state, server_state_lock
 
 import streamlit as st
@@ -37,21 +38,21 @@ def showFile():
     )
 
     # Special value for NONE (no label), to distinguish between images yet to annotate and real no-label images.
-    st.multiselect(
-        "Labels (true)",
-        options=["NONE"] + Taxonomy(TAXONOMY_VERSION).get_all_labels(),
-        default=file.labels_true,
-        key=file.title + "true",
-        on_change=evaluate_labels,
-        args=(file,),
-    )
+    # st.multiselect(
+    #     "Labels (true)",
+    #     options=["NONE"] + Taxonomy(TAXONOMY_VERSION).get_all_labels(),
+    #     default=[label for label, v in file.labels_true.items() if v],
+    #     key=file.title + "true",
+    #     on_change=evaluate_labels,
+    #     args=(file,),
+    # )
 
     if st.session_state["show_predictions"]:
         st.markdown(
             "Labels (predictions): ["
             + ", ".join(
                 [
-                    f'<span style="color:{["red", "green"][label in file.labels_true]}">{label}</span>'
+                    f'<span style="color:{["red", "green"][bool(file.labels_true[label])]}">{label}</span>'
                     for label in file.labels_pred
                 ]
             )
@@ -59,27 +60,23 @@ def showFile():
             unsafe_allow_html=True,
         )
 
-    # # Hide first botton of radio widget, so that by default no option is selected
-    # st.markdown(
-    #     """ <style>
-    #         div[role="radiogroup"] >  :first-child{
-    #             display: none !important;
-    #         }
-    #     </style>
-    #     """,
-    #     unsafe_allow_html=True,
-    # )
-    # index_map = {None: 0, 0: 2, 1: 1}
+    # Hide first botton of radio widget, so that by default no option is selected
+    st.markdown(
+        """ <style>
+            div[role="radiogroup"] >  :first-child{
+                display: none !important;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    index_map = {None: 0, 0: 2, 1: 1}
 
-    # for label, value in file.labels_true.items():
-    #     st.radio(
-    #         label,
-    #         ("-", "Correct", "Wrong"),
-    #         key=file.title + label,
-    #         index=index_map[value],
-    #         on_change=evaluate_label,
-    #         args=(file, label),
-    #     )
+    taxonomy = Taxonomy(TAXONOMY_VERSION).taxonomy
+    columns = st.columns(len(taxonomy.children))
+    for i, col in enumerate(columns):
+        with col:
+            create_buttons(file, taxonomy.children[i])
 
     # Extract the current log
     log_dump = file.log.replace("\n", "  \n ")
@@ -87,21 +84,21 @@ def showFile():
         st.write(log_dump)
 
 
-# def create_buttons(file, label):
-#     index_map = {None: 0, 0: 2, 1: 1}
+def create_buttons(file, label):
+    index_map = {None: 0, 0: 2, 1: 1}
+    st.radio(
+        label.name,
+        ("-", "Correct", "Wrong"),
+        key=file.title + label.name,
+        index=index_map[file.labels_true[label.name]],
+        on_change=evaluate_label,
+        args=(file, label.name),
+    )
 
-#     st.radio(
-#            label.name,
-#            ("-", "Correct", "Wrong"),
-#            key=file.title + label.name,
-#            index=index_map[file.labels_true[label.name]],
-#            on_change=evaluate_label,
-#            args=(file, label.name),
-#        )
-
-#     for child in label.children:
-#         # indent
-#         create_buttons(file, child)
+    for child in label.children:
+        cols = st.columns([1, 10])
+        with cols[1]:
+            create_buttons(file, child)
 
 
 def evaluate_labels(file):
@@ -118,7 +115,7 @@ def evaluate_label(file, label):
     index_map = {"Correct": 1, "Wrong": 0}
     evaluation = index_map[st.session_state[file.title + label]]
     with server_state_lock[st.session_state.dataset]:
-        file.labels[label] = evaluation
+        file.labels_true[label] = evaluation
     showFile()
 
 
@@ -155,7 +152,7 @@ def main():
         st.session_state.show_predictions = True
         st.session_state.filesize = 1
         st.session_state.previous_disabled = True
-        st.session_state.dataset = "files_42_1000_heuristics_v0.json.bz2"
+        st.session_state.dataset = "files_42_1000_headJ+depth.json.bz2"
         load_dataset()
         st.write("")
 
