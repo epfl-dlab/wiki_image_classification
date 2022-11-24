@@ -92,12 +92,12 @@ class Heuristics:
                 self.G.nodes[category]["visited"] = True
                 self.G.nodes[category]["labels"].add(label)
 
-    def set_taxonomy(self, taxonomy_version):
+    def set_taxonomy(self, taxonomy_version, hierarchical=True):
         """
         Set an ORES-like taxonomy, mapping labels to high-level categories.
         """
         self.taxonomy_version = taxonomy_version
-        self.taxonomy = Taxonomy()
+        self.taxonomy = Taxonomy(hierarchical)
         self.taxonomy.set_taxonomy(taxonomy_version)
         self.mapping = self.taxonomy.get_flat_mapping()
 
@@ -218,7 +218,7 @@ class Heuristics:
         next_queries = []
         if jump:
             # special exception for jumping
-            no_jump = ["Genera"]
+            no_jump = ["Genera", "Specimens"]
             for (common_head, parent) in common_heads:
                 if (
                     self.G.nodes.get(common_head, {}).get("depth", 1e9)
