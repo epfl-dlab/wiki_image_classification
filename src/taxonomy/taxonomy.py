@@ -266,7 +266,7 @@ class Taxonomy:
             )
             natural_sciences.add_children(
                 [
-                    Label("Mahematics", ["Mahematics"], self.hierarchical),
+                    Label("Mathematics", ["Mathematics"], self.hierarchical),
                     Label("Chemistry", ["Chemistry"], self.hierarchical),
                     Label("Astronomy", ["Astronomy"], self.hierarchical),
                 ]
