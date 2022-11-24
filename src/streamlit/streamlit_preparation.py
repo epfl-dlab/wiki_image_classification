@@ -70,6 +70,7 @@ def iterativeSampling(
     encoder = MultiLabelBinarizer()
     y = encoder.fit_transform(files["labels_pred"].apply(list))
     ifiles = pd.DataFrame(y, columns=encoder.classes_)
+    ifiles = ifiles.sample(frac=1, random_state=random_state)
 
     index_to_add = []
     count_per_class = ifiles.sum(axis=0)
@@ -109,10 +110,10 @@ def iterativeSampling(
         )
         print(f"Number of images: {len(balanced_files)}")
         print(
-            f"Ratio of images with more than one label (original): {(files.labels_pred.apply(len) > 1).sum() / len(files)}"
+            f"Ratio of images with more than one label (original, only among images with labels): {(files.labels_pred.apply(len) > 2).sum() / (files.labels_pred.apply(len) >= 1).sum()}"
         )
         print(
-            f"Ratio of images with more than one label (balanced): {(balanced_files.labels_pred.apply(len) > 1).sum() / len(balanced_files)}"
+            f"Ratio of images with more than one label (balanced): {(balanced_files.labels_pred.apply(len) > 2).sum() / len(balanced_files)}"
         )
 
     return balanced_files
@@ -122,11 +123,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-n", "--n", help="size of the sample")
     parser.add_argument("-s", "--seed", help="random seed")
-    parser.add_argument("-H ", "--how", help="querying scheme")
+    parser.add_argument("-b", "--balanced", help="balance the sample")
+    parser.add_argument("-H ", "--how", help="heuristics version")
+    parser.add_argument("-v", "--version", help="taxonomy version")
     args = parser.parse_args()
     n = int(args.n) if args.n else 1000
     seed = int(args.seed) if args.seed else 42
+    version = args.version if args.version else TAXONOMY_VERSION
     how = args.how if args.how else HEURISTICS_VERSION
+    balanced = int(args.balanced) if args.balanced else True
 
     printt("Reading files...")
     files = pd.read_parquet(FILES_PATH)
@@ -135,39 +140,52 @@ if __name__ == "__main__":
     printt("Loading graph...")
     heuristics.load_graph(EH_GRAPH_PATH)
     printt("Loading mapping...")
-    heuristics.set_taxonomy(taxonomy_version=TAXONOMY_VERSION)
+    heuristics.set_taxonomy(taxonomy_version=version)
     heuristics.set_heuristics(heuristics_version=how)
     printt("Loading done.")
 
+    printt("Predicting labels...")
     files["labels_pred"] = files.progress_apply(
         lambda x: heuristics.queryFile(x, debug=False, logfile=logfile),
         axis=1,
         result_type="expand",
     )[0]
 
+    printt("Sampling...")
     # Create a balanced sample
-    files_sample = iterativeSampling(
-        files,
-        images_per_class=50,
-        min_images=500,
-        mean_noise=0.5,
-        var_noise=0.5,
-        random_state=42,
-        verbose=1,
-    )
+    if balanced:
+        files_sample = iterativeSampling(
+            files,
+            images_per_class=50,
+            min_images=500,
+            mean_noise=0,
+            var_noise=0.2,
+            random_state=42,
+            verbose=1,
+        )
+    else:
+        files_sample = files.sample(n=n, random_state=seed)
 
     files_sample["labels_true"] = [
         {label: None for label in heuristics.taxonomy.get_all_labels()}
         for _ in range(len(files_sample))
     ]
+
+    printt("Resetting labels...")
+    heuristics.reset_labels()
     files_sample[["labels_pred", "log"]] = files_sample.progress_apply(
         lambda x: heuristics.queryFile(x, debug=True, logfile=logfile),
         axis=1,
         result_type="expand",
     )
     # Dict storing evaluations
-    printt("Saving file..")
+    printt("Saving file...")
     files_sample["labels_pred"] = files_sample.apply(
         lambda x: {label: None for label in x.labels_pred}, axis=1
     )
-    files_sample.to_json(STREAMLIT_PATH + f"files_{seed}_{n}_{how}.json.bz2")
+    if balanced:
+        name = f"files_{version}_{how}_balanced.json.bz2"
+    else:
+        name = f"files_{version}_{seed}_{n}_{how}.json.bz2"
+
+    files_sample.to_json(STREAMLIT_PATH + name)
