@@ -276,11 +276,7 @@ class Taxonomy:
             stem.add_children(
                 [
                     Label("Medicine", ["Medicine"], self.hierarchical),
-                    Label(
-                        "Technology & engineering",
-                        ["Technology", "Engineering"],
-                        self.hierarchical,
-                    ),
+                    Label("Technology", ["Technology"], self.hierarchical),
                 ]
             )
 
@@ -330,11 +326,7 @@ class Taxonomy:
                     Label("History", ["History"], self.hierarchical),
                     Label("Art", ["Art"], self.hierarchical),
                     Label("Music", ["Music"], self.hierarchical),
-                    Label(
-                        "Literature & language",
-                        ["Literature", "Language"],
-                        self.hierarchical,
-                    ),
+                    Label("Literature", ["Literature"], self.hierarchical),
                     Label("Food", ["Food"], self.hierarchical),
                     Label("Belief", ["Belief"], self.hierarchical),
                 ]
