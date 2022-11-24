@@ -72,7 +72,7 @@ def showFile():
     )
     index_map = {None: 0, 0: 2, 1: 1}
 
-    taxonomy = Taxonomy(TAXONOMY_VERSION).taxonomy
+    taxonomy = Taxonomy().set_taxonomy(TAXONOMY_VERSION)
     columns = st.columns(len(taxonomy.children))
     for i, col in enumerate(columns):
         with col:
@@ -152,7 +152,9 @@ def main():
         st.session_state.show_predictions = True
         st.session_state.filesize = 1
         st.session_state.previous_disabled = True
-        st.session_state.dataset = "files_42_1000_headJ+depth.json.bz2"
+        st.session_state.dataset = list(
+            filter(lambda f: f.endswith("bz2"), os.listdir(STREAMLIT_PATH))
+        )[0]
         load_dataset()
         st.write("")
 
