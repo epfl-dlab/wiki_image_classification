@@ -261,22 +261,24 @@ class Taxonomy:
 
             stem = Label("STEM", ["STEM"], self.hierarchical)
 
-            natural_sciences = Label(
-                "Natural sciences", ["Natural sciences"], self.hierarchical
-            )
-            natural_sciences.add_children(
-                [
-                    Label("Mathematics", ["Mathematics"], self.hierarchical),
-                    Label("Chemistry", ["Chemistry"], self.hierarchical),
-                    Label("Astronomy", ["Astronomy"], self.hierarchical),
-                ]
-            )
-            stem.add_child(natural_sciences)
-
             stem.add_children(
                 [
-                    Label("Medicine", ["Medicine"], self.hierarchical),
-                    Label("Technology", ["Technology"], self.hierarchical),
+                    Label("Biology", ["Biology"], self.hierarchical),
+                    Label("Physics", ["Physics"], self.hierarchical),
+                    Label(
+                        "Earth & Environment",
+                        ["Earth sciences", "Weather and climate"],
+                        self.hierarchical,
+                    ),
+                    Label("Mathematics", ["Mathematics"], self.hierarchical),
+                    Label("Chemistry", ["Chemistry"], self.hierarchical),
+                    Label("Space", ["Astronomy"], self.hierarchical),
+                    Label(
+                        "Medicine & Health", ["Medicine", "Health"], self.hierarchical
+                    ),
+                    Label(
+                        "Technology & Engineering", ["Technology"], self.hierarchical
+                    ),
                 ]
             )
 
@@ -286,11 +288,6 @@ class Taxonomy:
                     Label("Plants", ["Plantae"], self.hierarchical),
                     Label("Animals", ["Animalia"], self.hierarchical),
                     Label("Fossils", ["Fossils"], self.hierarchical),
-                    Label(
-                        "Weather and climate",
-                        ["Weather and climate"],
-                        self.hierarchical,
-                    ),
                 ]
             )
             stem.add_child(nature)
@@ -301,7 +298,7 @@ class Taxonomy:
                 [
                     Label("Architecture", ["Architecture"], self.hierarchical),
                     Label("Landscapes", ["Landscapes"], self.hierarchical),
-                    Label("Maps", ["Maps"], self.hierarchical),
+                    Label("Maps & Flags", ["Maps", "Flags"], self.hierarchical),
                 ]
             )
             self.taxonomy.add_child(places)
@@ -313,8 +310,7 @@ class Taxonomy:
                     Label("Sports", ["Sports"], self.hierarchical),
                     Label("Politics", ["Politics"], self.hierarchical),
                     Label("Events", ["Events"], self.hierarchical),
-                    Label("Games", ["Games"], self.hierarchical),
-                    Label("Flags", ["Flags"], self.hierarchical),
+                    Label("Entertainment", ["Entertainment"], self.hierarchical),
                     Label("Transportation", ["Transport"], self.hierarchical),
                 ]
             )
