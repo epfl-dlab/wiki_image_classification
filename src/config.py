@@ -40,6 +40,7 @@ EMBEDDINGS_PATH = "/scratch/WikipediaImagesTaxonomy/embeddings/"
 # Streamlit
 STREAMLIT_PATH = "./data/streamlit/"
 STREAMLIT_LOG_FILE = "streamlit_preparation.log"
+MTURK_PATH = "./data/mturk/"
 
 
 ### Versions (!!!)
