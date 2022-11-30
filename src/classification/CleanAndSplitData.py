@@ -7,15 +7,18 @@ import PIL
 from PIL import Image
 tqdm.pandas()
 
+hf.setup_gpu(gpu_nr=1)
+
 # INPUT FILES
-HEURISTICS_LABELS_PATH = 'data/commonswiki-20221114-files-heuristic-labels.json.bz2'
+HEURISTICS_LABELS_PATH = 'data/commonswiki-20221129-files-hierarchical-labels.json.bz2'
 
 # OUTPUT FILES
-HEURISTICS_LABELS_CAN_OPEN_PATH = 'data/commonswiki-221116-files-hierarchical-labels-can-be-opened.json.bz2'
-SPLIT_DATA_PATH = 'data/split_hierarchical_data_221116'
+HEURISTICS_LABELS_CAN_OPEN_PATH = 'data/commonswiki-221129-files-hierarchical-labels-can-be-opened.json.bz2'
+SPLIT_DATA_PATH = 'data/split_hierarchical_data_221129'
 
+print('Finished loading labels')
 labels = pd.read_json(HEURISTICS_LABELS_PATH)
-
+print('')
 
 # ------------- Only keep files that can be opened (eliminate encoding problems)
 
@@ -52,5 +55,7 @@ for index, row in tqdm(labels_jpg.iterrows(), total=labels_jpg.shape[0]):
         labels_jpg.at[index, 'can_be_opened'] = False
 
 openable_labels = labels_jpg.loc[labels_jpg.can_be_opened == True]
+openable_labels = openable_labels.drop(columns='can_be_opened')
+print(openable_labels.shape)
 
 openable_labels.to_json(HEURISTICS_LABELS_CAN_OPEN_PATH)

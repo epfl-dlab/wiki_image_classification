@@ -6,6 +6,8 @@ import pandas as pd
 import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
+import albumentations as A
+from functools import partial
 
 hf.setup_gpu(gpu_nr=1)
 
@@ -55,24 +57,28 @@ if config['undersample']:
     print('LOG: got the new undersampled flow')
 elif config['oversample']:
     start = time.time()
-    print('oversampling....')
+    print('LOG: oversampling....')
     duplicate_indices_dict = hf.oversample(y_true, 
                                            list(train.class_indices.keys()), 
                                            0.2, 
                                            config['results_folder'])
     hf.print_time(start)
-    print('found indices to duplicate...')
-    print('LOG: fail here?')
+    print('LOG: found indices to duplicate...')
     start = time.time()
+    idx_to_duplicate_from = y_true.shape[0] # the oversampled images will be added after this index
     for index_to_duplicate in duplicate_indices_dict:
         times_to_duplicate = duplicate_indices_dict[index_to_duplicate]
         train_df = pd.concat([train_df, pd.DataFrame([train_df.iloc[index_to_duplicate]] * times_to_duplicate)], axis=0, ignore_index=True)
-    print('LOG: or here')
     train_df = train_df.reset_index() # not necessary but why not
-    print('LOG: starting to get new flow... does it fail here?')
+    print('LOG: starting to get new flow...')
     train, _ = hf.get_flow(df=train_df,
                            nr_classes=config['nr_classes'],
                            image_dimension=config['image_dimension'])
+    if config['augment']:
+        train_augment = hf.augment(train, config['batch_size'], config['image_dimension'], idx_to_duplicate_from)
+
+
+
     print('LOG: got the new oversampled flow')
     hf.print_time(start)
 
@@ -133,6 +139,14 @@ if config['class_weights'] == True:
     epochs=config['epochs'],
     callbacks=[cp_callback, history_callback, early_stopping_callback],
     class_weight=class_weights)
+elif config['augment'] == True:
+    history = model.fit(
+        train_augment, 
+        verbose=2,
+        validation_data=val_stop,
+        epochs=config['epochs'],
+        callbacks=[cp_callback, history_callback, early_stopping_callback],
+    )
 else:
     history = model.fit(
     train,

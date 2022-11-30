@@ -13,7 +13,9 @@ import seaborn as sns
 from matplotlib.colors import LogNorm
 from sklearn.metrics import classification_report
 from collections import Counter
-
+import albumentations as A
+from functools import partial
+AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 def setup_gpu(gpu_nr):
     """
@@ -400,8 +402,53 @@ def oversample(y_true, label_names, add_pctg, image_path):
     plt.xlabel('Label')
     save_img(image_path + '/oversampled_imbalance_ratios.png')
 
-    indices_to_add_hashable = [tuple([el]) for el in indices_to_add]
+    indices_to_add_hashable = [tuple([el[0]]) for el in indices_to_add]
     return dict(Counter(indices_to_add_hashable))
+
+def augment(flow, batch_size, image_dimension, idx_to_augment_from):
+    nr_classes = len(flow.class_indices)
+    train_ds = tf.data.Dataset.from_generator(
+        lambda: flow, 
+        output_types=(tf.float32, tf.float32), 
+        output_shapes=((batch_size, image_dimension, image_dimension, 3), 
+                    (batch_size, nr_classes)), 
+        )
+    def augment_train_data(ds):
+        transforms = A.Compose([
+            A.Transpose(always_apply=True),
+            A.HorizontalFlip(always_apply=True),
+            A.VerticalFlip(always_apply=True),
+            A.ShiftScaleRotate(always_apply=True), 
+            # A.HueSaturationValue(hue_shift_limit=0.2, sat_shift_limit=0.2, val_shift_limit=0.2, always_apply=True), # gives black images
+            # A.RandomBrightnessContrast(brightness_limit=(-0.1, 0.1), contrast_limit=(-0.1, 0.1), always_apply=True), # gives black images
+            A.CoarseDropout(max_height=4, max_width=4),
+            ])
+    
+        def aug_fn(images):
+            # all_label_names = np.array(list(flow.class_indices.keys()))
+            aug_imgs = np.zeros((images.shape))
+            for img_idx in range(images.shape[0]):
+                img = images[img_idx, :, :, :]
+                # img_label_names = all_label_names[labels[img_idx].astype(bool)]
+                # if any(label in img_label_names for label in minority_labels):
+                if img_idx > idx_to_augment_from:
+                    img = transforms(image=img)['image']
+                aug_imgs[img_idx, :, :, :] = img
+                
+            aug_imgs = tf.cast(aug_imgs, tf.float32)
+            return aug_imgs
+
+        def process_data(image, label):
+            """"
+            Here, we we call the augmentation function if the image has any of the minority labels.
+            """
+            image = tf.numpy_function(func=aug_fn, inp=[image], Tout=tf.float32)
+            return image, label
+    
+        return ds.map(partial(process_data), num_parallel_calls=AUTOTUNE).prefetch(AUTOTUNE)
+
+    return augment_train_data(train_ds)
+
 
 
 
