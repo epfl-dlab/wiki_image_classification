@@ -10,11 +10,14 @@ tqdm.pandas()
 hf.setup_gpu(gpu_nr=1)
 
 # INPUT FILES
-HEURISTICS_LABELS_PATH = 'data/commonswiki-20221129-files-hierarchical-labels.json.bz2'
+# HEURISTICS_LABELS_PATH = 'data/commonswiki-20221129-files-hierarchical-labels.json.bz2' # - hierarchical
+HEURISTICS_LABELS_PATH = 'data/commonswiki-221129-files-flat-labels.json.bz2'
 
 # OUTPUT FILES
-HEURISTICS_LABELS_CAN_OPEN_PATH = 'data/commonswiki-221129-files-hierarchical-labels-can-be-opened.json.bz2'
-SPLIT_DATA_PATH = 'data/split_hierarchical_data_221129'
+# HEURISTICS_LABELS_CAN_OPEN_PATH = 'data/commonswiki-221129-files-hierarchical-labels-can-be-opened.json.bz2' # - hierarchical
+# SPLIT_DATA_PATH = 'data/split_hierarchical_data_221129'
+HEURISTICS_LABELS_CAN_OPEN_PATH = 'data/commonswiki-221130-files-flat-labels-can-be-opened.json.bz2' # - flat
+SPLIT_DATA_PATH = 'data/split_flat_data_221130'
 
 print('Finished loading labels')
 labels = pd.read_json(HEURISTICS_LABELS_PATH)
