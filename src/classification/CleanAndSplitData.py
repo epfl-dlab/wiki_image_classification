@@ -11,7 +11,7 @@ hf.setup_gpu(gpu_nr=1)
 
 # INPUT FILES
 # HEURISTICS_LABELS_PATH = 'data/commonswiki-20221129-files-hierarchical-labels.json.bz2' # - hierarchical
-HEURISTICS_LABELS_PATH = 'data/commonswiki-221129-files-flat-labels.json.bz2'
+HEURISTICS_LABELS_PATH = 'data/commonswiki-221130-files-flat-labels.json.bz2' # - flat
 
 # OUTPUT FILES
 # HEURISTICS_LABELS_CAN_OPEN_PATH = 'data/commonswiki-221129-files-hierarchical-labels-can-be-opened.json.bz2' # - hierarchical
