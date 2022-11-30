@@ -8,8 +8,8 @@ sys.path.append("../../")
 
 from src.config import *
 
-N = 50
-SEED = 42
+N = 100
+SEED = 0
 
 app = Flask(__name__)
 
