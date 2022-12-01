@@ -104,8 +104,12 @@ if __name__ == "__main__":
 
     <tr>
         <td style="vertical-align:top">
-            <img src="" width="350" class="with_margin" id="main_image">
+            <img src="" width="350" class="with_margin" id="main_image"><br><br>
+            <div style="display:inline-block; padding: 8px; border: black solid">
+                <p id="counter">0 / 0</p>
+            </div>
         </td>
+        
         
         <td style="vertical-align:top">
 {generate_column(root, "STEM", 3)}<br>
