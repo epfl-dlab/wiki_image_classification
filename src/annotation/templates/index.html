@@ -6,6 +6,13 @@
 </head>
 <body>
 
+<script>
+
+    let data = {{images_array|safe}}
+
+    let all_labels = [];
+
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <style>
@@ -16,15 +23,33 @@
     .with_margin {
         margin: 8px;
     }
+
+    .big_button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border: black solid;
+    }
+    .big_button:hover{
+        color:#000000;
+        background-color:#FFFFFF;
+    }
 </style>
 
-<form>
+<form id="main_labels">
 <table>
 
     <tr>
         <td style="vertical-align:top">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/2nd_Battalion%2C_503rd_Infantry_Regiment%2C_173rd_Airborne_Brigade_depart_Aviano_Air_Base%2C_Italy%2C_Feb._24%2C_2022.jpg/1920px-2nd_Battalion%2C_503rd_Infantry_Regiment%2C_173rd_Airborne_Brigade_depart_Aviano_Air_Base%2C_Italy%2C_Feb._24%2C_2022.jpg"
-                 alt="Girl in a jacket" width="350" class="with_margin">
+            <img src="" width="350" class="with_margin" id="main_image"><br><br>
+            <div style="display:inline-block; padding: 8px; border: black solid">
+                <p id="counter">0 / 0</p>
+            </div>
         </td>
         
         <td style="vertical-align:top">
@@ -81,23 +106,84 @@
                 <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>
         </td>
+
+        <td style="vertical-align:top">
+            <input type="button" value="Next" id="next_button" class="big_button"/>
+            <input type="text" placeholder="YOUR NAME" id="name_button" style="display: none"/><br><br>
+            <input type="button" value="Submit" id="submit_button" style="display: none" class="big_button"/>
+        </td>
     </tr>
 
 
 </table>
 
-    <input type="button" value="Next" />
 
 </form>
 
+<div id="log"></div>
+
 
 <script>
-    // You can use the console window at the bottom
-    var h1 = document.querySelector('h1');
-    console.log(h1.textContent);
+    let current_index = -1;
+
+    function push_labels() {
+        console.log("test");
+        let labels = [];
+        $.each($('#main_labels input:checkbox').serializeArray(), function (i, field) {
+            labels.push(field.value);
+        });
+        $("input:checkbox").prop('checked', "");
+
+        let other_text = $("#other_text").val();
+        $("#other_text").val("");
+
+        let item_labels = {"id": data[current_index].id, "labels": labels, "other_text": other_text};
+
+        all_labels.push(item_labels);
+    }
+
+    function next_image() {
+        $("#main_image").attr("src", "https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif")
+
+        if (current_index>=0) {
+            push_labels();
+        }
+
+        $("#main_image").attr("src", data[++current_index].url)
+        // Update counter
+        $("#counter").text(current_index + 1 + "/" + data.length);
+
+        if (current_index>=data.length-1) {
+            $("#next_button").hide()
+            $("#submit_button").show();
+            $("#name_button").show();
+        }
+    }
+
+    $(function(){
+        next_image();
+    });
+
+    $("#next_button").click(next_image);
+
+    $("#submit_button").click(function() {
+        push_labels();
+        let name = $("#name_button").val();
+
+        $.ajax({
+          type: "POST",
+          url: "/save",
+          data: JSON.stringify({"name": name, "labels": all_labels}),
+          success: function () {
+              alert("Thank you")
+              $("#submit_button").hide();
+          },
+          contentType : 'application/json',
+        });
+    });
+
 </script>
 
 
 </body>
 </html>
-        
