@@ -6,8 +6,6 @@ import pandas as pd
 import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
-import albumentations as A
-from functools import partial
 
 hf.setup_gpu(gpu_nr=1)
 
@@ -76,16 +74,12 @@ elif config['oversample']:
                            image_dimension=config['image_dimension'])
     if config['augment']:
         train_augment = hf.augment(train, config['batch_size'], config['image_dimension'], idx_to_duplicate_from)
-
-
+        print('LOG: got augmented dataset')
 
     print('LOG: got the new oversampled flow')
     hf.print_time(start)
 
-
-    
 start = time.time()
-
 val_stop, _ = hf.get_flow(df_file=config['data_folder'] + '/val_stop_df.json.bz2',
                           nr_classes=config['nr_classes'],
                           image_dimension=config['image_dimension'])
@@ -133,27 +127,26 @@ model.save_weights(checkpoint_path.format(epoch=0))
 if config['class_weights'] == True:
     class_weights = hf.compute_class_weights(y_true=hf.get_y_true(train))
     history = model.fit(
-    train,
-    verbose=2,
-    validation_data=val_stop,
-    epochs=config['epochs'],
-    callbacks=[cp_callback, history_callback, early_stopping_callback],
-    class_weight=class_weights)
+        train,
+        verbose=2,
+        validation_data=val_stop,
+        epochs=config['epochs'],
+        callbacks=[cp_callback, history_callback, early_stopping_callback],
+        class_weight=class_weights)
 elif config['augment'] == True:
     history = model.fit(
         train_augment, 
         verbose=2,
         validation_data=val_stop,
         epochs=config['epochs'],
-        callbacks=[cp_callback, history_callback, early_stopping_callback],
-    )
+        callbacks=[cp_callback, history_callback, early_stopping_callback])
 else:
     history = model.fit(
-    train,
-    verbose=2,
-    validation_data=val_stop,
-    epochs=config['epochs'],
-    callbacks=[cp_callback, history_callback, early_stopping_callback])
+        train,
+        verbose=2,
+        validation_data=val_stop,
+        epochs=config['epochs'],
+        callbacks=[cp_callback, history_callback, early_stopping_callback])
 hf.print_time(start)
 # ======================================================
 
