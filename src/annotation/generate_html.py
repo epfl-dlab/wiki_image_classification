@@ -124,6 +124,7 @@ if __name__ == "__main__":
 {generate_column(root, "Culture", 3)}<br>
             <fieldset class="with_margin">
                 <legend><b>Other</b> </legend>
+                <input type="checkbox" id="Logos" name="Logos" value="Logos"> <label for="Logos"> Logos</label><br>
                 <input type="checkbox" id="Other" name="Other" value="Other"> <label for="Other"> Other</label><br>
                 <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>
@@ -149,7 +150,6 @@ if __name__ == "__main__":
     let current_index = -1;
 
     function push_labels() {{
-        console.log("test");
         let labels = [];
         $.each($('#main_labels input:checkbox').serializeArray(), function (i, field) {{
             labels.push(field.value);

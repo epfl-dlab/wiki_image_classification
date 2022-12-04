@@ -58,12 +58,13 @@
 				<legend><b>STEM</b> 🌿 🦠 🔬 🧬 🚀 📡 💊</legend>
 				<input type="checkbox" id="Biology" name="Biology" value="Biology"> <label for="Biology"> Biology</label><br>
 				<input type="checkbox" id="Physics" name="Physics" value="Physics"> <label for="Physics"> Physics</label><br>
-				<input type="checkbox" id="Earth_Environment" name="Earth_Environment" value="Earth_Environment"> <label for="Earth_Environment"> Earth & Environment</label><br>
+				<input type="checkbox" id="Earth_sciences" name="Earth_sciences" value="Earth_sciences"> <label for="Earth_sciences"> Earth sciences</label><br>
 				<input type="checkbox" id="Mathematics" name="Mathematics" value="Mathematics"> <label for="Mathematics"> Mathematics</label><br>
 				<input type="checkbox" id="Chemistry" name="Chemistry" value="Chemistry"> <label for="Chemistry"> Chemistry</label><br>
 				<input type="checkbox" id="Space" name="Space" value="Space"> <label for="Space"> Space</label><br>
 				<input type="checkbox" id="Medicine_Health" name="Medicine_Health" value="Medicine_Health"> <label for="Medicine_Health"> Medicine & Health</label><br>
 				<input type="checkbox" id="Technology_Engineering" name="Technology_Engineering" value="Technology_Engineering"> <label for="Technology_Engineering"> Technology & Engineering</label><br>
+				<input type="checkbox" id="Diagrams" name="Diagrams" value="Diagrams"> <label for="Diagrams"> Diagrams</label><br>
 				<fieldset class="with_margin">
 					<legend><b>Nature</b></legend>
 					<input type="checkbox" id="Plants" name="Plants" value="Plants"> <label for="Plants"> Plants</label><br>
@@ -86,6 +87,7 @@
 			<fieldset class="with_margin">
 				<legend><b>Places</b> 🏛️ 🏘️ 🇺🇳 🗺️</legend>
 				<input type="checkbox" id="Architecture" name="Architecture" value="Architecture"> <label for="Architecture"> Architecture</label><br>
+				<input type="checkbox" id="Urban" name="Urban" value="Urban"> <label for="Urban"> Urban</label><br>
 				<input type="checkbox" id="Landscapes" name="Landscapes" value="Landscapes"> <label for="Landscapes"> Landscapes</label><br>
 				<input type="checkbox" id="Maps_Flags" name="Maps_Flags" value="Maps_Flags"> <label for="Maps_Flags"> Maps & Flags</label><br>
 			</fieldset>
@@ -103,6 +105,7 @@
 			</fieldset><br>
             <fieldset class="with_margin">
                 <legend><b>Other</b> </legend>
+                <input type="checkbox" id="Logos" name="Logos" value="Logos"> <label for="Logos"> Logos</label><br>
                 <input type="checkbox" id="Other" name="Other" value="Other"> <label for="Other"> Other</label><br>
                 <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>
@@ -128,7 +131,6 @@
     let current_index = -1;
 
     function push_labels() {
-        console.log("test");
         let labels = [];
         $.each($('#main_labels input:checkbox').serializeArray(), function (i, field) {
             labels.push(field.value);
