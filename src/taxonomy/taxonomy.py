@@ -266,8 +266,8 @@ class Taxonomy:
                     Label("Biology", ["Biology"], self.hierarchical),
                     Label("Physics", ["Physics"], self.hierarchical),
                     Label(
-                        "Earth & Environment",
-                        ["Earth sciences", "Weather and climate"],
+                        "Earth sciences",
+                        ["Earth sciences"],
                         self.hierarchical,
                     ),
                     Label("Mathematics", ["Mathematics"], self.hierarchical),
@@ -279,6 +279,7 @@ class Taxonomy:
                     Label(
                         "Technology & Engineering", ["Technology"], self.hierarchical
                     ),
+                    Label("Diagrams", ["Diagrams"], self.hierarchical),
                 ]
             )
 
@@ -297,6 +298,7 @@ class Taxonomy:
             places.add_children(
                 [
                     Label("Architecture", ["Architecture"], self.hierarchical),
+                    Label("Urban", ["Houses"], self.hierarchical),
                     Label("Landscapes", ["Landscapes"], self.hierarchical),
                     Label("Maps & Flags", ["Maps", "Flags"], self.hierarchical),
                 ]
@@ -328,6 +330,8 @@ class Taxonomy:
                 ]
             )
             self.taxonomy.add_child(culture)
+
+            self.taxonomy.add_child(Label("Logos", ["Logos"], self.hierarchical))
 
         else:
             raise ValueError("Invalid taxonomy version")
