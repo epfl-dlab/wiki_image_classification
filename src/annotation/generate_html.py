@@ -124,7 +124,7 @@ if __name__ == "__main__":
 {generate_column(root, "Culture", 3)}<br>
             <fieldset class="with_margin">
                 <legend><b>Other</b> </legend>
-                <input type="checkbox" id="Logos" name="Logos" value="Logos"> <label for="Logos"> Logos</label><br>
+                <input type="checkbox" id="Logos_Symbols" name="Logos_Symbols" value="Logos_Symbols"> <label for="Logos_Symbols"> Logos & Symbols</label><br>
                 <input type="checkbox" id="Other" name="Other" value="Other"> <label for="Other"> Other</label><br>
                 <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>

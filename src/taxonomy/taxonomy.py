@@ -328,7 +328,9 @@ class Taxonomy:
             )
             self.taxonomy.add_child(culture)
 
-            self.taxonomy.add_child(Label("Logos", ["Logos"], self.hierarchical))
+            self.taxonomy.add_child(
+                Label("Logos & Symbols", ["Logos", "Symbols"], self.hierarchical)
+            )
 
         else:
             raise ValueError("Invalid taxonomy version")
