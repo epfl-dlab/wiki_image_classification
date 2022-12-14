@@ -27,6 +27,7 @@ def iterativeSampling(
     var_noise=1,
     random_state=42,
     verbose=1,
+    weighted=True,
 ):
     """
     Iterative sampling of images, to construct a balanced dataset.
@@ -82,13 +83,18 @@ def iterativeSampling(
     balanced_count_per_class = pd.Series({ind: 0 for ind in count_per_class.index})
 
     for label, _ in tqdm(count_per_class.iteritems(), total=n_classes):
-        n_remaining = images_per_class - balanced_count_per_class[label]
+        n_remaining = images_per_class
+        if weighted:
+            n_remaining -= balanced_count_per_class[label]
         if n_remaining <= 0:
             continue
         # Update class counts and cost per class
         curr_count_per_class = count_per_class - balanced_count_per_class
-        cost_per_class = curr_count_per_class / curr_count_per_class.sum()
-        cost_per_class += balanced_count_per_class / images_per_class
+        if weighted:
+            cost_per_class = curr_count_per_class / curr_count_per_class.sum()
+            cost_per_class += balanced_count_per_class / images_per_class
+        else:
+            cost_per_class = np.zeros(len(curr_count_per_class))
 
         # Get index of images to add to complete the current class
         cost_per_image = ifiles[ifiles[label].astype(bool)] @ cost_per_class
@@ -122,7 +128,7 @@ def iterativeSampling(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-n", "--n", help="size of the sample")
-    parser.add_argument("-s", "--seed", help="random seed")
+    parser.add_argument("-seed", "--seed", help="random seed")
     parser.add_argument("-b", "--balanced", help="balance the sample")
     parser.add_argument("-H ", "--how", help="heuristics version")
     parser.add_argument("-v", "--version", help="taxonomy version")
@@ -156,12 +162,13 @@ if __name__ == "__main__":
     if balanced:
         files_sample = iterativeSampling(
             files,
-            images_per_class=50,
-            min_images=500,
+            images_per_class=n,
+            min_images=50,
             mean_noise=0,
             var_noise=0.2,
-            random_state=42,
+            random_state=seed,
             verbose=1,
+            weighted=0,
         )
     else:
         files_sample = files.sample(n=n, random_state=seed)
@@ -183,9 +190,10 @@ if __name__ == "__main__":
     files_sample["labels_pred"] = files_sample.apply(
         lambda x: {label: None for label in x.labels_pred}, axis=1
     )
+
+    name = f"files_{version}_{seed}_{n}_{how}"
     if balanced:
-        name = f"files_{version}_{how}_balanced.json.bz2"
-    else:
-        name = f"files_{version}_{seed}_{n}_{how}.json.bz2"
+        name += "_balanced"
+    name += ".json.bz2"
 
     files_sample.to_json(STREAMLIT_PATH + name)
