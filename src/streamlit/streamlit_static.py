@@ -75,9 +75,9 @@ def showFile():
     version = st.session_state.dataset.split("_")[1]
     taxonomy = Taxonomy().set_taxonomy(version)
     columns = st.columns(len(taxonomy.children))
-    for i, col in enumerate(columns):
-        with col:
-            create_buttons(file, taxonomy.children[i])
+    # for i, col in enumerate(columns):
+    #     with col:
+    #         create_buttons(file, taxonomy.children[i])
 
     # Extract the current log
     log_dump = file.log.replace("\n", "  \n ")
@@ -155,7 +155,7 @@ def main():
         st.session_state.previous_disabled = True
         st.session_state.dataset = list(
             filter(lambda f: f.endswith("bz2"), os.listdir(STREAMLIT_PATH))
-        )[0]
+        )[-1]
         load_dataset()
         st.write("")
 

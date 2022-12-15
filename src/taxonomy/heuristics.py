@@ -218,7 +218,7 @@ class Heuristics:
         next_queries = []
         if jump:
             # special exception for jumping
-            no_jump = ["Genera", "Specimens"]
+            no_jump = ["Genera", "Specimens", "Antagonists", "Births"]
             for (common_head, parent) in common_heads:
                 if (
                     self.G.nodes.get(common_head, {}).get("depth", 1e9)

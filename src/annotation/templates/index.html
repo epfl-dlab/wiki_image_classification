@@ -52,14 +52,14 @@
             </div>
         </td>
         
+        
         <td style="vertical-align:top">
 			<fieldset class="with_margin">
 				<legend><b>STEM</b> 🌿 🦠 🔬 🧬 🚀 📡 💊</legend>
-				<input type="checkbox" id="Biology" name="Biology" value="Biology"> <label for="Biology"> Biology</label><br>
-				<input type="checkbox" id="Physics" name="Physics" value="Physics"> <label for="Physics"> Physics</label><br>
-				<input type="checkbox" id="Earth_Environment" name="Earth_Environment" value="Earth_Environment"> <label for="Earth_Environment"> Earth & Environment</label><br>
+				<input type="checkbox" id="Diagrams" name="Diagrams" value="Diagrams"> <label for="Diagrams"> Diagrams</label><br>
 				<input type="checkbox" id="Mathematics" name="Mathematics" value="Mathematics"> <label for="Mathematics"> Mathematics</label><br>
 				<input type="checkbox" id="Chemistry" name="Chemistry" value="Chemistry"> <label for="Chemistry"> Chemistry</label><br>
+				<input type="checkbox" id="Geology" name="Geology" value="Geology"> <label for="Geology"> Geology</label><br>
 				<input type="checkbox" id="Space" name="Space" value="Space"> <label for="Space"> Space</label><br>
 				<input type="checkbox" id="Medicine_Health" name="Medicine_Health" value="Medicine_Health"> <label for="Medicine_Health"> Medicine & Health</label><br>
 				<input type="checkbox" id="Technology_Engineering" name="Technology_Engineering" value="Technology_Engineering"> <label for="Technology_Engineering"> Technology & Engineering</label><br>
@@ -79,14 +79,15 @@
 				<input type="checkbox" id="Sports" name="Sports" value="Sports"> <label for="Sports"> Sports</label><br>
 				<input type="checkbox" id="Politics" name="Politics" value="Politics"> <label for="Politics"> Politics</label><br>
 				<input type="checkbox" id="Events" name="Events" value="Events"> <label for="Events"> Events</label><br>
-				<input type="checkbox" id="Entertainment" name="Entertainment" value="Entertainment"> <label for="Entertainment"> Entertainment</label><br>
 				<input type="checkbox" id="Transportation" name="Transportation" value="Transportation"> <label for="Transportation"> Transportation</label><br>
 			</fieldset><br>
 			<fieldset class="with_margin">
 				<legend><b>Places</b> 🏛️ 🏘️ 🇺🇳 🗺️</legend>
 				<input type="checkbox" id="Architecture" name="Architecture" value="Architecture"> <label for="Architecture"> Architecture</label><br>
+				<input type="checkbox" id="Monuments_Memorials" name="Monuments_Memorials" value="Monuments_Memorials"> <label for="Monuments_Memorials"> Monuments & Memorials</label><br>
 				<input type="checkbox" id="Landscapes" name="Landscapes" value="Landscapes"> <label for="Landscapes"> Landscapes</label><br>
 				<input type="checkbox" id="Maps_Flags" name="Maps_Flags" value="Maps_Flags"> <label for="Maps_Flags"> Maps & Flags</label><br>
+                <input type="checkbox" id="Places_Other" name="Places_Other" value="Places_Other"> <label for="Places_Other"> Places-Other</label><br>
 			</fieldset>
         </td>
 
@@ -102,6 +103,7 @@
 			</fieldset><br>
             <fieldset class="with_margin">
                 <legend><b>Other</b> </legend>
+                <input type="checkbox" id="Logos_Symbols" name="Logos_Symbols" value="Logos_Symbols"> <label for="Logos_Symbols"> Logos & Symbols</label><br>
                 <input type="checkbox" id="Other" name="Other" value="Other"> <label for="Other"> Other</label><br>
                 <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>
@@ -127,7 +129,6 @@
     let current_index = -1;
 
     function push_labels() {
-        console.log("test");
         let labels = [];
         $.each($('#main_labels input:checkbox').serializeArray(), function (i, field) {
             labels.push(field.value);
@@ -137,7 +138,7 @@
         let other_text = $("#other_text").val();
         $("#other_text").val("");
 
-        let item_labels = {"id": data[current_index].id, "labels": labels, "other_text": other_text};
+        let item_labels = {"id": data[current_index].id, "url": data[current_index].url, "labels": labels, "other_text": other_text};
 
         all_labels.push(item_labels);
     }
@@ -150,7 +151,6 @@
         }
 
         $("#main_image").attr("src", data[++current_index].url)
-        // Update counter
         $("#counter").text(current_index + 1 + "/" + data.length);
 
         if (current_index>=data.length-1) {

@@ -124,6 +124,7 @@ if __name__ == "__main__":
 {generate_column(root, "Culture", 3)}<br>
             <fieldset class="with_margin">
                 <legend><b>Other</b> </legend>
+                <input type="checkbox" id="Logos_Symbols" name="Logos_Symbols" value="Logos_Symbols"> <label for="Logos_Symbols"> Logos & Symbols</label><br>
                 <input type="checkbox" id="Other" name="Other" value="Other"> <label for="Other"> Other</label><br>
                 <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>
@@ -149,7 +150,6 @@ if __name__ == "__main__":
     let current_index = -1;
 
     function push_labels() {{
-        console.log("test");
         let labels = [];
         $.each($('#main_labels input:checkbox').serializeArray(), function (i, field) {{
             labels.push(field.value);
@@ -159,7 +159,7 @@ if __name__ == "__main__":
         let other_text = $("#other_text").val();
         $("#other_text").val("");
 
-        let item_labels = {{"id": data[current_index].id, "labels": labels, "other_text": other_text}};
+        let item_labels = {{"id": data[current_index].id, "url": data[current_index].url, "labels": labels, "other_text": other_text}};
 
         all_labels.push(item_labels);
     }}
@@ -172,6 +172,7 @@ if __name__ == "__main__":
         }}
 
         $("#main_image").attr("src", data[++current_index].url)
+        $("#counter").text(current_index + 1 + "/" + data.length);
 
         if (current_index>=data.length-1) {{
             $("#next_button").hide()
@@ -208,7 +209,7 @@ if __name__ == "__main__":
 </body>
 </html>"""
 
-    with open("templates/index.html", "w") as file:
+    with open("templates/index.html", "w", encoding="utf-8") as file:
         file.write(doc)
 
     print("Done.")

@@ -263,15 +263,10 @@ class Taxonomy:
 
             stem.add_children(
                 [
-                    Label("Biology", ["Biology"], self.hierarchical),
-                    Label("Physics", ["Physics"], self.hierarchical),
-                    Label(
-                        "Earth & Environment",
-                        ["Earth sciences", "Weather and climate"],
-                        self.hierarchical,
-                    ),
+                    Label("Diagrams", ["Diagrams"], self.hierarchical),
                     Label("Mathematics", ["Mathematics"], self.hierarchical),
                     Label("Chemistry", ["Chemistry"], self.hierarchical),
+                    Label("Geology", ["Geology"], self.hierarchical),
                     Label("Space", ["Astronomy"], self.hierarchical),
                     Label(
                         "Medicine & Health", ["Medicine", "Health"], self.hierarchical
@@ -297,6 +292,11 @@ class Taxonomy:
             places.add_children(
                 [
                     Label("Architecture", ["Architecture"], self.hierarchical),
+                    Label(
+                        "Monuments & Memorials",
+                        ["Monuments and memorials"],
+                        self.hierarchical,
+                    ),
                     Label("Landscapes", ["Landscapes"], self.hierarchical),
                     Label("Maps & Flags", ["Maps", "Flags"], self.hierarchical),
                 ]
@@ -306,11 +306,10 @@ class Taxonomy:
             society = Label("Society", ["Society"], self.hierarchical)
             society.add_children(
                 [
-                    Label("People", ["People"], self.hierarchical),
+                    Label("People", ["People", "Human births"], self.hierarchical),
                     Label("Sports", ["Sports"], self.hierarchical),
                     Label("Politics", ["Politics"], self.hierarchical),
                     Label("Events", ["Events"], self.hierarchical),
-                    Label("Entertainment", ["Entertainment"], self.hierarchical),
                     Label("Transportation", ["Transport"], self.hierarchical),
                 ]
             )
@@ -328,6 +327,10 @@ class Taxonomy:
                 ]
             )
             self.taxonomy.add_child(culture)
+
+            self.taxonomy.add_child(
+                Label("Logos & Symbols", ["Logos"], self.hierarchical)
+            )
 
         else:
             raise ValueError("Invalid taxonomy version")
