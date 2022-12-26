@@ -63,7 +63,6 @@ class HierarchicalModel(keras.Model):
         if training:
             return outputs
         else:
-            print(outputs)
             return self.max_constrain(outputs)
 
     def max_constrain(self, output):

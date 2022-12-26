@@ -86,10 +86,16 @@ elif config['oversample']:
     hf.print_time(start)
 
 start = time.time()
-val_stop, _ = hf.get_flow(df_file=config['data_folder'] + '/val_stop_df.json.bz2',
+# val_stop, _ = hf.get_flow(df_file=config['data_folder'] + '/val_stop_df.json.bz2',
+#                           batch_size=config['batch_size'],
+#                           nr_classes=config['nr_classes'],
+#                           image_dimension=config['image_dimension'])
+
+val_stop, _ = hf.get_flow(df_file=config['data_folder'] + '/val_df.json.bz2',
                           batch_size=config['batch_size'],
                           nr_classes=config['nr_classes'],
                           image_dimension=config['image_dimension'])
+
 print('LOG: Got the validation flow')
 hf.print_time(start)
 
@@ -171,12 +177,14 @@ elif config['hierarchical']:
     history = model.fit(train, 
                         verbose=2,
                         epochs=config['epochs'], 
+                        # steps_per_epoch=500,
                         validation_data=val_stop,
                         callbacks=[cp_callback, history_callback]) 
 else:
     history = model.fit(
         train,
         verbose=2,
+        # steps_per_epoch=500,
         validation_data=val_stop,
         epochs=config['epochs'],
         callbacks=[cp_callback, history_callback, early_stopping_callback])
@@ -191,7 +199,7 @@ training_metrics = pd.read_csv(config['results_folder'] + '/history.csv')
 
 epochs = training_metrics.shape[0]
 
-_ = plt.subplot(1, 6, 1)
+_ = plt.subplot(1, 5, 1)
 plt.plot(range(config['epochs']), training_metrics.loss.values, label='Training loss')
 plt.plot(range(config['epochs']), training_metrics.val_loss.values, label='Validation loss')
 plt.xlabel('Epochs')
@@ -199,7 +207,7 @@ plt.title('Loss')
 plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
 plt.legend(['Train', 'Validation'])
 
-_ = plt.subplot(1, 6, 2)
+_ = plt.subplot(1, 5, 2)
 plt.plot(range(config['epochs']), training_metrics.recall.values, label='Training recall')
 plt.plot(range(config['epochs']), training_metrics.val_recall.values, label='Validation recall')
 plt.title('Recall')
@@ -207,7 +215,7 @@ plt.xlabel('Epochs')
 plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
 plt.legend(['Train', 'Validation'])
 
-_ = plt.subplot(1, 6, 3)
+_ = plt.subplot(1, 5, 3)
 plt.plot(range(config['epochs']), training_metrics.precision.values, label='Training precision')
 plt.plot(range(config['epochs']), training_metrics.val_precision.values, label='Validation precision')
 plt.title('Precision')
@@ -215,7 +223,7 @@ plt.xlabel('Epochs')
 plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
 plt.legend(['Train', 'Validation'])
 
-_ = plt.subplot(1, 6, 4)
+_ = plt.subplot(1, 5, 4)
 plt.plot(range(config['epochs']), training_metrics.pr_auc.values, label='Training PR_AUC')
 plt.plot(range(config['epochs']), training_metrics.val_pr_auc.values, label='Validation PR_AUC')
 plt.title('PR AUC')
@@ -223,15 +231,7 @@ plt.xlabel('Epochs')
 plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
 plt.legend(['Train', 'Validation'])
 
-_ = plt.subplot(1, 6, 5)
-plt.plot(range(config['epochs']), training_metrics.roc_auc.values, label='Training ROC_AUC')
-plt.plot(range(config['epochs']), training_metrics.val_roc_auc.values, label='Validation ROC_AUC')
-plt.title('ROC AUC')
-plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
-plt.legend(['Train', 'Validation'])
-
-_ = plt.subplot(1, 6, 6)
+_ = plt.subplot(1, 5, 5)
 plt.plot(range(config['epochs']), training_metrics.binary_accuracy.values, label='Training binary acc')
 plt.plot(range(config['epochs']), training_metrics.val_binary_accuracy.values, label='Validation binary acc')
 plt.title('Binary accuracy')
@@ -241,38 +241,5 @@ plt.legend(['Train', 'Validation'])
 
 hf.save_img(config['results_folder'] + '/training_metrics.png')
 
-_ = plt.subplot(1, 4, 1)
-plt.plot(range(config['epochs']), training_metrics.tp.values, label='Training TP')
-plt.plot(range(config['epochs']), training_metrics.val_tp.values, label='Validation TP')
-plt.xlabel('Epochs')
-plt.title('TP')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
-plt.legend(['Train', 'Validation'])
-
-_ = plt.subplot(1, 4, 2)
-plt.plot(range(config['epochs']), training_metrics.tn.values, label='Training TN')
-plt.plot(range(config['epochs']), training_metrics.val_tn.values, label='Validation TN')
-plt.title('TN')
-plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
-plt.legend(['Train', 'Validation'])
-
-_ = plt.subplot(1, 4, 3)
-plt.plot(range(config['epochs']), training_metrics.fp.values, label='Training FP')
-plt.plot(range(config['epochs']), training_metrics.val_fp.values, label='Validation FP')
-plt.title('FP')
-plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
-plt.legend(['Train', 'Validation'])
-
-_ = plt.subplot(1, 4, 4)
-plt.plot(range(config['epochs']), training_metrics.fn.values, label='Training FN')
-plt.plot(range(config['epochs']), training_metrics.val_fn.values, label='Validation FN')
-plt.title('FN')
-plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
-plt.legend(['Train', 'Validation'])
-
-hf.save_img(config['results_folder'] + '/training_metrics_confusion_matrix.png')
 
 # ======================================================
