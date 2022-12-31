@@ -87,7 +87,7 @@
 				<input type="checkbox" id="Monuments_Memorials" name="Monuments_Memorials" value="Monuments_Memorials"> <label for="Monuments_Memorials"> Monuments & Memorials</label><br>
 				<input type="checkbox" id="Landscapes" name="Landscapes" value="Landscapes"> <label for="Landscapes"> Landscapes</label><br>
 				<input type="checkbox" id="Maps_Flags" name="Maps_Flags" value="Maps_Flags"> <label for="Maps_Flags"> Maps & Flags</label><br>
-                <input type="checkbox" id="Places" name="Places" value="Places"> <label for="Places"> Places</label><br>
+                <input type="checkbox" id="Places_Other" name="Places_Other" value="Places_Other"> <label for="Places_Other"> Places-Other</label><br>
 			</fieldset>
         </td>
 
@@ -104,7 +104,8 @@
             <fieldset class="with_margin">
                 <legend><b>Other</b> </legend>
                 <input type="checkbox" id="Logos_Symbols" name="Logos_Symbols" value="Logos_Symbols"> <label for="Logos_Symbols"> Logos & Symbols</label><br>
-                <input type="checkbox" id="None" name="None" value="None"> <label for="None"> None of those</label><br>
+                <input type="checkbox" id="Other" name="Other" value="Other"> <label for="Other"> Other</label><br>
+                <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>
         </td>
 
@@ -134,7 +135,10 @@
         });
         $("input:checkbox").prop('checked', "");
 
-        let item_labels = {"id": data[current_index].id, "url": data[current_index].url, "labels": labels};
+        let other_text = $("#other_text").val();
+        $("#other_text").val("");
+
+        let item_labels = {"id": data[current_index].id, "url": data[current_index].url, "labels": labels, "other_text": other_text};
 
         all_labels.push(item_labels);
     }
