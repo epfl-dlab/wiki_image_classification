@@ -21,7 +21,7 @@ if __name__ == "__main__":
     seed = int(args.seed) if args.seed else 0
 
     df_list = []
-    path = MTURK_PATH + "annotated/"
+    path = GTRUTH_PATH + "annotated/"
     for file in filter(
         lambda x: x.startswith(f"{n}_{seed}_")
         and x.endswith(".json")

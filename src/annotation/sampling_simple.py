@@ -26,4 +26,4 @@ if __name__ == "__main__":
     files_sample = files.sample(n=n, random_state=seed)
     files_sample["url"] = files_sample.url.apply(lambda x: UPLOAD_URL + x)
     files_sample = files_sample[["id", "title", "url"]]
-    files_sample.to_json(MTURK_PATH + f"{n}_{seed}_sample.json", orient="records")
+    files_sample.to_json(GTRUTH_PATH + f"{n}_{seed}_sample.json", orient="records")

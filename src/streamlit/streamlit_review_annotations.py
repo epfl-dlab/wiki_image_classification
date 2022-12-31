@@ -58,7 +58,7 @@ def load_dataset():
         with st.spinner("Loading files..."):
             with server_state_lock[st.session_state.dataset]:
                 server_state[st.session_state.dataset] = pd.read_json(
-                    MTURK_PATH + "annotated/" + st.session_state.dataset
+                    GTRUTH_PATH + "annotated/" + st.session_state.dataset
                 )
 
     st.session_state.filesize = len(server_state[st.session_state.dataset])
@@ -95,7 +95,7 @@ def main():
         st.session_state.dataset = list(
             filter(
                 lambda f: f.endswith("_combined.json"),
-                os.listdir(MTURK_PATH + "annotated/"),
+                os.listdir(GTRUTH_PATH + "annotated/"),
             )
         )[0]
         load_dataset()
@@ -107,7 +107,7 @@ def main():
             options=list(
                 filter(
                     lambda f: f.endswith("_combined.json"),
-                    os.listdir(MTURK_PATH + "annotated/"),
+                    os.listdir(GTRUTH_PATH + "annotated/"),
                 )
             ),
             key="dataset",
