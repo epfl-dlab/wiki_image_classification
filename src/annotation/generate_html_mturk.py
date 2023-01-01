@@ -114,6 +114,7 @@ if __name__ == "__main__":
 .question_mark {{
   width: 15px;
   opacity: 0.5;
+  vertical-align: middle;
 }}
 
 .tooltip_image {{
@@ -148,6 +149,14 @@ if __name__ == "__main__":
 
 .tooltip:hover .tooltiptext {{
   visibility: visible;
+}}
+
+.with_margin{{
+    width: 220px;
+}}
+
+crowd-checkbox{{
+    margin-bottom: 5px;
 }}
 </style>
 
