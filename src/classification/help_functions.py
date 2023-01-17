@@ -272,7 +272,7 @@ def scumble(y_true):
     return SCUMBLE_D, SCUMBLE_ins
 
 
-def get_flow(nr_classes, image_dimension, batch_size, df_file='',  df=None):
+def get_flow(nr_classes, image_dimension, batch_size, df_file='', df=None):
     if df_file:
         df = pd.read_json(df_file, compression='bz2')
     if not nr_classes == 'all': 
@@ -583,6 +583,19 @@ def plot_distribution(dataframe, filename, minimal_nr_images=0):
         _ = plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.6)
 
     _ = plt.yticks(range(y_true.shape[1]), np.array(list(_data.class_indices.keys()))[sorted_indices], fontsize=12)
+    _ = plt.xscale('log')
+    _ = plt.xlabel('Count', fontsize=13)
+    _ = plt.ylabel('Labels', fontsize=13)
+    _ = plt.grid(True)
+    save_img(filename)
+
+def plot_distribution_pred(y_pred, label_names, filename):
+    _ = plt.figure(figsize=(8, 14))
+    sorted_indices = np.argsort(np.sum(y_pred, axis=0))
+    sorted_images_per_class = y_pred.sum(axis=0)[sorted_indices]   
+    _ = plt.barh(np.array(range(y_pred.shape[1])), sorted_images_per_class, color='blue', alpha=0.6)
+
+    _ = plt.yticks(range(y_pred.shape[1]), np.array(label_names)[sorted_indices], fontsize=12)
     _ = plt.xscale('log')
     _ = plt.xlabel('Count', fontsize=13)
     _ = plt.ylabel('Labels', fontsize=13)

@@ -26,10 +26,17 @@ print('\n\n\n=============== EVALUATION ====================\n')
 # ======================================================
 
 # Load test set
-test, _ = hf.get_flow(df_file=config['data_folder'] + '/test_df.json.bz2',
+test, _ = hf.get_flow(
+                    #   df_file=config['data_folder'] + '/test_df.json.bz2',
+                      df_file=config['data_folder'] + '/train_df.json.bz2', # evaluate on training set
                       batch_size=config['batch_size'],
                       nr_classes=config['nr_classes'],
                       image_dimension=config['image_dimension'])
+y_true_test = hf.get_y_true(shape=(test.samples, len(test.class_indices)), 
+                            classes=test.classes)
+label_frequencies = y_true_test.sum(axis=0) / y_true_test.sum()
+print('Label frequencies')
+print(label_frequencies)
 
 # Create model
 if config['hierarchical']:
@@ -46,13 +53,14 @@ model.load_weights(latest)
 # Predict on test set
 print('Predicting on test set:\n')
 probs_test = model.predict(test, verbose=2)
-y_true_test = hf.get_y_true(shape=(test.samples, len(test.class_indices)), 
-                            classes=test.classes)
+
 y_pred_test_05 = 1 * (probs_test > 0.5)
 
-THRESHOLD_MOVE = False
+THRESHOLD_MOVE = True
 if THRESHOLD_MOVE:
-    val_threshold, _ = hf.get_flow(df_file=config['data_folder'] + '/val_threshold_df.json.bz2',
+    val_threshold, _ = hf.get_flow(
+                                #    df_file=config['data_folder'] + '/val_threshold_df.json.bz2',
+                                   df_file=config['data_folder'] + '/val_df.json.bz2',
                                    batch_size=config['batch_size'],
                                    nr_classes=config['nr_classes'],
                                    image_dimension=config['image_dimension'])
@@ -68,6 +76,20 @@ if THRESHOLD_MOVE:
                                             N=7,
                                             image_path=config['results_folder'])
     y_pred_test_per_class_threshold = 1 * (probs_test > optim_thresholds)
+
+
+# Distribution of predictions
+nr_images = y_pred_test_05.shape[0]
+pctgs = [round(100 * pctg, 4) for pctg in y_pred_test_05.sum(axis=0) / nr_images]
+hf.plot_distribution_pred(y_pred_test_05, list(test.class_indices.keys()), config['results_folder'] + '/distr_pred_05.png')
+print('\n---------- DISTRIBUTION OF PREDICTIONS ----------')
+print(dict(zip(list(test.class_indices.keys()), pctgs)))
+if THRESHOLD_MOVE:
+    hf.plot_distribution_pred(y_pred_test_per_class_threshold, list(test.class_indices.keys()), config['results_folder'] + '/distr_pred_tresh.png')
+    pctgs = [round(100 * pctg, 4) for pctg in y_pred_test_per_class_threshold.sum(axis=0) / nr_images]
+    print('\n---------- DISTRIBUTION OF PREDICTIONS (individual thresholds) ----------')
+    print(dict(zip(list(test.class_indices.keys()), pctgs)))
+
 
 def plot_f1_scores_side_by_side(f1_scores_05, f1_scores_thresh, image_path):
     plt.figure(figsize=(12, 6))
@@ -158,6 +180,7 @@ metrics_dict = dict()
 metrics_dict['label_name'] = list(test.class_indices.keys())
 metrics_dict['pr_auc'] = list(pr_auc.values())
 metrics_dict['random_auc'] = list(random_auc.values())
+metrics_dict['frequency'] = label_frequencies
 metrics_df = pd.DataFrame(metrics_dict)
 metrics_df['better_than_random'] = round(metrics_df['pr_auc'] / metrics_df['random_auc'], 3)
 macro_pr_auc = metrics_df['pr_auc'].sum() / len(metrics_df)
