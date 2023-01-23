@@ -29,46 +29,49 @@ def showFile():
     url = file.url
 
     # Display the image with a link to commons
+    st.subheader(file.title)
     st.markdown(
-        f'<img src="{url}" alt="drawing" width="600"/>',
+        f'<a href="{COMMONS_URL + url.split("/")[-1]}"><img src="{url}" alt="drawing" width="600"/>',
         unsafe_allow_html=True,
     )
 
     st.markdown("")
-    for name in st.session_state.names:
+    st.markdown(f"HIT {file.HITId}")
+    for i in range(st.session_state.n_assignments + 1):
         markdown_str = (
-            f"Labels {name.capitalize()}: ["
+            f"Labels {file[f'WorkerId{i}']}: ["
             + ", ".join(
                 [
-                    f'<span style="color:{["red", "green"][int(label in file.common_labels)]}">{label}</span>'
-                    for label in file[f"labels_{name}"]
+                    f'<span style="color:{["red", "green"][int(label in file.labels_enriched_majority)]}">{label}</span>'
+                    for label in file[f"labels{i}"]
                 ]
             )
             + "]"
         )
-
-        if file[f"other_text_{name}"]:
-            markdown_str += f" ------ Other text: {file[f'other_text_{name}']}"
-
         st.markdown(markdown_str, unsafe_allow_html=True)
+
+    st.markdown(f"Labels majority: {file.labels_enriched_majority}")
 
 
 def load_dataset():
     if st.session_state.dataset not in server_state:
         with st.spinner("Loading files..."):
-            with server_state_lock[st.session_state.dataset]:
-                server_state[st.session_state.dataset] = pd.read_json(
-                    GTRUTH_PATH + "annotated/" + st.session_state.dataset
-                )
+            df = pd.read_csv(MTURK_PATH + st.session_state.dataset)
+            for column in filter(
+                lambda x: x.startswith("labels"),
+                df.columns,
+            ):
+                df[column] = df[column].apply(lambda x: eval(x))
+            server_state[st.session_state.dataset] = df
 
     st.session_state.filesize = len(server_state[st.session_state.dataset])
-    names = set()
+    n_assignments = 0
     for column in filter(
-        lambda x: x.startswith("labels_"),
+        lambda x: x.startswith("WorkerId"),
         server_state[st.session_state.dataset].columns,
     ):
-        names.add(column.split("_")[-1])
-    st.session_state.names = list(names)
+        n_assignments = max(n_assignments, int(column[-1]))
+    st.session_state.n_assignments = n_assignments
 
     time.sleep(1)
     showFile()
@@ -94,8 +97,8 @@ def main():
         st.session_state.previous_disabled = True
         st.session_state.dataset = list(
             filter(
-                lambda f: f.endswith("_combined.json"),
-                os.listdir(GTRUTH_PATH + "annotated/"),
+                lambda f: f.endswith("_aggregated.csv"),
+                os.listdir(MTURK_PATH),
             )
         )[0]
         load_dataset()
@@ -106,8 +109,8 @@ def main():
             "Dataset",
             options=list(
                 filter(
-                    lambda f: f.endswith("_combined.json"),
-                    os.listdir(GTRUTH_PATH + "annotated/"),
+                    lambda f: f.endswith("_aggregated.csv"),
+                    os.listdir(MTURK_PATH),
                 )
             ),
             key="dataset",

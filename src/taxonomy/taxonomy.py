@@ -4,6 +4,7 @@ class Label:
         self.own_categories = categories
         self.categories = categories
         self.children = []
+        self.ancestors = []
         self.hierarchical = hierarchical
 
     def add_child(self, child):
@@ -13,6 +14,7 @@ class Label:
                 curr = queue.pop()
                 self.categories += curr.categories
                 queue.extend(curr.children)
+                self.name != "All" and curr.ancestors.append(self.name)
         self.children.append(child)
 
     def add_children(self, children):
@@ -336,6 +338,20 @@ class Taxonomy:
             raise ValueError("Invalid taxonomy version")
 
         return self.taxonomy
+
+    def get_label_mapping(self):
+        """
+        Return a dictionary mapping strings to labels
+        """
+        mapping = {}
+
+        def dfs(node):
+            mapping[node.name] = node
+            for children in node.children:
+                dfs(children)
+
+        dfs(self.taxonomy)
+        return mapping
 
     def get_flat_mapping(self):
         mapping = {}

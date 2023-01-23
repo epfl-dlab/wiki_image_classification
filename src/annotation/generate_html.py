@@ -125,7 +125,8 @@ if __name__ == "__main__":
             <fieldset class="with_margin">
                 <legend><b>Other</b> </legend>
                 <input type="checkbox" id="Logos_Symbols" name="Logos_Symbols" value="Logos_Symbols"> <label for="Logos_Symbols"> Logos & Symbols</label><br>
-                <input type="checkbox" id="None" name="None" value="None"> <label for="None"> None of those</label><br>
+                <input type="checkbox" id="Other" name="Other" value="Other"> <label for="Other"> Other</label><br>
+                <input type="text" id="other_text" name="other_text"><br><br>
             </fieldset><br>
         </td>
 
@@ -155,7 +156,10 @@ if __name__ == "__main__":
         }});
         $("input:checkbox").prop('checked', "");
 
-        let item_labels = {{"id": data[current_index].id, "url": data[current_index].url, "labels": labels}};
+        let other_text = $("#other_text").val();
+        $("#other_text").val("");
+
+        let item_labels = {{"id": data[current_index].id, "url": data[current_index].url, "labels": labels, "other_text": other_text}};
 
         all_labels.push(item_labels);
     }}

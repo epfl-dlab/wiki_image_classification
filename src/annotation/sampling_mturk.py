@@ -25,5 +25,11 @@ if __name__ == "__main__":
 
     files_sample = files.sample(n=n, random_state=seed)
     files_sample["url"] = files_sample.url.apply(lambda x: UPLOAD_URL + x)
-    files_sample = files_sample[["id", "title", "url"]]
-    files_sample.to_json(GTRUTH_PATH + f"{n}_{seed}_sample.json", orient="records")
+    files_sample = files_sample[["id", "url"]]
+
+    batch_size = 10
+    url_batched = files_sample["url"].values.reshape((n // batch_size, batch_size))
+    files_sample_reshaped = pd.DataFrame(url_batched)
+    files_sample_reshaped.columns = [f"url{i}" for i in range(batch_size)]
+
+    files_sample_reshaped.to_csv(MTURK_PATH + f"{n}_{seed}_sample.csv", index=False)
