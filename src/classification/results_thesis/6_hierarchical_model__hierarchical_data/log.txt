@@ -1,0 +1,75 @@
+{'augment': False, 'oversample': False, 'undersample': False, 'loss_function': 'binary_crossentropy', 'class_weights': False, 'per_class_thresh': False, 'random_initialization': False, 'number_trainable_layers': 'all', 'hierarchical': True, 'data_folder': 'data/split_hierarchical_data_221218', 'batch_size': 512, 'basemodel': 'EfficientNetB2', 'epochs': 15, 'nr_classes': 'all', 'image_dimension': 64, 'results_folder': 'results_thesis/109_hierarchical__bs_512'}
+Time passed: 0.0 hours
+13:08:22
+Found 773500 validated image filenames belonging to 31 classes.
+LOG: finished getting the first flow
+Time passed: 0.14 hours
+13:16:52
+Found 136500 validated image filenames belonging to 31 classes.
+LOG: Got the validation flow
+Time passed: 0.0 hours
+13:17:04
+LOG: creating and training model
+LOG: Getting hierarchical model...
+Epoch 1/15
+
+Epoch 00001: val_loss improved from inf to 0.17845, saving model to results_thesis/109_hierarchical__bs_512/cp-0001.ckpt
+500/500 - 3665s - loss: 0.1850 - binary_accuracy: 0.9255 - recall: 0.2087 - precision: 0.5156 - pr_auc: 0.0755 - val_loss: 0.1784 - val_binary_accuracy: 0.9271 - val_recall: 0.2309 - val_precision: 0.5410 - val_pr_auc: 0.0756
+Epoch 2/15
+
+Epoch 00002: val_loss did not improve from 0.17845
+500/500 - 5226s - loss: 0.1799 - binary_accuracy: 0.9264 - recall: 0.2051 - precision: 0.5340 - pr_auc: 0.0756 - val_loss: 0.1786 - val_binary_accuracy: 0.9271 - val_recall: 0.2309 - val_precision: 0.5410 - val_pr_auc: 0.0756
+Epoch 3/15
+
+Epoch 00003: val_loss improved from 0.17845 to 0.17010, saving model to results_thesis/109_hierarchical__bs_512/cp-0003.ckpt
+500/500 - 4964s - loss: 0.1734 - binary_accuracy: 0.9306 - recall: 0.2423 - precision: 0.6018 - pr_auc: 0.0988 - val_loss: 0.1701 - val_binary_accuracy: 0.9318 - val_recall: 0.2322 - val_precision: 0.6325 - val_pr_auc: 0.1133
+Epoch 4/15
+
+Epoch 00004: val_loss improved from 0.17010 to 0.16517, saving model to results_thesis/109_hierarchical__bs_512/cp-0004.ckpt
+500/500 - 4509s - loss: 0.1678 - binary_accuracy: 0.9325 - recall: 0.2409 - precision: 0.6434 - pr_auc: 0.1235 - val_loss: 0.1652 - val_binary_accuracy: 0.9333 - val_recall: 0.2230 - val_precision: 0.6794 - val_pr_auc: 0.1388
+Epoch 5/15
+
+Epoch 00005: val_loss improved from 0.16517 to 0.16220, saving model to results_thesis/109_hierarchical__bs_512/cp-0005.ckpt
+500/500 - 3530s - loss: 0.1630 - binary_accuracy: 0.9342 - recall: 0.2550 - precision: 0.6663 - pr_auc: 0.1452 - val_loss: 0.1622 - val_binary_accuracy: 0.9340 - val_recall: 0.2494 - val_precision: 0.6703 - val_pr_auc: 0.1547
+Epoch 6/15
+
+Epoch 00006: val_loss improved from 0.16220 to 0.16078, saving model to results_thesis/109_hierarchical__bs_512/cp-0006.ckpt
+500/500 - 3230s - loss: 0.1609 - binary_accuracy: 0.9348 - recall: 0.2646 - precision: 0.6760 - pr_auc: 0.1595 - val_loss: 0.1608 - val_binary_accuracy: 0.9348 - val_recall: 0.2706 - val_precision: 0.6707 - val_pr_auc: 0.1643
+Epoch 7/15
+
+Epoch 00007: val_loss improved from 0.16078 to 0.15851, saving model to results_thesis/109_hierarchical__bs_512/cp-0007.ckpt
+500/500 - 2835s - loss: 0.1586 - binary_accuracy: 0.9355 - recall: 0.2730 - precision: 0.6814 - pr_auc: 0.1699 - val_loss: 0.1585 - val_binary_accuracy: 0.9354 - val_recall: 0.2778 - val_precision: 0.6764 - val_pr_auc: 0.1718
+Epoch 8/15
+
+Epoch 00008: val_loss improved from 0.15851 to 0.15727, saving model to results_thesis/109_hierarchical__bs_512/cp-0008.ckpt
+500/500 - 3166s - loss: 0.1570 - binary_accuracy: 0.9361 - recall: 0.2820 - precision: 0.6860 - pr_auc: 0.1773 - val_loss: 0.1573 - val_binary_accuracy: 0.9357 - val_recall: 0.3069 - val_precision: 0.6615 - val_pr_auc: 0.1809
+Epoch 9/15
+
+Epoch 00009: val_loss improved from 0.15727 to 0.15629, saving model to results_thesis/109_hierarchical__bs_512/cp-0009.ckpt
+500/500 - 2874s - loss: 0.1561 - binary_accuracy: 0.9363 - recall: 0.2877 - precision: 0.6897 - pr_auc: 0.1848 - val_loss: 0.1563 - val_binary_accuracy: 0.9361 - val_recall: 0.3092 - val_precision: 0.6661 - val_pr_auc: 0.1842
+Epoch 10/15
+
+Epoch 00010: val_loss improved from 0.15629 to 0.15549, saving model to results_thesis/109_hierarchical__bs_512/cp-0010.ckpt
+500/500 - 2196s - loss: 0.1548 - binary_accuracy: 0.9368 - recall: 0.2937 - precision: 0.6950 - pr_auc: 0.1916 - val_loss: 0.1555 - val_binary_accuracy: 0.9364 - val_recall: 0.2916 - val_precision: 0.6861 - val_pr_auc: 0.1899
+Epoch 11/15
+
+Epoch 00011: val_loss improved from 0.15549 to 0.15494, saving model to results_thesis/109_hierarchical__bs_512/cp-0011.ckpt
+500/500 - 2187s - loss: 0.1539 - binary_accuracy: 0.9372 - recall: 0.2986 - precision: 0.6974 - pr_auc: 0.1986 - val_loss: 0.1549 - val_binary_accuracy: 0.9367 - val_recall: 0.3113 - val_precision: 0.6759 - val_pr_auc: 0.1958
+Epoch 12/15
+
+Epoch 00012: val_loss improved from 0.15494 to 0.15478, saving model to results_thesis/109_hierarchical__bs_512/cp-0012.ckpt
+500/500 - 2066s - loss: 0.1529 - binary_accuracy: 0.9376 - recall: 0.3045 - precision: 0.7004 - pr_auc: 0.2032 - val_loss: 0.1548 - val_binary_accuracy: 0.9367 - val_recall: 0.2919 - val_precision: 0.6927 - val_pr_auc: 0.1943
+Epoch 13/15
+
+Epoch 00013: val_loss improved from 0.15478 to 0.15462, saving model to results_thesis/109_hierarchical__bs_512/cp-0013.ckpt
+500/500 - 1963s - loss: 0.1522 - binary_accuracy: 0.9378 - recall: 0.3092 - precision: 0.7014 - pr_auc: 0.2078 - val_loss: 0.1546 - val_binary_accuracy: 0.9367 - val_recall: 0.3048 - val_precision: 0.6817 - val_pr_auc: 0.1967
+Epoch 14/15
+
+Epoch 00014: val_loss improved from 0.15462 to 0.15446, saving model to results_thesis/109_hierarchical__bs_512/cp-0014.ckpt
+500/500 - 1807s - loss: 0.1512 - binary_accuracy: 0.9383 - recall: 0.3144 - precision: 0.7054 - pr_auc: 0.2123 - val_loss: 0.1545 - val_binary_accuracy: 0.9367 - val_recall: 0.3080 - val_precision: 0.6786 - val_pr_auc: 0.1990
+Epoch 15/15
+
+Epoch 00015: val_loss improved from 0.15446 to 0.15384, saving model to results_thesis/109_hierarchical__bs_512/cp-0015.ckpt
+500/500 - 2107s - loss: 0.1506 - binary_accuracy: 0.9384 - recall: 0.3156 - precision: 0.7074 - pr_auc: 0.2174 - val_loss: 0.1538 - val_binary_accuracy: 0.9369 - val_recall: 0.3188 - val_precision: 0.6748 - val_pr_auc: 0.2034
+Time passed: 12.91 hours
+02:11:37

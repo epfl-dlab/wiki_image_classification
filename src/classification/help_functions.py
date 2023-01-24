@@ -1,38 +1,129 @@
+#
+# This file contains a variety of help functions used in the train_classification.py file, and in the 
+# Jupyter notebooks. 
+#
+
+# Standard Python libraries
+import time
 import numpy as np
 import pandas as pd
-import time
-import tensorflow as tf
+from functools import partial
+from collections import Counter
 from matplotlib import pyplot as plt
-from tensorflow.keras.applications import EfficientNetB2
+from sklearn.metrics import f1_score
+from sklearn.metrics import classification_report
+
+# Tensorflow & Keras
+import tensorflow as tf
+from keras import backend
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
+from tensorflow.keras.applications import EfficientNetB2
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from CustomBCE import get_custom_loss
+
+# Other stuff
 from focal_loss import BinaryFocalLoss
-from sklearn.metrics import f1_score
-import seaborn as sns
-from matplotlib.colors import LogNorm
-from sklearn.metrics import classification_report
-from collections import Counter
 import albumentations as A
-from functools import partial
+
 AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-def setup_gpu(gpu_nr):
-    """
-    Limit the code to run on the GPU with number gpu_nr (0 or 1 in iccluster039). 
-    """
-    # tf.config.threading.set_intra_op_parallelism_threads(10) 
-    # tf.config.threading.set_inter_op_parallelism_threads(10) 
-    gpus = tf.config.list_physical_devices('GPU')
-    if gpus:
-        # Restrict TensorFlow to only use the first GPU
-        try:
-            tf.config.set_visible_devices(gpus[gpu_nr], 'GPU')
-            logical_gpus = tf.config.list_logical_devices('GPU')
-            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
-        except RuntimeError as e:
-            print(e)
+
+# =================================== Model-related =========================================
+
+def create_model(n_labels, image_dimension, model_name, number_trainable_layers, y_true=None, loss='binary_crossentropy', random_initialization=False):
+    """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
+    assert(model_name == 'EfficientNetB2')
+    if random_initialization:
+        base_model = EfficientNetB2(include_top=False, 
+                                    weights=None, 
+                                    classes=n_labels,
+                                    input_shape=(image_dimension, image_dimension, 3))
+    else:
+        base_model = EfficientNetB2(include_top=False, 
+                                    weights='imagenet', 
+                                    classes=n_labels,
+                                    input_shape=(image_dimension, image_dimension, 3))
+
+    print(f'\nNumber of layers in basemodel: {len(base_model.layers)}')
+
+    if isinstance(number_trainable_layers, str):
+        assert(number_trainable_layers == 'all')
+    elif isinstance(number_trainable_layers, int):
+        assert(number_trainable_layers >= 0 & number_trainable_layers <= len(base_model.layers))
+    else:
+        raise ValueError('Invalid argument for variable number_of_trainable_layers')
+    if number_trainable_layers == 'all':
+        number_trainable_layers = len(base_model.layers)
+    # Fine tune from this layer onwards
+    fine_tune_at = len(base_model.layers) - number_trainable_layers
+ 
+    print(f'Number of trainable layers: {len(base_model.layers) - fine_tune_at}\n')
+    for layer in base_model.layers[:fine_tune_at]:
+        layer.trainable = False
+
+    model = Sequential([
+        base_model,
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dense(n_labels, activation='sigmoid')
+    ])
+    # Standard binary cross entropy loss
+    if loss == 'binary_crossentropy':
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                    loss='binary_crossentropy',
+                    metrics=[
+                        tf.keras.metrics.BinaryAccuracy(name='binary_accuracy', threshold=0.5),
+                        tf.keras.metrics.Precision(name='precision'),
+                        tf.keras.metrics.Recall(name='recall'),
+                        tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
+                    ])
+    # Binary focal cross entropy loss
+    elif loss == 'focal_loss':
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                    loss=BinaryFocalLoss(gamma=2, from_logits=False),
+                    metrics=[
+                        tf.keras.metrics.BinaryAccuracy(name='binary_accuracy', threshold=0.5),
+                        tf.keras.metrics.Precision(name='precision'),
+                        tf.keras.metrics.Recall(name='recall'),
+                        tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
+                    ])
+    # Sample weight loss
+    elif loss == 'custom_loss':
+        positive_samples_per_class = np.sum(y_true, axis=0)
+        negative_samples_per_class = y_true.shape[0] - positive_samples_per_class
+        alpha_weights = negative_samples_per_class / positive_samples_per_class
+        alpha_weights = tf.cast(alpha_weights, tf.float32)
+        model.compile(optimizer=tf.keras.optimizers.Adam(),
+                        loss=get_custom_loss(alpha_weights),
+                        metrics=[
+                            tf.keras.metrics.BinaryAccuracy(name='binary_accuracy', threshold=0.5),
+                            tf.keras.metrics.Precision(name='precision'),
+                            tf.keras.metrics.Recall(name='recall'),
+                            tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
+                            tf.keras.metrics.AUC(num_thresholds=50, curve='ROC', name='roc_auc', multi_label=True)
+                        ])
+    else:
+        raise ValueError('This loss function is not supported!')
+
+    model.summary()
+    return model
+
+
+def get_flow(image_dimension, batch_size, df_file='', df=None):
+    if df_file:
+        df = pd.read_json(df_file, compression='bz2')
+    datagen = ImageDataGenerator() 
+    flow = datagen.flow_from_dataframe(
+            dataframe=df, 
+            directory='/scratch/WIT_Dataset/images',
+            color_mode='rgb',
+            batch_size=batch_size,
+            x_col='url', 
+            y_col='labels', 
+            class_mode='categorical', 
+            target_size=(image_dimension, image_dimension),
+            shuffle=False)
+    return flow, df
 
 
 def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3):
@@ -48,7 +139,7 @@ def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3):
             labels     - labes [Art, Architecture, ...]
     Output: best_thresholds (nr_labels, )
 
-    Inspiration: GHOST paper.
+    Inspiration: "GHOST: Adjusting the Decision Threshold to Handle Imbalanced Data in Machine Learning" by Esposito et al.
     """
 
     def to_label(probs, threshold):
@@ -96,101 +187,7 @@ def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3):
     save_img(image_path + '/probs.png')
 
     return optim_thresholds
-
-
-def get_top_classes(nr_classes, df):
-    """Returns the nr_classes classes with greater number of samples from the multiclass df."""
-    _generator = ImageDataGenerator() 
-    _data = _generator.flow_from_dataframe(dataframe=df, 
-                                        directory='/scratch/WIT_Dataset/images', 
-                                        x_col='url', 
-                                        y_col='labels', 
-                                        class_mode='categorical', 
-                                        validate_filenames=False)
-
-    y_true = get_y_true(shape=(_data.samples, len(_data.class_indices)), classes=_data.classes)
-
-    sorted_indices = np.argsort(np.sum(y_true, axis=0))[::-1]
-    return np.array(list(_data.class_indices.keys()))[sorted_indices[:nr_classes]]
       
-
-def create_model(n_labels, image_dimension, model_name, number_trainable_layers, y_true=None, loss='binary_crossentropy', random_initialization=False):
-    """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
-    assert(model_name == 'EfficientNetB2')
-    if random_initialization:
-        base_model = EfficientNetB2(include_top=False, 
-                                    weights=None, 
-                                    classes=n_labels,
-                                    input_shape=(image_dimension, image_dimension, 3))
-    else:
-        base_model = EfficientNetB2(include_top=False, 
-                                    weights='imagenet', 
-                                    classes=n_labels,
-                                    input_shape=(image_dimension, image_dimension, 3))
-
-    print(f'\nNumber of layers in basemodel: {len(base_model.layers)}')
-
-    if isinstance(number_trainable_layers, str):
-        assert(number_trainable_layers == 'all')
-    elif isinstance(number_trainable_layers, int):
-        assert(number_trainable_layers >= 0 & number_trainable_layers <= len(base_model.layers))
-    else:
-        raise ValueError('Invalid argument for variable number_of_trainable_layers')
-    if number_trainable_layers == 'all':
-        number_trainable_layers = len(base_model.layers)
-    # Fine tune from this layer onwards
-    fine_tune_at = len(base_model.layers) - number_trainable_layers
- 
-    print(f'Number of trainable layers: {len(base_model.layers) - fine_tune_at}\n')
-    for layer in base_model.layers[:fine_tune_at]:
-        layer.trainable = False
-
-    model = Sequential([
-        base_model,
-        layers.Flatten(),
-        layers.Dense(128, activation='relu'),
-        layers.Dense(n_labels, activation='sigmoid')
-    ])
-
-    if loss == 'binary_crossentropy':
-        model.compile(optimizer=tf.keras.optimizers.Adam(),
-                    loss='binary_crossentropy',
-                    metrics=[
-                        tf.keras.metrics.BinaryAccuracy(name='binary_accuracy', threshold=0.5),
-                        tf.keras.metrics.Precision(name='precision'),
-                        tf.keras.metrics.Recall(name='recall'),
-                        tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
-                    ])
-    # Binary Focal Cross Entropy
-    elif loss == 'focal_loss':
-        model.compile(optimizer=tf.keras.optimizers.Adam(),
-                    loss=BinaryFocalLoss(gamma=2, from_logits=False),
-                    metrics=[
-                        tf.keras.metrics.BinaryAccuracy(name='binary_accuracy', threshold=0.5),
-                        tf.keras.metrics.Precision(name='precision'),
-                        tf.keras.metrics.Recall(name='recall'),
-                        tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
-                    ])
-    elif loss == 'custom_loss':
-        positive_samples_per_class = np.sum(y_true, axis=0)
-        negative_samples_per_class = y_true.shape[0] - positive_samples_per_class
-        alpha_weights = negative_samples_per_class / positive_samples_per_class
-        alpha_weights = tf.cast(alpha_weights, tf.float32)
-        model.compile(optimizer=tf.keras.optimizers.Adam(),
-                        loss=get_custom_loss(alpha_weights),
-                        metrics=[
-                            tf.keras.metrics.BinaryAccuracy(name='binary_accuracy', threshold=0.5),
-                            tf.keras.metrics.Precision(name='precision'),
-                            tf.keras.metrics.Recall(name='recall'),
-                            tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
-                            tf.keras.metrics.AUC(num_thresholds=50, curve='ROC', name='roc_auc', multi_label=True)
-                        ])
-    else:
-        raise ValueError('This loss function is not supported!')
-
-    model.summary()
-    return model
-
 
 def get_y_true(shape, classes):
     """
@@ -222,6 +219,30 @@ def compute_class_weights(y_true):
     class_labels = range(len(class_weights))
     return dict(zip(class_labels, class_weights))
 
+
+def get_custom_loss(alpha_weights):
+    """
+    Sample weight loss implementation, inspired by https://www.tensorflow.org/guide/keras/train_and_evaluate#sample_weights.
+
+    Input:  
+        - alpha_weights: a Tensorflow tensor with dimension (n_labels x 1) containing the n_labels positive weights of each label.
+                         Cast it to a Tensorflow tensor with: `alpha_weights = tf.cast(alpha_weights, tf.float32)`.
+    Output:
+        - custom_loss: a function, to be used as https://www.tensorflow.org/api_docs/python/tf/keras/losses/BinaryCrossentropy.
+    """
+    epsilon = 1e-7
+    @tf.function
+    def custom_loss(y_true, y_pred):
+        y_true = tf.cast(y_true, y_pred.dtype)
+        y_pred = tf.cast(y_pred, y_pred.dtype)
+
+        bce = y_true * tf.math.log(y_pred + epsilon) * alpha_weights
+        bce += (1 - y_true) * tf.math.log(1 - y_pred + epsilon)
+
+        return -backend.mean(bce)
+    return custom_loss
+
+# ====================================== Metrics ============================================
 
 def imbalance_ratio_per_label(y_true):
     """
@@ -272,31 +293,60 @@ def scumble(y_true):
     return SCUMBLE_D, SCUMBLE_ins
 
 
-def get_flow(nr_classes, image_dimension, batch_size, df_file='', df=None):
-    if df_file:
-        df = pd.read_json(df_file, compression='bz2')
-    if not nr_classes == 'all': 
-        # Only keep rows which have either of the top classes
-        top_classes = get_top_classes(nr_classes, df) 
-        ids_x_labels = df.labels.apply(lambda classes_list: any([True for a_class in top_classes if a_class in classes_list]))
-        df_x_labels = df[ids_x_labels]
-        df_x_labels['labels'] = df['labels'].apply(lambda labels_list: [label for label in labels_list if label in top_classes])
-        df = df_x_labels.copy()
+def get_metrics(y_true, y_pred, label_names, image_path):
+    """
+    Prints F1-score, precision, and recall for all classes, top 5 majority classes, and the rest minority classes.
 
-    datagen = ImageDataGenerator() 
-    flow = datagen.flow_from_dataframe(
-            dataframe=df, 
-            directory='/scratch/WIT_Dataset/images',
-            color_mode='rgb',
-            batch_size=batch_size,
-            x_col='url', 
-            y_col='labels', 
-            class_mode='categorical', 
-            target_size=(image_dimension, image_dimension),
-            shuffle=False)
-    
-    return flow, df
+    Output:
+        - f1-scores for all classes.
+    """
+    print(f'\nMean number of label assignments per image in ground-truth: {np.sum(y_true) / y_true.shape[0]:.4f}')
+    print(f'Mean number of label assignments per image in predictions: {np.sum(y_pred) / y_pred.shape[0]:.4f}\n')
 
+    n_labels = y_pred.shape[1]
+    metrics_df = pd.DataFrame(classification_report(y_true, y_pred, target_names=label_names, output_dict=True)).transpose()
+    metrics_df['index'] = np.concatenate((np.arange(start=0, stop=n_labels), [None, None, None, None]))
+    print(metrics_df)
+
+    # Sort the classes by size, descending order
+    sorted_class_sizes = np.argsort(np.sum(y_true, axis=0))[::-1]
+    print(f'Ordered class in descending order of samples:\n {np.array(label_names)[sorted_class_sizes]}')
+
+    # F1-scores
+    sorted_f1score_per_class = metrics_df['f1-score'][0:n_labels][sorted_class_sizes]
+
+    print(f'\nUnweighted avg. F1-score of all classes: {np.sum(sorted_f1score_per_class) / n_labels}')
+    print(f'Unweighted avg. F1-score of top 5 classes: {np.sum(sorted_f1score_per_class[:5]) / 5}')
+    print(f'Unweighted avg. F1-score of the rest: {np.sum(sorted_f1score_per_class[5:]) / (n_labels - 5)}\n')
+
+    # Precision
+    sorted_precision_per_class = metrics_df['precision'][0:n_labels][sorted_class_sizes]
+
+    print(f'\nUnweighted avg. precision of all classes: {np.sum(sorted_precision_per_class) / n_labels}')
+    print(f'Unweighted avg. precision of top 5 classes: {np.sum(sorted_precision_per_class[:5]) / 5}')
+    print(f'Unweighted avg. precision of the rest: {np.sum(sorted_precision_per_class[5:]) / (n_labels - 5)}\n')
+
+    # Recall
+    sorted_recall_per_class = metrics_df['recall'][0:n_labels][sorted_class_sizes]
+
+    print(f'\nUnweighted avg. recall of all classes: {np.sum(sorted_recall_per_class) / n_labels}')
+    print(f'Unweighted avg. recall of top 5 classes: {np.sum(sorted_recall_per_class[:5]) / 5}')
+    print(f'Unweighted avg. recall of the rest: {np.sum(sorted_recall_per_class[5:]) / (n_labels - 5)}\n')
+
+    if image_path:
+        _ = plt.figure(figsize=(8, 14))
+                        
+        _ = plt.title('F1-score per class')
+        _ = plt.barh(range(y_true.shape[1]), sorted_f1score_per_class, color='blue', alpha=0.6)
+        _ = plt.yticks(ticks=range(n_labels), labels=np.array(label_names)[sorted_class_sizes])
+        _ = plt.xlabel('F1-score')
+        _ = plt.grid(True)
+        save_img(image_path)
+
+    return metrics_df['f1-score'][0:n_labels]
+
+
+# ============================= Undersampling & oversampling ================================
 
 def undersample(y_true, label_names, kept_pctg, image_path):
     """
@@ -320,7 +370,10 @@ def undersample(y_true, label_names, kept_pctg, image_path):
 
     def remove_row(label_costs, row_costs):
         """
-        Remove the row with the minimal cost.
+        Removes the row with the minimal cost.
+        Input:
+            - label_costs: a numpy array of dimension (nr_labels x 1) containing the cost of each label
+            - row_costs: a numpy array of dimension (nr_images x 1) containing the cost of each image
         Output:
             - tuple containing the index of the removed row (i.e. image), and the updated row and label costs.
         """
@@ -374,9 +427,17 @@ def oversample(y_true, label_names, add_pctg, image_path):
     label_reward := BIG_NUMBER / label_samples). An image will have high reward when 
     it has rare labels, and small rewards when it has frequent labels.
 
+    Input:
+        - y_true: a binary numpy array of dimension (nr_images x nr_labels) containing the ground-truth
+                  assignments of labels for each image. 
+        - label_names: a list of the names of the labels of dimension (nr_labels x 1).
+        - add_pctg: the percentual size of the data that will be oversampled. Between 0 and 1.
+        - image_path: path to image that displays the imbalance ratio per class before and after oversampling.
     Output:
         - indices_to_add: a dict of the indices to be duplicated and the amount of times 
     """
+    assert(add_pctg > 0 and add_pctg < 1)
+
     mean_ir_original, dict_ir_original = mean_imbalance_ratio(y_true=y_true, class_names=label_names)
 
     original_nr_rows = y_true.shape[0]
@@ -420,6 +481,10 @@ def oversample(y_true, label_names, add_pctg, image_path):
 
 
 def augment(flow, batch_size, image_dimension, idx_to_augment_from):
+    """
+    
+    
+    """
     nr_classes = len(flow.class_indices)
     train_ds = tf.data.Dataset.from_generator(
         lambda: flow, 
@@ -464,27 +529,23 @@ def augment(flow, batch_size, image_dimension, idx_to_augment_from):
     return augment_train_data(train_ds)
 
 
-def plot_confusion_matrices(confusion_matrix, label_names, data_folder):
-    def print_confusion_matrix(confusion_matrix, axes, class_label, class_names, fontsize=14):
-        # From https://stackoverflow.com/questions/62722416/plot-confusion-matrix-for-multilabel-classifcation-python
-        df_cm = pd.DataFrame(confusion_matrix, index=class_names, columns=class_names)
-        try:
-            heatmap = sns.heatmap(df_cm, annot=True, fmt="d", cbar=False, ax=axes, cmap='YlGnBu', norm=LogNorm())
-        except ValueError:
-            raise ValueError('Confusion matrix values must be integers.')
-        heatmap.yaxis.set_ticklabels(heatmap.yaxis.get_ticklabels(), rotation=0, ha='right', fontsize=fontsize)
-        heatmap.xaxis.set_ticklabels(heatmap.xaxis.get_ticklabels(), rotation=45, ha='right', fontsize=fontsize)
-        axes.set_ylabel('True label', fontsize=8)
-        axes.set_xlabel('Predicted label', fontsize=8)
-        axes.set_title(class_label)
+# ====================================== Utilities ==========================================
 
-    fig, ax = plt.subplots(5, 4, figsize=(10, 10))
-        
-    for axes, cfs_matrix, label in zip(ax.flatten(), confusion_matrix, label_names):
-        print_confusion_matrix(cfs_matrix, axes, label, ['N', 'P'])
-        
-    fig.tight_layout()
-    save_img(data_folder + '/confusion_matrix.png')
+def setup_gpu(gpu_nr):
+    """
+    Limit the code to run on the GPU with number gpu_nr (0 or 1 in iccluster039). 
+    """
+    # tf.config.threading.set_intra_op_parallelism_threads(10) 
+    # tf.config.threading.set_inter_op_parallelism_threads(10) 
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        # Restrict TensorFlow to only use the first GPU
+        try:
+            tf.config.set_visible_devices(gpus[gpu_nr], 'GPU')
+            logical_gpus = tf.config.list_logical_devices('GPU')
+            print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPU")
+        except RuntimeError as e:
+            print(e)
 
 
 def print_time(start, ms=False):
@@ -508,56 +569,7 @@ def save_img(image_path):
         print(f'ERROR: Could not save image {image_path}')
 
 
-def get_metrics(y_true, y_pred, label_names, image_path):
-    print(f'\nMean number of label assignments per image in ground-truth: {np.sum(y_true) / y_true.shape[0]:.4f}')
-    print(f'Mean number of label assignments per image in predictions: {np.sum(y_pred) / y_pred.shape[0]:.4f}\n')
-
-    n_labels = y_pred.shape[1]
-    metrics_df = pd.DataFrame(classification_report(y_true, y_pred, target_names=label_names, output_dict=True)).transpose()
-    metrics_df['index'] = np.concatenate((np.arange(start=0, stop=n_labels), [None, None, None, None]))
-    print(metrics_df)
-
-    # Sort the classes by size, descending order
-    sorted_class_sizes = np.argsort(np.sum(y_true, axis=0))[::-1]
-    print(f'Ordered class in descending order of samples:\n {np.array(label_names)[sorted_class_sizes]}')
-
-    # F1-scores
-    sorted_f1score_per_class = metrics_df['f1-score'][0:n_labels][sorted_class_sizes]
-
-    print(f'\nUnweighted avg. F1-score of all classes: {np.sum(sorted_f1score_per_class) / n_labels}')
-    print(f'Unweighted avg. F1-score of top 5 classes: {np.sum(sorted_f1score_per_class[:5]) / 5}')
-    print(f'Unweighted avg. F1-score of the rest: {np.sum(sorted_f1score_per_class[5:]) / (n_labels - 5)}\n')
-
-    # Precision
-    sorted_precision_per_class = metrics_df['precision'][0:n_labels][sorted_class_sizes]
-
-    print(f'\nUnweighted avg. precision of all classes: {np.sum(sorted_precision_per_class) / n_labels}')
-    print(f'Unweighted avg. precision of top 5 classes: {np.sum(sorted_precision_per_class[:5]) / 5}')
-    print(f'Unweighted avg. precision of the rest: {np.sum(sorted_precision_per_class[5:]) / (n_labels - 5)}\n')
-
-    # Recall
-    sorted_recall_per_class = metrics_df['recall'][0:n_labels][sorted_class_sizes]
-
-    print(f'\nUnweighted avg. recall of all classes: {np.sum(sorted_recall_per_class) / n_labels}')
-    print(f'Unweighted avg. recall of top 5 classes: {np.sum(sorted_recall_per_class[:5]) / 5}')
-    print(f'Unweighted avg. recall of the rest: {np.sum(sorted_recall_per_class[5:]) / (n_labels - 5)}\n')
-
-    
-
-    if image_path:
-        _ = plt.figure(figsize=(8, 14))
-                        
-        _ = plt.title('F1-score per class')
-        _ = plt.barh(range(y_true.shape[1]), sorted_f1score_per_class, color='blue', alpha=0.6)
-        _ = plt.yticks(ticks=range(n_labels), labels=np.array(label_names)[sorted_class_sizes])
-        _ = plt.xlabel('F1-score')
-        _ = plt.grid(True)
-        save_img(image_path)
-
-    return metrics_df['f1-score'][0:n_labels]
-
-
-def plot_distribution(dataframe, filename, minimal_nr_images=0):
+def plot_distribution(dataframe, filename):
     _generator = ImageDataGenerator() 
     _data = _generator.flow_from_dataframe(dataframe=dataframe, 
                                             directory='/scratch/WIT_Dataset/images', 
@@ -572,30 +584,8 @@ def plot_distribution(dataframe, filename, minimal_nr_images=0):
     sorted_images_per_class = y_true.sum(axis=0)[sorted_indices]
 
     _ = plt.figure(figsize=(8, 14))
-
-    if minimal_nr_images > 0:
-        mask_kept = y_true.sum(axis=0)[sorted_indices] > minimal_nr_images
-        # mask_removed = y_true.sum(axis=0)[sorted_indices] < minimal_nr_images
-        _ = plt.barh(np.array(range(y_true.shape[1]))[mask_kept], sorted_images_per_class[mask_kept], color='blue', alpha=0.6)
-        # _ = plt.barh(np.array(range(y_true.shape[1]))[mask_removed], sorted_images_per_class[mask_removed], color='red', alpha=0.6)
-        # _ = plt.legend(['Kept', 'Removed'], loc='upper right', fontsize=12)
-    else:
-        _ = plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.6)
-
+    _ = plt.barh(np.array(range(y_true.shape[1])), sorted_images_per_class, color='blue', alpha=0.6)
     _ = plt.yticks(range(y_true.shape[1]), np.array(list(_data.class_indices.keys()))[sorted_indices], fontsize=12)
-    _ = plt.xscale('log')
-    _ = plt.xlabel('Count', fontsize=13)
-    _ = plt.ylabel('Labels', fontsize=13)
-    _ = plt.grid(True)
-    save_img(filename)
-
-def plot_distribution_pred(y_pred, label_names, filename):
-    _ = plt.figure(figsize=(8, 14))
-    sorted_indices = np.argsort(np.sum(y_pred, axis=0))
-    sorted_images_per_class = y_pred.sum(axis=0)[sorted_indices]   
-    _ = plt.barh(np.array(range(y_pred.shape[1])), sorted_images_per_class, color='blue', alpha=0.6)
-
-    _ = plt.yticks(range(y_pred.shape[1]), np.array(label_names)[sorted_indices], fontsize=12)
     _ = plt.xscale('log')
     _ = plt.xlabel('Count', fontsize=13)
     _ = plt.ylabel('Labels', fontsize=13)

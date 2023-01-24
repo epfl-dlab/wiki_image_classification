@@ -1,0 +1,88 @@
+{'augment': False, 'oversample': False, 'undersample': False, 'loss_function': 'binary_crossentropy', 'class_weights': False, 'per_class_thresh': False, 'random_initialization': False, 'number_trainable_layers': 0, 'hierarchical': False, 'data_folder': 'data/split_hierarchical_data_221129', 'batch_size': 512, 'basemodel': 'EfficientNetB2', 'epochs': 20, 'nr_classes': 'all', 'image_dimension': 64, 'results_folder': 'results_thesis/100_bs_512'}
+Time passed: 0.0 hours
+15:49:49
+Found 760000 validated image filenames belonging to 31 classes.
+LOG: finished getting the first flow
+Time passed: 0.02 hours
+15:50:52
+Found 50000 validated image filenames belonging to 31 classes.
+LOG: Got the validation flow
+Time passed: 0.0 hours
+15:50:55
+LOG: creating and training model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 0
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 31)                3999      
+=================================================================
+Total params: 8,493,592
+Trainable params: 725,023
+Non-trainable params: 7,768,569
+_________________________________________________________________
+Epoch 1/20
+
+Epoch 00001: val_loss improved from inf to 0.15169, saving model to results_thesis/100_bs_512/cp-0001.ckpt
+1485/1485 - 13417s - loss: 0.1567 - binary_accuracy: 0.9366 - precision: 0.6560 - recall: 0.3842 - pr_auc: 0.1979 - roc_auc: 0.6881 - fn: 1125296.0000 - fp: 368246.0000 - tn: 21364352.0000 - tp: 702116.0000 - val_loss: 0.1517 - val_binary_accuracy: 0.9385 - val_precision: 0.6838 - val_recall: 0.3807 - val_pr_auc: 0.2274 - val_roc_auc: 0.7089 - val_fn: 74243.0000 - val_fp: 21098.0000 - val_tn: 1409028.0000 - val_tp: 45631.0000
+Epoch 2/20
+
+Epoch 00002: val_loss improved from 0.15169 to 0.15035, saving model to results_thesis/100_bs_512/cp-0002.ckpt
+1485/1485 - 10399s - loss: 0.1513 - binary_accuracy: 0.9386 - precision: 0.6763 - recall: 0.3990 - pr_auc: 0.2275 - roc_auc: 0.7122 - fn: 1098318.0000 - fp: 348999.0000 - tn: 21383588.0000 - tp: 729094.0000 - val_loss: 0.1504 - val_binary_accuracy: 0.9388 - val_precision: 0.6810 - val_recall: 0.3931 - val_pr_auc: 0.2336 - val_roc_auc: 0.7127 - val_fn: 72754.0000 - val_fp: 22070.0000 - val_tn: 1408056.0000 - val_tp: 47120.0000
+Epoch 3/20
+
+Epoch 00003: val_loss improved from 0.15035 to 0.14918, saving model to results_thesis/100_bs_512/cp-0003.ckpt
+1485/1485 - 9242s - loss: 0.1498 - binary_accuracy: 0.9391 - precision: 0.6816 - recall: 0.4043 - pr_auc: 0.2361 - roc_auc: 0.7226 - fn: 1088667.0000 - fp: 345052.0000 - tn: 21387530.0000 - tp: 738745.0000 - val_loss: 0.1492 - val_binary_accuracy: 0.9395 - val_precision: 0.6818 - val_recall: 0.4095 - val_pr_auc: 0.2395 - val_roc_auc: 0.7151 - val_fn: 70785.0000 - val_fp: 22914.0000 - val_tn: 1407212.0000 - val_tp: 49089.0000
+Epoch 4/20
+
+Epoch 00004: val_loss improved from 0.14918 to 0.14880, saving model to results_thesis/100_bs_512/cp-0004.ckpt
+1485/1485 - 8351s - loss: 0.1490 - binary_accuracy: 0.9395 - precision: 0.6847 - recall: 0.4084 - pr_auc: 0.2402 - roc_auc: 0.7288 - fn: 1081114.0000 - fp: 343596.0000 - tn: 21389000.0000 - tp: 746298.0000 - val_loss: 0.1488 - val_binary_accuracy: 0.9397 - val_precision: 0.6774 - val_recall: 0.4199 - val_pr_auc: 0.2426 - val_roc_auc: 0.7222 - val_fn: 69535.0000 - val_fp: 23976.0000 - val_tn: 1406150.0000 - val_tp: 50339.0000
+Epoch 5/20
+
+Epoch 00005: val_loss improved from 0.14880 to 0.14860, saving model to results_thesis/100_bs_512/cp-0005.ckpt
+1485/1485 - 7997s - loss: 0.1485 - binary_accuracy: 0.9397 - precision: 0.6861 - recall: 0.4105 - pr_auc: 0.2457 - roc_auc: 0.7316 - fn: 1077253.0000 - fp: 343221.0000 - tn: 21389360.0000 - tp: 750159.0000 - val_loss: 0.1486 - val_binary_accuracy: 0.9398 - val_precision: 0.6760 - val_recall: 0.4262 - val_pr_auc: 0.2460 - val_roc_auc: 0.7288 - val_fn: 68778.0000 - val_fp: 24492.0000 - val_tn: 1405634.0000 - val_tp: 51096.0000
+Epoch 6/20
+
+Epoch 00006: val_loss did not improve from 0.14860
+1485/1485 - 9037s - loss: 0.1479 - binary_accuracy: 0.9399 - precision: 0.6874 - recall: 0.4133 - pr_auc: 0.2492 - roc_auc: 0.7336 - fn: 1072183.0000 - fp: 343405.0000 - tn: 21389172.0000 - tp: 755229.0000 - val_loss: 0.1487 - val_binary_accuracy: 0.9399 - val_precision: 0.6776 - val_recall: 0.4244 - val_pr_auc: 0.2437 - val_roc_auc: 0.7197 - val_fn: 68994.0000 - val_fp: 24213.0000 - val_tn: 1405913.0000 - val_tp: 50880.0000
+Epoch 7/20
+
+Epoch 00007: val_loss improved from 0.14860 to 0.14849, saving model to results_thesis/100_bs_512/cp-0007.ckpt
+1485/1485 - 9403s - loss: 0.1476 - binary_accuracy: 0.9400 - precision: 0.6881 - recall: 0.4148 - pr_auc: 0.2520 - roc_auc: 0.7355 - fn: 1069372.0000 - fp: 343647.0000 - tn: 21388936.0000 - tp: 758040.0000 - val_loss: 0.1485 - val_binary_accuracy: 0.9399 - val_precision: 0.6755 - val_recall: 0.4287 - val_pr_auc: 0.2452 - val_roc_auc: 0.7215 - val_fn: 68487.0000 - val_fp: 24684.0000 - val_tn: 1405442.0000 - val_tp: 51387.0000
+Epoch 8/20
+
+Epoch 00008: val_loss improved from 0.14849 to 0.14822, saving model to results_thesis/100_bs_512/cp-0008.ckpt
+1485/1485 - 9932s - loss: 0.1472 - binary_accuracy: 0.9402 - precision: 0.6892 - recall: 0.4168 - pr_auc: 0.2557 - roc_auc: 0.7379 - fn: 1065765.0000 - fp: 343395.0000 - tn: 21389184.0000 - tp: 761647.0000 - val_loss: 0.1482 - val_binary_accuracy: 0.9400 - val_precision: 0.6765 - val_recall: 0.4300 - val_pr_auc: 0.2480 - val_roc_auc: 0.7285 - val_fn: 68328.0000 - val_fp: 24645.0000 - val_tn: 1405481.0000 - val_tp: 51546.0000
+Epoch 9/20
+
+Epoch 00009: val_loss did not improve from 0.14822
+1485/1485 - 9788s - loss: 0.1469 - binary_accuracy: 0.9403 - precision: 0.6904 - recall: 0.4183 - pr_auc: 0.2568 - roc_auc: 0.7391 - fn: 1063093.0000 - fp: 342675.0000 - tn: 21389912.0000 - tp: 764319.0000 - val_loss: 0.1485 - val_binary_accuracy: 0.9400 - val_precision: 0.6785 - val_recall: 0.4255 - val_pr_auc: 0.2468 - val_roc_auc: 0.7323 - val_fn: 68871.0000 - val_fp: 24167.0000 - val_tn: 1405959.0000 - val_tp: 51003.0000
+Epoch 10/20
+
+Epoch 00010: val_loss did not improve from 0.14822
+1485/1485 - 10767s - loss: 0.1466 - binary_accuracy: 0.9404 - precision: 0.6908 - recall: 0.4196 - pr_auc: 0.2606 - roc_auc: 0.7420 - fn: 1060652.0000 - fp: 343121.0000 - tn: 21389480.0000 - tp: 766760.0000 - val_loss: 0.1483 - val_binary_accuracy: 0.9401 - val_precision: 0.6888 - val_recall: 0.4112 - val_pr_auc: 0.2469 - val_roc_auc: 0.7200 - val_fn: 70586.0000 - val_fp: 22273.0000 - val_tn: 1407853.0000 - val_tp: 49288.0000
+Epoch 11/20
+
+Epoch 00011: val_loss did not improve from 0.14822
+1485/1485 - 11318s - loss: 0.1463 - binary_accuracy: 0.9405 - precision: 0.6917 - recall: 0.4206 - pr_auc: 0.2623 - roc_auc: 0.7435 - fn: 1058728.0000 - fp: 342563.0000 - tn: 21390024.0000 - tp: 768684.0000 - val_loss: 0.1482 - val_binary_accuracy: 0.9400 - val_precision: 0.6728 - val_recall: 0.4377 - val_pr_auc: 0.2467 - val_roc_auc: 0.7213 - val_fn: 67406.0000 - val_fp: 25520.0000 - val_tn: 1404606.0000 - val_tp: 52468.0000
+Epoch 12/20
+
+Epoch 00012: val_loss did not improve from 0.14822
+1485/1485 - 11945s - loss: 0.1461 - binary_accuracy: 0.9406 - precision: 0.6923 - recall: 0.4212 - pr_auc: 0.2634 - roc_auc: 0.7438 - fn: 1057685.0000 - fp: 342065.0000 - tn: 21390532.0000 - tp: 769727.0000 - val_loss: 0.1482 - val_binary_accuracy: 0.9400 - val_precision: 0.6778 - val_recall: 0.4270 - val_pr_auc: 0.2482 - val_roc_auc: 0.7307 - val_fn: 68686.0000 - val_fp: 24338.0000 - val_tn: 1405788.0000 - val_tp: 51188.0000
+Epoch 13/20
+
+Epoch 00013: val_loss improved from 0.14822 to 0.14816, saving model to results_thesis/100_bs_512/cp-0013.ckpt
+1485/1485 - 12462s - loss: 0.1459 - binary_accuracy: 0.9407 - precision: 0.6929 - recall: 0.4227 - pr_auc: 0.2655 - roc_auc: 0.7456 - fn: 1054973.0000 - fp: 342344.0000 - tn: 21390240.0000 - tp: 772439.0000 - val_loss: 0.1482 - val_binary_accuracy: 0.9401 - val_precision: 0.6867 - val_recall: 0.4156 - val_pr_auc: 0.2501 - val_roc_auc: 0.7282 - val_fn: 70054.0000 - val_fp: 22735.0000 - val_tn: 1407391.0000 - val_tp: 49820.0000
+Epoch 14/20
+
+Epoch 00014: val_loss did not improve from 0.14816
+1485/1485 - 11791s - loss: 0.1456 - binary_accuracy: 0.9408 - precision: 0.6937 - recall: 0.4237 - pr_auc: 0.2672 - roc_auc: 0.7499 - fn: 1053097.0000 - fp: 341950.0000 - tn: 21390620.0000 - tp: 774315.0000 - val_loss: 0.1482 - val_binary_accuracy: 0.9402 - val_precision: 0.6958 - val_recall: 0.4033 - val_pr_auc: 0.2466 - val_roc_auc: 0.7156 - val_fn: 71534.0000 - val_fp: 21132.0000 - val_tn: 1408994.0000 - val_tp: 48340.0000

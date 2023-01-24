@@ -1,0 +1,194 @@
+Found 50000 validated image filenames belonging to 31 classes.
+
+Number of layers in basemodel: 339
+Number of trainable layers: 0
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 2, 2, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 5632)              0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               721024    
+_________________________________________________________________
+dense_1 (Dense)              (None, 31)                3999      
+=================================================================
+Total params: 8,493,592
+Trainable params: 725,023
+Non-trainable params: 7,768,569
+_________________________________________________________________
+results_thesis/104_class_weights__bs_512/checkpoints/cp-0012.ckpt
+Predicting on test set:
+
+98/98 - 114s
+METRICS FOR THRESHOLD 0.5
+
+Mean number of label assignments per image in ground-truth: 2.3975
+Mean number of label assignments per image in predictions: 1.8330
+
+                          precision    recall  f1-score   support index
+Animals                    0.108731  0.550000  0.181568     120.0     0
+Architecture               0.086083  0.121090  0.100629     991.0     1
+Art                        0.137143  0.017937  0.031725    1338.0     2
+Belief                     0.000000  0.000000  0.000000       2.0     3
+Biology                    0.263959  0.326019  0.291725     319.0     4
+Chemistry                  0.011364  0.056604  0.018927      53.0     5
+Culture                    0.545500  0.129567  0.209397   17026.0     6
+Earth & Environment        0.000000  0.000000  0.000000      26.0     7
+Entertainment              0.301887  0.008929  0.017344    1792.0     8
+Events                     0.265060  0.016917  0.031803    2601.0     9
+Food                       0.000000  0.000000  0.000000       4.0    10
+Fossils                    0.116592  0.187050  0.143646     139.0    11
+History                    0.316547  0.006527  0.012791    6741.0    12
+Landscapes                 0.032612  0.515789  0.061346     190.0    13
+Literature                 0.000000  0.000000  0.000000     116.0    14
+Maps & Flags               0.605852  0.479564  0.535361     734.0    15
+Mathematics                0.039604  0.235294  0.067797      17.0    16
+Medicine & Health          0.125000  0.012792  0.023209    1798.0    17
+Music                      0.000000  0.000000  0.000000     317.0    18
+Nature                     0.527646  0.356577  0.425564    7199.0    19
+People                     0.555034  0.338466  0.420504   10131.0    20
+Physics                    0.000000  0.000000  0.000000     111.0    21
+Places                     0.634872  0.740625  0.683683   19439.0    22
+Plants                     0.547619  0.122776  0.200581     562.0    23
+Politics                   0.276243  0.018861  0.035311    2651.0    24
+STEM                       0.384517  0.465520  0.421159   11630.0    25
+Society                    0.658583  0.754342  0.703217   26891.0    26
+Space                      0.000000  0.000000  0.000000      59.0    27
+Sports                     0.673188  0.193069  0.300077    3030.0    28
+Technology & Engineering   0.720539  0.078274  0.141208    2734.0    29
+Transportation             0.333333  0.001797  0.003575    1113.0    30
+micro avg                  0.547097  0.418289  0.474100  119874.0  None
+macro avg                  0.266694  0.184980  0.163295  119874.0  None
+weighted avg               0.526191  0.418289  0.420596  119874.0  None
+samples avg                0.552608  0.483571  0.467846  119874.0  None
+Ordered class in descending order of samples:
+ ['Society' 'Places' 'Culture' 'STEM' 'People' 'Nature' 'History' 'Sports'
+ 'Technology & Engineering' 'Politics' 'Events' 'Medicine & Health'
+ 'Entertainment' 'Art' 'Transportation' 'Architecture' 'Maps & Flags'
+ 'Plants' 'Biology' 'Music' 'Landscapes' 'Fossils' 'Animals' 'Literature'
+ 'Physics' 'Space' 'Chemistry' 'Earth & Environment' 'Mathematics' 'Food'
+ 'Belief']
+
+Unweighted avg. F1-score of all classes: 0.16329507486981323
+Unweighted avg. F1-score of top 5 classes: 0.48759211802921226
+Unweighted avg. F1-score of the rest: 0.10093025887762114
+
+
+Unweighted avg. precision of all classes: 0.26669381149760524
+Unweighted avg. precision of top 5 classes: 0.555701078728658
+Unweighted avg. precision of the rest: 0.2111154908762489
+
+
+Unweighted avg. recall of all classes: 0.18498015057326833
+Unweighted avg. recall of top 5 classes: 0.48570379296286037
+Unweighted avg. recall of the rest: 0.1271486808829622
+
+
+
+-------------------------- PR AUC metrics table -----------------------
+Macro PR_AUC is: 0.20757200191723937
+                  label_name    pr_auc  random_auc  better_than_random
+0                    Animals  0.181395     0.00240              75.581
+1               Architecture  0.071243     0.01982               3.594
+2                        Art  0.078218     0.02676               2.923
+3                     Belief  0.000083     0.00004               2.083
+4                    Biology  0.257021     0.00638              40.285
+5                  Chemistry  0.005943     0.00106               5.607
+6                    Culture  0.463371     0.34052               1.361
+7        Earth & Environment  0.001536     0.00052               2.954
+8              Entertainment  0.081850     0.03584               2.284
+9                     Events  0.115561     0.05202               2.221
+10                      Food  0.001018     0.00008              12.727
+11                   Fossils  0.074308     0.00278              26.729
+12                   History  0.198330     0.13482               1.471
+13                Landscapes  0.046755     0.00380              12.304
+14                Literature  0.012631     0.00232               5.444
+15              Maps & Flags  0.490895     0.01468              33.440
+16               Mathematics  0.147082     0.00034             432.593
+17         Medicine & Health  0.097601     0.03596               2.714
+18                     Music  0.016337     0.00634               2.577
+19                    Nature  0.438558     0.14398               3.046
+20                    People  0.492898     0.20262               2.433
+21                   Physics  0.009897     0.00222               4.458
+22                    Places  0.687566     0.38878               1.769
+23                    Plants  0.357514     0.01124              31.807
+24                  Politics  0.141012     0.05302               2.660
+25                      STEM  0.445204     0.23260               1.914
+26                   Society  0.749796     0.53782               1.394
+27                     Space  0.004066     0.00118               3.446
+28                    Sports  0.393023     0.06060               6.486
+29  Technology & Engineering  0.250239     0.05468               4.576
+30            Transportation  0.123779     0.02226               5.561
+
+
+----------------------Sorted by the best PR_AUC-------------------
+                  label_name    pr_auc  random_auc  better_than_random
+26                   Society  0.749796     0.53782               1.394
+22                    Places  0.687566     0.38878               1.769
+20                    People  0.492898     0.20262               2.433
+15              Maps & Flags  0.490895     0.01468              33.440
+6                    Culture  0.463371     0.34052               1.361
+25                      STEM  0.445204     0.23260               1.914
+19                    Nature  0.438558     0.14398               3.046
+28                    Sports  0.393023     0.06060               6.486
+23                    Plants  0.357514     0.01124              31.807
+4                    Biology  0.257021     0.00638              40.285
+29  Technology & Engineering  0.250239     0.05468               4.576
+12                   History  0.198330     0.13482               1.471
+0                    Animals  0.181395     0.00240              75.581
+16               Mathematics  0.147082     0.00034             432.593
+24                  Politics  0.141012     0.05302               2.660
+30            Transportation  0.123779     0.02226               5.561
+9                     Events  0.115561     0.05202               2.221
+17         Medicine & Health  0.097601     0.03596               2.714
+8              Entertainment  0.081850     0.03584               2.284
+2                        Art  0.078218     0.02676               2.923
+11                   Fossils  0.074308     0.00278              26.729
+1               Architecture  0.071243     0.01982               3.594
+13                Landscapes  0.046755     0.00380              12.304
+18                     Music  0.016337     0.00634               2.577
+14                Literature  0.012631     0.00232               5.444
+21                   Physics  0.009897     0.00222               4.458
+5                  Chemistry  0.005943     0.00106               5.607
+27                     Space  0.004066     0.00118               3.446
+7        Earth & Environment  0.001536     0.00052               2.954
+10                      Food  0.001018     0.00008              12.727
+3                     Belief  0.000083     0.00004               2.083
+
+
+----------------------Sorted by the best compared to random-------------------
+                  label_name    pr_auc  random_auc  better_than_random
+16               Mathematics  0.147082     0.00034             432.593
+0                    Animals  0.181395     0.00240              75.581
+4                    Biology  0.257021     0.00638              40.285
+15              Maps & Flags  0.490895     0.01468              33.440
+23                    Plants  0.357514     0.01124              31.807
+11                   Fossils  0.074308     0.00278              26.729
+10                      Food  0.001018     0.00008              12.727
+13                Landscapes  0.046755     0.00380              12.304
+28                    Sports  0.393023     0.06060               6.486
+5                  Chemistry  0.005943     0.00106               5.607
+30            Transportation  0.123779     0.02226               5.561
+14                Literature  0.012631     0.00232               5.444
+29  Technology & Engineering  0.250239     0.05468               4.576
+21                   Physics  0.009897     0.00222               4.458
+1               Architecture  0.071243     0.01982               3.594
+27                     Space  0.004066     0.00118               3.446
+19                    Nature  0.438558     0.14398               3.046
+7        Earth & Environment  0.001536     0.00052               2.954
+2                        Art  0.078218     0.02676               2.923
+17         Medicine & Health  0.097601     0.03596               2.714
+24                  Politics  0.141012     0.05302               2.660
+18                     Music  0.016337     0.00634               2.577
+20                    People  0.492898     0.20262               2.433
+8              Entertainment  0.081850     0.03584               2.284
+9                     Events  0.115561     0.05202               2.221
+3                     Belief  0.000083     0.00004               2.083
+25                      STEM  0.445204     0.23260               1.914
+22                    Places  0.687566     0.38878               1.769
+12                   History  0.198330     0.13482               1.471
+26                   Society  0.749796     0.53782               1.394
+6                    Culture  0.463371     0.34052               1.361
