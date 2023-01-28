@@ -5,3 +5,8 @@ Besides their regular text, Wikipedia articles are rich multimedia documents con
 This project is inspired by the textual counterpart ORES, and the goal is two-fold: 1) develop a classification taxonomy to label images on Wikipedia and 2) develop a model for image classification and embedding. The first part requires familiarity with semantic network data such as Wikipedia/Commons category network, and it aims to identify the best way to label images on Wikipedia based on existing metadata (e.g. Wikipedia/Commons templates, categories, and tags). The second part will focus on training and evaluating a deep learning model to predict the binary relevance of a set of relevant labels.
 
 More info: https://meta.wikimedia.org/wiki/Research:Automated_Categorization_of_Wikipedia_Images
+
+## Taxonomy
+
+## Classification
+
