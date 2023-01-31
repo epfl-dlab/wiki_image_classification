@@ -5,9 +5,3 @@ __pycache__/
 src/classification/.ipynb_checkpoints/*
 src/classification/data
 src/classification/**/cp*
-src/classification/**/history.csv
-src/classification/**/y_true.csv
-src/classification/**/y_pred.csv
-src/classification/**/y_pred_train.npy
-src/classification/**/y_true_train.npy
-
