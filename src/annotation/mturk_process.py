@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--seed", help="random seed")
     args = parser.parse_args()
     n = int(args.n) if args.n else 1000
-    seed = int(args.seed) if args.seed else 0
+    seed = int(args.seed) if args.seed else 42
 
     printt("Reading files...")
     files = pd.read_parquet(FILES_PATH)
