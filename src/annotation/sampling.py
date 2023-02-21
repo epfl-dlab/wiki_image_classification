@@ -1,13 +1,23 @@
+"""
+Sample a subset of the image dataset for evaluation, either
+uniformly at random or stratified by label (as predicted by 
+the "base" heuristics), in a balanced way.
+
+Usage: 
+    python sampling.py -n <n> -s <seed>
+
+Other settings might need to be adjusted in the main code.
+"""
+
 import argparse
 import sys
 
 import numpy as np
 import pandas as pd
+from sklearn.preprocessing import MultiLabelBinarizer
 from tqdm import tqdm
 
 tqdm.pandas()
-from sklearn.preprocessing import MultiLabelBinarizer
-
 sys.path.append("./")
 sys.path.append("../../")
 
