@@ -15,6 +15,7 @@ from src.config import *
 from src.taxonomy.heuristics import Heuristics
 from src.utilities import init_logger, printt
 
+UPLOAD_URL = "https://upload.wikimedia.org/wikipedia/commons/"
 logger = init_logger(STREAMLIT_PATH + STREAMLIT_LOG_FILE, logger_name="taxonomy")
 logfile = open(STREAMLIT_PATH + STREAMLIT_LOG_FILE, "w+")
 
@@ -125,29 +126,26 @@ def iterativeSampling(
     return balanced_files
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-n", "--n", help="size of the sample")
-    parser.add_argument("-seed", "--seed", help="random seed")
-    parser.add_argument("-b", "--balanced", help="balance the sample")
-    parser.add_argument("-H ", "--how", help="heuristics version")
-    parser.add_argument("-v", "--version", help="taxonomy version")
-    args = parser.parse_args()
-    n = int(args.n) if args.n else 1000
-    seed = int(args.seed) if args.seed else 42
-    version = args.version if args.version else TAXONOMY_VERSION
-    how = args.how if args.how else HEURISTICS_VERSION
-    balanced = int(args.balanced) if args.balanced else True
+def uniform_sampling(files, n, seed):
+    """
+    Uniform sampling of images.
+    """
+    printt("Loading done.")
+    printt("Sampling...")
+    files_sample = files.sample(n=n, random_state=seed)
+    return files_sample
 
-    printt("Reading files...")
-    files = pd.read_parquet(FILES_PATH)
 
+def stratified_sampling(files, n, seed, taxonomy_version, heuristics_version):
+    """
+    Stratified sampling of images, to construct a balanced dataset.
+    """
     heuristics = Heuristics()
     printt("Loading graph...")
     heuristics.load_graph(EH_GRAPH_PATH)
     printt("Loading mapping...")
-    heuristics.set_taxonomy(taxonomy_version=version)
-    heuristics.set_heuristics(heuristics_version=how)
+    heuristics.set_taxonomy(taxonomy_version=taxonomy_version)
+    heuristics.set_heuristics(heuristics_version=heuristics_version)
     printt("Loading done.")
 
     printt("Predicting labels...")
@@ -158,26 +156,30 @@ if __name__ == "__main__":
     )[0]
 
     printt("Sampling...")
-    # Create a balanced sample
-    if balanced:
-        files_sample = iterativeSampling(
-            files,
-            images_per_class=n,
-            min_images=50,
-            mean_noise=0,
-            var_noise=0.2,
-            random_state=seed,
-            verbose=1,
-            weighted=0,
-        )
-    else:
-        files_sample = files.sample(n=n, random_state=seed)
+    files_sample = iterativeSampling(
+        files,
+        images_per_class=n,
+        min_images=50,
+        mean_noise=0,
+        var_noise=0.2,
+        random_state=seed,
+        verbose=1,
+        weighted=0,
+    )
+    return files_sample
 
+
+def save_streamlit(files_sample, name):
+    """
+    Save the dataset for streamlit.
+    """
+    # Default dictionary for streamlit evaluation
     files_sample["labels_true"] = [
         {label: None for label in heuristics.taxonomy.get_all_labels()}
         for _ in range(len(files_sample))
     ]
 
+    # Predicting labels again with debug=True, to get the logs for the sample
     printt("Resetting labels...")
     heuristics.reset_labels()
     files_sample[["labels_pred", "log"]] = files_sample.progress_apply(
@@ -185,15 +187,90 @@ if __name__ == "__main__":
         axis=1,
         result_type="expand",
     )
-    # Dict storing evaluations
-    printt("Saving file...")
     files_sample["labels_pred"] = files_sample.apply(
         lambda x: {label: None for label in x.labels_pred}, axis=1
     )
 
-    name = f"files_{version}_{seed}_{n}_{how}"
-    if balanced:
-        name += "_balanced"
-    name += ".json.bz2"
+    printt("Saving file...")
+    files_sample.to_json(STREAMLIT_PATH + name + ".json.bz2")
 
-    files_sample.to_json(STREAMLIT_PATH + name)
+
+def save_grounded_truth(files_sample, name):
+    """
+    Save the dataset for grounded truth evaluation.
+    """
+    files_sample["url"] = files_sample.url.apply(lambda x: UPLOAD_URL + x)
+    files_sample = files_sample[["id", "title", "url"]]
+    files_sample.to_json(GTRUTH_PATH + name + ".json.bz2", orient="records")
+
+
+def save_mturk(files_sample, name, batch_size):
+    """
+    Save the dataset for MTurk evaluation.
+    """
+    files_sample["url"] = files_sample.url.apply(lambda x: UPLOAD_URL + x)
+    files_sample.to_csv(MTURK_PATH + name + "_plain.csv")
+
+    # Splitting the dataset into batches
+    files_sample = files_sample[["id", "url"]]
+    url_batched = files_sample["url"].values.reshape((n // batch_size, batch_size))
+    files_sample_reshaped = pd.DataFrame(url_batched)
+    files_sample_reshaped.columns = [f"url{i}" for i in range(batch_size)]
+
+    printt("Saving file...")
+    files_sample_reshaped.to_csv(MTURK_PATH + name + "_batched.csv", index=False)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-n", "--n", help="size of the sample")
+    parser.add_argument("-seed", "--seed", help="random seed")
+    args = parser.parse_args()
+
+    # If uniform sampling (balanced=False), n is the number of total images in the sample
+    # If stratified sampling (balanced=True), n is the number of images per class
+    n = int(args.n) if args.n else 1000
+    seed = int(args.seed) if args.seed else 42
+
+    #############  DEFINE THE APPROPRIATE SETTNIGS #############
+    version = TAXONOMY_VERSION
+    how = HEURISTICS_VERSION
+
+    ## EARLY EXPERIMENTS
+    # balanced = False
+    # saving = "streamlit"
+
+    ## GROUNDED TRUTH, i.e. manual annotation to select the taxonomy
+    # balanced = False
+    # saving = "gtruth"
+
+    ## MTURK PILOT
+    balanced = False
+    saving = "mturk"
+
+    ## MTURK STUDY
+    # balanced = True
+    # saving = "mturk"
+    ############################################################
+
+    printt("Reading files...")
+    files = pd.read_parquet(FILES_PATH)
+    printt("Reading done.")
+
+    if balanced:
+        files_sample = stratified_sampling(files, n, seed, version, how)
+        name = f"{n}_{seed}_{version}_{how}_balanced_sample"
+    else:
+        files_sample = uniform_sampling(files, n, seed)
+        name = f"{n}_{seed}_uniform_sample"
+
+    if saving == "streamlit":
+        save_streamlit(files_sample, name)
+    elif saving == "gtruth":
+        save_grounded_truth(files_sample, name)
+    elif saving == "mturk":
+        save_mturk(files_sample, name, batch_size=10)
+    else:
+        raise ValueError("Invalid saving option")
+
+    printt("Done.")

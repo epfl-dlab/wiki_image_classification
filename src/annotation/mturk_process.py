@@ -21,13 +21,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
     n = int(args.n) if args.n else 1000
     seed = int(args.seed) if args.seed else 42
+    pilot = True
 
-    printt("Reading files...")
-    files = pd.read_parquet(FILES_PATH)
-    files_sample = files.sample(n=n, random_state=seed)
-    files_sample["url"] = files_sample.url.apply(lambda x: UPLOAD_URL + x)
-    annotated_files = pd.read_csv(MTURK_PATH + f"{n}_{seed}_annotated.csv")
-    printt("Reading done.")
+    if pilot:
+        name = f"{n}_{seed}_uniform_sample"
+    else:
+        name = f"{n}_{seed}_{TAXONOMY_VERSION}_{HEURISTICS_VERSION}_balanced_sample"
+
+    files_sample = pd.read_csv(MTURK_PATH + name + "_plain.csv")
+    annotated_files = pd.read_csv(MTURK_PATH + name + "_annotated.csv")
 
     taxonomy = Taxonomy()
     taxonomy.set_taxonomy(TAXONOMY_VERSION)
@@ -150,5 +152,5 @@ if __name__ == "__main__":
     print(counts)
 
     printt("Saving labels...")
-    labels.to_csv(MTURK_PATH + f"{n}_{seed}_aggregated.csv", index=False)
+    labels.to_csv(MTURK_PATH + name + "_aggregated.csv", index=False)
     printt("Done.")
