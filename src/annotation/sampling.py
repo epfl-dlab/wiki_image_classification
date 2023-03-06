@@ -38,17 +38,22 @@ def iterativeSampling(
     var_noise=1,
     random_state=42,
     verbose=1,
-    weighted=True,
+    weighted=False,
 ):
     """
     Iterative sampling of images, to construct a balanced dataset.
     At each iteration, the class(label) with less predicted images is filled,
     until the balanced set has images_per_class samples of that class.
-    To fill a class, the examples with lowest cost are selected, where the cost of each
-    image is proportional to the number of images with its labels in the dataset
-    and the number of images with its labels already selected in the balanced dataset.
-    In addition, a random noise is added to the cost, to avoid biasing the balanced
-    dataset by only selecting images with a single label.
+
+    In the unweighted version, classes(labels) are filled by sampling uniformly
+    at random <images_per_class> images from each class.
+
+    In the weighted version (DEPRECATED), each image is given a cost proportional to the
+    number of images with the same labels in the original dataset and the in-progress
+    balanced dataset. Classes(labels) are filled by adding iteratively the image with
+    the lowest cost until there are <images_per_class> images, with the addition of a
+    random noise to avoid biasing the balanced dataset by only selecting
+    images with a single label.
 
     Parameters
     ----------
@@ -121,7 +126,8 @@ def iterativeSampling(
 
     # Sample statistics
     if verbose:
-        print("Distribution after sampling:", balanced_count_per_class.value_counts())
+        # Not sorted on purpose - same order as how the sample is populated
+        print("Distribution after sampling:\n", balanced_count_per_class)
         print(
             f"Number of classes with {images_per_class} images = {(balanced_count_per_class == images_per_class).sum()}"
         )
@@ -169,12 +175,12 @@ def stratified_sampling(files, n, seed, taxonomy_version, heuristics_version):
     files_sample = iterativeSampling(
         files,
         images_per_class=n,
-        min_images=50,
+        min_images=n,
         mean_noise=0,
         var_noise=0.2,
         random_state=seed,
         verbose=1,
-        weighted=0,
+        weighted=False,
     )
     return files_sample
 
@@ -183,47 +189,50 @@ def save_streamlit(files_sample, name):
     """
     Save the dataset for streamlit.
     """
+    files_sample_loc = files_sample.copy()
     # Default dictionary for streamlit evaluation
-    files_sample["labels_true"] = [
+    files_sample_loc["labels_true"] = [
         {label: None for label in heuristics.taxonomy.get_all_labels()}
-        for _ in range(len(files_sample))
+        for _ in range(len(files_sample_loc))
     ]
 
     # Predicting labels again with debug=True, to get the logs for the sample
     printt("Resetting labels...")
     heuristics.reset_labels()
-    files_sample[["labels_pred", "log"]] = files_sample.progress_apply(
+    files_sample_loc[["labels_pred", "log"]] = files_sample_loc.progress_apply(
         lambda x: heuristics.queryFile(x, debug=True, logfile=logfile),
         axis=1,
         result_type="expand",
     )
-    files_sample["labels_pred"] = files_sample.apply(
+    files_sample_loc["labels_pred"] = files_sample_loc.apply(
         lambda x: {label: None for label in x.labels_pred}, axis=1
     )
 
     printt("Saving file...")
-    files_sample.to_json(STREAMLIT_PATH + name + ".json.bz2")
+    files_sample_loc.to_json(STREAMLIT_PATH + name + ".json.bz2")
 
 
 def save_grounded_truth(files_sample, name):
     """
     Save the dataset for grounded truth evaluation.
     """
-    files_sample["url"] = files_sample.url.apply(lambda x: UPLOAD_URL + x)
-    files_sample = files_sample[["id", "title", "url"]]
-    files_sample.to_json(GTRUTH_PATH + name + ".json.bz2", orient="records")
+    files_sample_loc = files_sample.copy()
+    files_sample_loc["url"] = files_sample_loc.url.apply(lambda x: UPLOAD_URL + x)
+    files_sample_loc = files_sample_loc[["id", "title", "url"]]
+    files_sample_loc.to_json(GTRUTH_PATH + name + ".json.bz2", orient="records")
 
 
 def save_mturk(files_sample, name, batch_size):
     """
     Save the dataset for MTurk evaluation.
     """
-    files_sample["url"] = files_sample.url.apply(lambda x: UPLOAD_URL + x)
-    files_sample.to_csv(MTURK_PATH + name + "_plain.csv")
+    files_sample_loc = files_sample.copy()
+    files_sample_loc["url"] = files_sample_loc.url.apply(lambda x: UPLOAD_URL + x)
+    files_sample_loc.to_csv(MTURK_PATH + name + "_plain.csv")
 
     # Splitting the dataset into batches
-    files_sample = files_sample[["id", "url"]]
-    url_batched = files_sample["url"].values.reshape((n // batch_size, batch_size))
+    files_sample_loc = files_sample_loc[["id", "url"]]
+    url_batched = files_sample_loc["url"].values.reshape((-1, batch_size))
     files_sample_reshaped = pd.DataFrame(url_batched)
     files_sample_reshaped.columns = [f"url{i}" for i in range(batch_size)]
 
@@ -255,12 +264,12 @@ if __name__ == "__main__":
     # saving = "gtruth"
 
     ## MTURK PILOT
-    balanced = False
-    saving = "mturk"
+    # balanced = False
+    # saving = "mturk"
 
     ## MTURK STUDY
-    # balanced = True
-    # saving = "mturk"
+    balanced = True
+    saving = "mturk"
     ############################################################
 
     printt("Reading files...")

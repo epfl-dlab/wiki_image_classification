@@ -72,7 +72,7 @@ def showFile():
     )
     index_map = {None: 0, 0: 2, 1: 1}
 
-    version = st.session_state.dataset.split("_")[1]
+    version = st.session_state.dataset.split("_")[2]
     taxonomy = Taxonomy().set_taxonomy(version)
     columns = st.columns(len(taxonomy.children))
     # for i, col in enumerate(columns):
