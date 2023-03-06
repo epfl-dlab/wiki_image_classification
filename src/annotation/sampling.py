@@ -299,11 +299,8 @@ if __name__ == "__main__":
     # saving = "mturk"
 
     ## MTURK STUDY
-    # mode = "balanced"
-    # saving = "mturk"
-
-    mode = "probabilistic"
-    saving = "test"
+    mode = "balanced"
+    saving = "mturk"
     ############################################################
 
     printt("Reading files...")
