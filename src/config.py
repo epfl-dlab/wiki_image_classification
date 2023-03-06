@@ -37,7 +37,6 @@ HEADS_PATH = "/scratch/WikipediaImagesTaxonomy/heads/"
 EMBEDDINGS_PATH = "/scratch/WikipediaImagesTaxonomy/embeddings/"
 ####################################
 
-# Streamlit
 STREAMLIT_PATH = "./data/streamlit/"
 STREAMLIT_LOG_FILE = "streamlit_preparation.log"
 GTRUTH_PATH = "./data/grounded_truth/"
@@ -52,3 +51,5 @@ HEURISTICS_VERSION = "headJ+depth"
 # Graph with labels (i.e. enriched with heads, embeddings and labels)
 LGRAPH_PATH = f"/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_{HEURISTICS_VERSION}_{TAXONOMY_VERSION}.pkl.bz2"
 LGRAPH_H_PATH = f"/scratch/WikipediaImagesTaxonomy/20220220-clean-graph-wlabels_{HEURISTICS_VERSION}_{TAXONOMY_VERSION}.pkl.bz2"
+
+"/scratch/WikipediaImagesTaxonomy/probs_df_280223.json.bz2"

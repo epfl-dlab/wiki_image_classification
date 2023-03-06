@@ -11,6 +11,7 @@ Other settings might need to be adjusted in the main code.
 
 import argparse
 import sys
+import urllib
 
 import numpy as np
 import pandas as pd
@@ -185,20 +186,50 @@ def stratified_sampling(files, n, seed, taxonomy_version, heuristics_version):
     return files_sample
 
 
-def save_streamlit(files_sample, name):
+def probabilistic_sampling(files, n, seed):
+    """
+    Probabilistic sampling of images, to construct a balanced dataset.
+    """
+    printt("Reading probabilities...")
+    proba_files = pd.read_json(FILES_PROBA_PATH)
+    printt("Reading done.")
+    proba_files = proba_files.set_index("url")
+    proba_files = proba_files**5
+    sample_urls = []
+    printt("Sampling...")
+    for column in tqdm(proba_files.columns):
+        index_to_add = proba_files.sample(n, weights=column, random_state=seed).index
+        sample_urls.extend(index_to_add)
+        proba_files = proba_files.drop(index_to_add)
+    printt("Sampling done.")
+    files_sample = pd.Series(sample_urls).to_frame("url")
+    files_sample = files_sample.merge(files, on="url", how="inner")
+    files_sample = files_sample[["id", "title", "url", "categories"]]
+
+    # Sanity check
+    assert len(files_sample) == n * proba_files.shape[1]
+    return files_sample
+
+
+def save_streamlit(files_sample, name, taxonomy_version, heuristics_version):
     """
     Save the dataset for streamlit.
     """
     files_sample_loc = files_sample.copy()
+
+    heuristics = Heuristics()
+    printt("Loading graph...")
+    heuristics.load_graph(EH_GRAPH_PATH)
+    printt("Loading mapping...")
+    heuristics.set_taxonomy(taxonomy_version=taxonomy_version)
+    heuristics.set_heuristics(heuristics_version=heuristics_version)
+    printt("Loading done.")
+
     # Default dictionary for streamlit evaluation
     files_sample_loc["labels_true"] = [
         {label: None for label in heuristics.taxonomy.get_all_labels()}
         for _ in range(len(files_sample_loc))
     ]
-
-    # Predicting labels again with debug=True, to get the logs for the sample
-    printt("Resetting labels...")
-    heuristics.reset_labels()
     files_sample_loc[["labels_pred", "log"]] = files_sample_loc.progress_apply(
         lambda x: heuristics.queryFile(x, debug=True, logfile=logfile),
         axis=1,
@@ -248,7 +279,7 @@ if __name__ == "__main__":
 
     # If uniform sampling (balanced=False), n is the number of total images in the sample
     # If stratified sampling (balanced=True), n is the number of images per class
-    n = int(args.n) if args.n else 1000
+    n = int(args.n) if args.n else 10
     seed = int(args.seed) if args.seed else 42
 
     #############  DEFINE THE APPROPRIATE SETTNIGS #############
@@ -256,38 +287,53 @@ if __name__ == "__main__":
     how = HEURISTICS_VERSION
 
     ## EARLY EXPERIMENTS
-    # balanced = False
+    # mode = "uniform"
     # saving = "streamlit"
 
     ## GROUNDED TRUTH, i.e. manual annotation to select the taxonomy
-    # balanced = False
+    # mode = "uniform"
     # saving = "gtruth"
 
     ## MTURK PILOT
-    # balanced = False
+    # mode = "uniform"
     # saving = "mturk"
 
     ## MTURK STUDY
-    balanced = True
-    saving = "mturk"
+    # mode = "balanced"
+    # saving = "mturk"
+
+    mode = "probabilistic"
+    saving = "test"
     ############################################################
 
     printt("Reading files...")
     files = pd.read_parquet(FILES_PATH)
     printt("Reading done.")
 
-    if balanced:
-        files_sample = stratified_sampling(files, n, seed, version, how)
-        name = f"{n}_{seed}_{version}_{how}_balanced_sample"
-    else:
+    if mode == "uniform":
         files_sample = uniform_sampling(files, n, seed)
         name = f"{n}_{seed}_uniform_sample"
+    elif mode == "balanced":
+        files_sample = stratified_sampling(files, n, seed, version, how)
+        name = f"{n}_{seed}_{version}_{how}_balanced_sample"
+    elif mode == "probabilistic":
+        files.url = files.url.apply(
+            lambda x: urllib.parse.unquote(x).encode().decode("unicode-escape")
+        )
+        files_sample = probabilistic_sampling(files, n, seed)
+        name = f"{n}_{seed}_probabilistic_sample"
+    else:
+        raise ValueError("Invalid mode")
 
     if saving == "streamlit":
-        save_streamlit(files_sample, name)
+        save_streamlit(files_sample, name, version, how)
     elif saving == "gtruth":
         save_grounded_truth(files_sample, name)
     elif saving == "mturk":
+        save_mturk(files_sample, name, batch_size=10)
+    elif saving == "test":
+        save_streamlit(files_sample, name, version, how)
+        save_grounded_truth(files_sample, name)
         save_mturk(files_sample, name, batch_size=10)
     else:
         raise ValueError("Invalid saving option")
