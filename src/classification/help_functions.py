@@ -4,6 +4,7 @@
 #
 
 # Standard Python libraries
+import os
 import time
 import numpy as np
 import pandas as pd
@@ -124,6 +125,34 @@ def get_flow(image_dimension, batch_size, df_file='', df=None):
             target_size=(image_dimension, image_dimension),
             shuffle=False)
     return flow, df
+
+
+# fast fix for evaluate.py of 4M images, to avoid returning the whole dataframe
+def get_flow_urls(image_dimension, batch_size, df_file='', df=None):
+    if df_file:
+        df = pd.read_json(df_file, compression='bz2')
+    datagen = ImageDataGenerator() 
+
+    white_list_formats = ("png", "jpg", "jpeg", "bmp", "ppm", "tif", "tiff")
+    def validate_filename(filename, white_list_formats):
+        return filename.lower().endswith(white_list_formats) and os.path.isfile(filename)
+
+    filepaths = df['url'].map(lambda fname: os.path.join('/scratch/WIT_Dataset/images', fname))
+    mask = filepaths.apply(validate_filename, args=(white_list_formats,))
+    df = df[mask]
+
+    flow = datagen.flow_from_dataframe(
+            dataframe=df, 
+            directory='/scratch/WIT_Dataset/images',
+            color_mode='rgb',
+            batch_size=batch_size,
+            x_col='url', 
+            y_col='labels', 
+            class_mode='categorical', 
+            target_size=(image_dimension, image_dimension),
+            validate_filenames=False,
+            shuffle=False)
+    return flow, df.url.values
 
 
 def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3):

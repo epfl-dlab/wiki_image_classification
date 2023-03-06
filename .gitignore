@@ -5,3 +5,4 @@ __pycache__/
 src/classification/.ipynb_checkpoints/*
 src/classification/data
 src/classification/**/cp*
+src/classification/results_paper/*
