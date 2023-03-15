@@ -52,4 +52,4 @@ HEURISTICS_VERSION = "headJ+depth"
 LGRAPH_PATH = f"/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_{HEURISTICS_VERSION}_{TAXONOMY_VERSION}.pkl.bz2"
 LGRAPH_H_PATH = f"/scratch/WikipediaImagesTaxonomy/20220220-clean-graph-wlabels_{HEURISTICS_VERSION}_{TAXONOMY_VERSION}.pkl.bz2"
 
-"/scratch/WikipediaImagesTaxonomy/probs_df_280223.json.bz2"
+FILES_PROBA_PATH = "/scratch/WikipediaImagesTaxonomy/probs_df_280223.json.bz2"

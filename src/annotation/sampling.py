@@ -322,6 +322,8 @@ if __name__ == "__main__":
     else:
         raise ValueError("Invalid mode")
 
+    files_sample = files_sample.sample(frac=1, random_state=seed).reset_index(drop=True)
+
     if saving == "streamlit":
         save_streamlit(files_sample, name, version, how)
     elif saving == "gtruth":
