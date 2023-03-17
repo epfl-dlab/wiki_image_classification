@@ -329,6 +329,7 @@ if __name__ == "__main__":
     elif saving == "gtruth":
         save_grounded_truth(files_sample, name)
     elif saving == "mturk":
+        save_streamlit(files_sample, name, version, how)
         save_mturk(files_sample, name, batch_size=10)
     elif saving == "test":
         save_streamlit(files_sample, name, version, how)

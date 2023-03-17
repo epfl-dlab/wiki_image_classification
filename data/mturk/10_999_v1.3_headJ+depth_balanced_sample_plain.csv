@@ -1,7 +1,402 @@
 ,id,title,url,categories,labels_pred
-895390,43061334,Amavasya and Prathama tithi.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0b/Amavasya_and_Prathama_tithi.jpg,['Lunar phase diagrams' 'Astronomy' 'Indian Astrology'],"{'Diagrams', 'Society', 'Space', 'Culture', 'History', 'STEM', 'Belief'}"
-538312,56977080,Porphyry house divisions.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fd/Porphyry_house_divisions.jpg,['Astrological diagrams' 'House (astrology)' 'Porphyry (philosopher)'],"{'Diagrams', 'Society', 'Culture', 'History', 'STEM', 'Belief'}"
-2161076,88525483,2008 Democratic primaries polling.png,https://upload.wikimedia.org/wikipedia/commons/a/ab/2008_Democratic_primaries_polling.png,"['Hillary Rodham Clinton presidential campaign, 2008'
+0,12424009,Icefields Parkway-01.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d2/Icefields_Parkway-01.jpg,['Icefields Parkway'],"{'Society', 'Places'}"
+1,56977081,Regimontanus house divisions.jpg,https://upload.wikimedia.org/wikipedia/commons/8/8d/Regimontanus_house_divisions.jpg,['Astrological diagrams' 'House (astrology)' 'Johannes Regiomontanus'],"{'Culture', 'Belief', 'Diagrams', 'People', 'History', 'Society', 'STEM'}"
+2,88781312,"Weekly excess flu death rates per 100,000 for 4 US cities final 16 weeks of 1918.png",https://upload.wikimedia.org/wikipedia/commons/0/06/Weekly_excess_flu_death_rates_per_100%2C000_for_4_US_cities_final_16_weeks_of_1918.png,['Spanish flu in the United States' 'Pandemic statistics'],"{'Culture', 'Medicine & Health', 'History', 'Society', 'STEM'}"
+3,83641489,Whitby through the Lobster Pots.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f3/Whitby_through_the_Lobster_Pots.jpg,"['Whitby, North Yorkshire' 'Fishing in North Yorkshire' 'Lobster traps']","{'Culture', 'Society', 'Sports', 'Places'}"
+4,19914023,Pelorus River from Pelorus Bridge.jpg,https://upload.wikimedia.org/wikipedia/commons/5/51/Pelorus_River_from_Pelorus_Bridge.jpg,['Pelorus River' 'Pelorus Bridge'],{'Places'}
+5,66384816,YadkinRiver.jpg,https://upload.wikimedia.org/wikipedia/commons/3/35/YadkinRiver.jpg,['Yadkin River' 'Landscapes of North Carolina'],"{'Landscapes', 'Places'}"
+6,4804838,Alma antenna in transit.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f4/Alma_antenna_in_transit.jpg,"['ALMA telescopes' 'Construction of ALMA'
+ 'Lore (ALMA antenna transporter)' 'Photographs taken on 2008-07-08']","{'Space', 'Places', 'STEM'}"
+7,18629102,E-2 10 TL arka.jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/E-2_10_TL_arka.jpg,['Banknotes of Turkey' 'Banknotes with a face value of 10'],"{'Culture', 'History', 'Society'}"
+8,6037443,Gherman Solovetski.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dc/Gherman_Solovetski.jpg,"['18th-century icons of Russia' 'Icons of saints - H' 'Icons in Solovki'
+ 'Gherman of Solovki' 'Icons of saints with Mandylion on the top']","{'People', 'Society'}"
+9,92939566,Tabcorp logo Blue RGB.jpg,https://upload.wikimedia.org/wikipedia/commons/5/55/Tabcorp_logo_Blue_RGB.jpg,['Logos'],{'Logos & Symbols'}
+10,56977080,Porphyry house divisions.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fd/Porphyry_house_divisions.jpg,['Astrological diagrams' 'House (astrology)' 'Porphyry (philosopher)'],"{'Culture', 'Belief', 'Diagrams', 'History', 'Society', 'STEM'}"
+11,31520196,A Small Town Idol (1921) - 4.jpg,https://upload.wikimedia.org/wikipedia/commons/6/6a/A_Small_Town_Idol_%281921%29_-_4.jpg,['A Small Town Idol' 'Ben Turpin' 'Marie Prevost'],"{'Culture', 'Society', 'People'}"
+12,878516,BWV1001-cropped.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e2/BWV1001-cropped.jpg,"['Sheet music of Johann Sebastian Bach'
+ 'BWV 1001 – Sonata No. 1 in G minor for violin solo']","{'Culture', 'Music'}"
+13,75840745,Haze'evot 12.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f3/Haze%27evot_12.jpg,"[""Haze'evot"" 'Talia Ishai' 'Yifat Balassiano']","{'Culture', 'Music', 'People', 'Society'}"
+14,19865249,Logo Nuevo Banco de Santa Fe.svg,https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_Nuevo_Banco_de_Santa_Fe.svg,['SVG logos of banks in Argentina' 'SVG logos of banks'],{'Logos & Symbols'}
+15,25219085,דורון ספיר.JPG,https://upload.wikimedia.org/wikipedia/commons/9/93/%D7%93%D7%95%D7%A8%D7%95%D7%9F_%D7%A1%D7%A4%D7%99%D7%A8.JPG,"['People of Tel Aviv-Yafo' 'Environmentalists from Israel'
+ 'Chief executive officers from Israel']","{'Nature', 'People', 'Society', 'STEM'}"
+16,10081915,Jorge Arraiza1.JPG,https://upload.wikimedia.org/wikipedia/commons/8/81/Jorge_Arraiza1.JPG,['1970 births' 'Fiel a la Vega' 'Male bass guitarists'],"{'Culture', 'Music', 'Society'}"
+17,28997685,"Ausztria, Grác, Schloßbergbahn, 0082.JPG",https://upload.wikimedia.org/wikipedia/commons/3/35/Ausztria%2C_Gr%C3%A1c%2C_Schlo%C3%9Fbergbahn%2C_0082.JPG,"['Schloßbergbahn, Graz']","{'Transportation', 'Society'}"
+18,16198564,AcrocephalusMendanaeKeulemans.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c6/AcrocephalusMendanaeKeulemans.jpg,"['Ibis (1883)' 'Acrocephalus mendanae' 'Acrocephalus nests'
+ 'Acrocephalus (juvenile)']","{'Culture', 'History', 'Society'}"
+19,40395914,Jared Landers 777 Lucas Oil Late Model 2015 Oshkosh pan.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3a/Jared_Landers_777_Lucas_Oil_Late_Model_2015_Oshkosh_pan.jpg,"['Lucas Oil Late Model Dirt Series cars' 'NASCAR drivers'
+ 'Sunnyview Expo Center' 'Panning of racing automobiles']","{'Sports', 'People', 'Society'}"
+20,26083497,Legacy Trail Overpass.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3b/Legacy_Trail_Overpass.jpg,"['Bridges in Sarasota County, Florida' 'Rail trail bridges in Florida'
+ 'Tamiami Trail' 'Venice, Florida' 'Legacy Trail, Florida'
+ 'Bridges in the United States photographed in 2013' 'May 2013 in Florida']","{'Culture', 'STEM', 'Technology & Engineering', 'Places'}"
+21,29740134,Slide28ior.JPG,https://upload.wikimedia.org/wikipedia/commons/1/17/Slide28ior.JPG,['Human dissection'],"{'People', 'Society'}"
+22,6187052,Ontario Rb-84A.svg,https://upload.wikimedia.org/wikipedia/commons/e/e6/Ontario_Rb-84A.svg,"['SVG regulatory road signs of Ontario' 'Cycle lanes in Ontario'
+ 'Diagrams of cycle lane road signs']","{'STEM', 'Society', 'Diagrams', 'Places'}"
+23,19946918,Skuleskogen North entrance.jpg,https://upload.wikimedia.org/wikipedia/commons/6/61/Skuleskogen_North_entrance.jpg,['Skuleskogen National Park'],"{'Society', 'Places', 'Landscapes'}"
+24,18553986,Dome Richelieu 1.jpg,https://upload.wikimedia.org/wikipedia/commons/9/90/Dome_Richelieu_1.jpg,"['Louis XIII style'
+ 'Pavillon du manège, dit le Dôme, château de Richelieu']","{'Culture', 'Art', 'People', 'STEM', 'Society', 'Technology & Engineering'}"
+25,4336030,Charles W. Woodworth reading.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d1/Charles_W._Woodworth_reading.jpg,"['Charles W. Woodworth' 'People sitting at tables in the United States'
+ 'Reading men' 'Sitting men' 'Black and white portrait photographs of men']","{'People', 'Society'}"
+26,426312,Gb-tramlink-tickets.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b5/Gb-tramlink-tickets.jpg,"['Tramlink ticket machines' '2005 on Tramlink' 'Birkbeck station'
+ 'October 2005 in London' '2005 in the London Borough of Bromley'
+ 'Tramlink at night' 'United Kingdom photographs taken on 2005-10-24']","{'Transportation', 'STEM', 'Society', 'Technology & Engineering'}"
+27,354771,Lake Toba location.png,https://upload.wikimedia.org/wikipedia/commons/7/79/Lake_Toba_location.png,"['Lake Toba' 'Locator maps of islands of Indonesia'
+ 'Toba catastrophe theory']","{'Nature', 'STEM', 'Places'}"
+28,10424030,Collatz-graph-50-no27.svg,https://upload.wikimedia.org/wikipedia/commons/c/c2/Collatz-graph-50-no27.svg,['Collatz conjecture'],"{'Mathematics', 'STEM'}"
+29,16336331,British Museum Yemen 05.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c0/British_Museum_Yemen_05.jpg,"['Room 53, British Museum' 'Art of Ancient Yemen']","{'Culture', 'Art'}"
+30,90186647,"Shelter at King's Esplanade, Hove (near Lansdowne Place) (NHLE Code 1280525) (January 2012).jpg",https://upload.wikimedia.org/wikipedia/commons/8/87/Shelter_at_King%27s_Esplanade%2C_Hove_%28near_Lansdowne_Place%29_%28NHLE_Code_1280525%29_%28January_2012%29.jpg,"['19th-century architecture in East Sussex'
+ 'Buildings in Hove, East Sussex'
+ 'Grade II listed buildings in Brighton and Hove'
+ 'Shelters in East Sussex' ""King's Esplanade, Hove""]","{'Culture', 'Architecture', 'Places', 'History'}"
+31,47269215,De Witt Clinton by Henry Inman.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c1/De_Witt_Clinton_by_Henry_Inman.jpg,['DeWitt Clinton' 'Henry Inman'],"{'Politics', 'Society'}"
+32,30435955,US-$50-IBN-1865-Fr.212d.jpg,https://upload.wikimedia.org/wikipedia/commons/6/6c/US-%2450-IBN-1865-Fr.212d.jpg,"['NNC United States Banknotes (1861-present)'
+ '50 dollar Interest Bearing Notes' 'Eagles on banknotes'
+ 'NNC Compound & Interest Bearing Notes']","{'Culture', 'History', 'Society'}"
+33,74553628,Scaphognathus crassirostris cast - Pterosaurs Flight in the Age of Dinosaurs.jpg,https://upload.wikimedia.org/wikipedia/commons/9/99/Scaphognathus_crassirostris_cast_-_Pterosaurs_Flight_in_the_Age_of_Dinosaurs.jpg,"['Scaphognathus fossils' 'Pterosaurs: Flight in the Age of Dinosaurs'
+ 'Pterosauria holotypes']","{'Events', 'Nature', 'Fossils', 'Society', 'STEM'}"
+34,2531603,Map of Morocco and Western Sahara-fr.svg,https://upload.wikimedia.org/wikipedia/commons/7/74/Map_of_Morocco_and_Western_Sahara-fr.svg,"['French-language SVG maps' 'SVG maps of Morocco'
+ 'SVG maps of Western Sahara']","{'Maps & Flags', 'Places'}"
+35,52490573,Ignition SQL Bridge Diagram.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fc/Ignition_SQL_Bridge_Diagram.jpg,['Software frameworks'],"{'Architecture', 'Places'}"
+36,62751496,Sportfreunde Lotte Performance Chart.png,https://upload.wikimedia.org/wikipedia/commons/d/d2/Sportfreunde_Lotte_Performance_Chart.png,['Table rank diagrams of Germany' 'Sportfreunde Lotte'],"{'Society', 'Sports', 'Diagrams', 'STEM'}"
+37,86126880,"Patricia Mora, FA - Costa Rica (cropped).JPG",https://upload.wikimedia.org/wikipedia/commons/e/eb/Patricia_Mora%2C_FA_-_Costa_Rica_%28cropped%29.JPG,['Deputies of Costa Rica' 'Frente Amplio (Costa Rica)'],"{'Politics', 'Culture', 'Society'}"
+38,17366712,Dodecahedron t01 v.png,https://upload.wikimedia.org/wikipedia/commons/a/a9/Dodecahedron_t01_v.png,"['Set of colored Coxeter plane graphs (red, orange, yellow, green... vertices)']","{'Culture', 'Mathematics', 'STEM'}"
+39,9283286,"Ty Frannan, birthplace of author W. D. Owen (1874) - geograph.org.uk - 111671.jpg",https://upload.wikimedia.org/wikipedia/commons/f/f7/Ty_Frannan%2C_birthplace_of_author_W._D._Owen_%281874%29_-_geograph.org.uk_-_111671.jpg,"['Bryngwran' 'Cottages in Anglesey' 'Roads in Anglesey'
+ 'Welsh-language writers' '19th-century architecture in Wales'
+ 'January 2006 in Wales' 'United Kingdom photographs taken on 2006-01-25']","{'Culture', 'Places', 'Politics', 'People', 'Society', 'STEM', 'Transportation', 'Architecture', 'Technology & Engineering'}"
+40,16143644,PC DiamondAnatomy B-W.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e8/PC_DiamondAnatomy_B-W.jpg,"['Drawings of diamonds' 'Facet cutting' 'Passion cut' 'Gem cut diagrams'
+ 'Brilliant cut diagrams']","{'Culture', 'Diagrams', 'Nature', 'STEM'}"
+41,68202252,"Martin Kohlstedt, Gamma Festival 2017, Russia.png",https://upload.wikimedia.org/wikipedia/commons/9/9d/Martin_Kohlstedt%2C_Gamma_Festival_2017%2C_Russia.png,"['Music events in Saint Petersburg' 'Piano music' 'Martin Kohlstedt'
+ '2017 events in Saint Petersburg' 'August 2017 in Saint Petersburg']","{'Culture', 'Music', 'Events', 'Society'}"
+42,25762312,Gaston Gourde.JPG,https://upload.wikimedia.org/wikipedia/commons/0/0b/Gaston_Gourde.JPG,"['Lawyers from Quebec'
+ 'Members of the House of Commons of Canada from Quebec'
+ 'Liberal Party of Canada members of Parliament'
+ 'Members of the Bloc Québécois' 'Mayors from Quebec'
+ 'Male politicians of Canada' '1950 births'
+ 'Canadian federal election, 2011' 'Federal elections of Canada in Quebec'
+ 'April 2011 in Quebec City']","{'Politics', 'Society', 'Places'}"
+43,68414479,"Singapore Art Museum, 2012.jpg",https://upload.wikimedia.org/wikipedia/commons/4/41/Singapore_Art_Museum%2C_2012.jpg,['Singapore Art Museum'],"{'Culture', 'History', 'Places'}"
+44,63740160,Musical band.jpg,https://upload.wikimedia.org/wikipedia/commons/4/45/Musical_band.jpg,"['Musicians from Rwanda' 'Military people of Rwanda'
+ 'Military bands of Rwanda']","{'Culture', 'Music', 'People', 'Society'}"
+45,61538864,Princetown - HM Prison Dartmoor (geograph 5487986).jpg,https://upload.wikimedia.org/wikipedia/commons/e/e7/Princetown_-_HM_Prison_Dartmoor_%28geograph_5487986%29.jpg,['August 2017 in Devon' 'Dartmoor Prison'],"{'Landscapes', 'Places'}"
+46,4231274,Works of Archimedes Lemmas.PNG,https://upload.wikimedia.org/wikipedia/commons/b/b5/Works_of_Archimedes_Lemmas.PNG,"['Pages of books about mathematics' 'Arbelos' 'The works of Archimedes'
+ 'Euclidean geometry' 'Mathematical theorems' 'Lemmas']","{'Mathematics', 'Culture', 'Nature', 'History', 'STEM'}"
+47,535631,VM-firande.jpg,https://upload.wikimedia.org/wikipedia/commons/5/52/VM-firande.jpg,"['People of Piteå' 'Lina Andersson' 'Emelie Öhrstig'
+ 'Sportspeople from Sweden in 2005'
+ 'FIS Nordic World Ski Championships 2005' 'Cross-country skiers in 2005']","{'People', 'Society', 'Events'}"
+48,572074,Map of New Mexico highlighting Cibola County.svg,https://upload.wikimedia.org/wikipedia/commons/d/dd/Map_of_New_Mexico_highlighting_Cibola_County.svg,"['Maps of Cibola County, New Mexico' 'New Mexico county locator maps'
+ 'SVG maps of New Mexico']","{'Maps & Flags', 'Places'}"
+49,43061334,Amavasya and Prathama tithi.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0b/Amavasya_and_Prathama_tithi.jpg,['Lunar phase diagrams' 'Astronomy' 'Indian Astrology'],"{'Culture', 'Belief', 'Society', 'Diagrams', 'History', 'Space', 'STEM'}"
+50,6902974,Eriophyes tilae tilae underside.JPG,https://upload.wikimedia.org/wikipedia/commons/2/2f/Eriophyes_tilae_tilae_underside.JPG,"['Tilia × europaea' 'Galls on Tilia' 'Tilia leaves' 'Leaf veins'
+ 'Eriophyes tiliae' 'Eriophyes leaf galls']","{'Nature', 'Plants', 'STEM'}"
+51,15656065,Fire of 1795 (Gammel Strand).jpg,https://upload.wikimedia.org/wikipedia/commons/5/5c/Fire_of_1795_%28Gammel_Strand%29.jpg,"['Great Fire of Copenhagen 1795' 'Gammel Strand in art'
+ 'Burning buildings in Denmark']","{'Culture', 'Nature', 'History', 'Society', 'STEM'}"
+52,16215583,Saniwa ensidens.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fc/Saniwa_ensidens.jpg,['Saniwa fossils' 'Fossil Butte Member'],"{'Nature', 'Fossils', 'Places', 'STEM'}"
+53,5639793,Equilibrium refinements.svg,https://upload.wikimedia.org/wikipedia/commons/a/a7/Equilibrium_refinements.svg,['Game theory'],"{'Mathematics', 'STEM'}"
+54,2971889,Camden County New Jersey Incorporated and Unincorporated areas Pine Valley Highlighted.svg,https://upload.wikimedia.org/wikipedia/commons/2/20/Camden_County_New_Jersey_Incorporated_and_Unincorporated_areas_Pine_Valley_Highlighted.svg,"['Locator maps of populated places in Camden County, New Jersey'
+ 'Pine Valley, New Jersey']",{'Places'}
+55,55437863,Early medieval silver hooked tag (FindID 468363).jpg,https://upload.wikimedia.org/wikipedia/commons/b/b5/Early_medieval_silver_hooked_tag_%28FindID_468363%29.jpg,"['Portable Antiquities Scheme, LON' 'Trewhiddle style']","{'Culture', 'Art'}"
+56,7444088,Sensornode.svg,https://upload.wikimedia.org/wikipedia/commons/8/8d/Sensornode.svg,['Computer diagrams' 'Computer architecture diagrams'],"{'Diagrams', 'STEM'}"
+57,26056680,Leptobrachium bompu.jpeg,https://upload.wikimedia.org/wikipedia/commons/4/41/Leptobrachium_bompu.jpeg,"['Animals of Eaglenest Wildlife Sanctuary' 'Anura of India'
+ 'Leptobrachium bompu' 'Amphibians of Arunachal Pradesh']","{'Nature', 'STEM'}"
+58,79109839,Tarbosaurus & Saurolophus.jpg,https://upload.wikimedia.org/wikipedia/commons/8/8e/Tarbosaurus_%26_Saurolophus.jpg,"['Tarbosaurus skeletal mounts' 'Central Museum of Mongolian Dinosaurs'
+ 'Saurolophus skeletal mounts']","{'Culture', 'Nature', 'Fossils', 'STEM'}"
+59,44716073,IMessage logo (Apple Inc.).png,https://upload.wikimedia.org/wikipedia/commons/5/56/IMessage_logo_%28Apple_Inc.%29.png,['Logos' 'IMessage'],"{'People', 'Logos & Symbols', 'Society'}"
+60,11574227,Balinovahouse.jpg,https://upload.wikimedia.org/wikipedia/commons/2/27/Balinovahouse.jpg,['Balinova House'],{'Culture'}
+61,15805026,Dechow Mustin ehemalige innerdeutsche Grenze 2011-07-10 007.JPG,https://upload.wikimedia.org/wikipedia/commons/3/33/Dechow_Mustin_ehemalige_innerdeutsche_Grenze_2011-07-10_007.JPG,"['Mustin' 'Dechow' 'Naturschutzgebiet Lankower See'
+ 'Inner German border in Landkreis Nordwestmecklenburg' 'Bundesstraße 208'
+ 'Monuments and memorials to the Unity of Germany in Schleswig-Holstein']","{'Culture', 'Places', 'Nature', 'History', 'STEM'}"
+62,17134893,"Jacopo della quercia, fede.JPG",https://upload.wikimedia.org/wikipedia/commons/2/28/Jacopo_della_quercia%2C_fede.JPG,['Sculptures from Fonte Gaia - Faith by Jacopo della Quercia'],"{'Culture', 'Belief'}"
+63,85951053,Villarroya Vilalta.jpg,https://upload.wikimedia.org/wikipedia/commons/1/13/Villarroya_Vilalta.jpg,['Generals of Spain' 'Miguel Ángel Villarroya Vilalta'],"{'People', 'Society'}"
+64,18013845,Cube t012 af4.png,https://upload.wikimedia.org/wikipedia/commons/7/75/Cube_t012_af4.png,"['Set of colored Coxeter plane graphs (red, orange, yellow, green... vertices)']","{'Culture', 'Mathematics', 'STEM'}"
+65,5167848,Vallecalle-Village.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f0/Vallecalle-Village.jpg,['Landscapes of Corsica' 'Vallecalle'],"{'Landscapes', 'Places'}"
+66,2865278,Lymnea auricularia1pl.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a1/Lymnea_auricularia1pl.jpg,['Radix auricularia'],"{'Animals', 'STEM', 'Nature'}"
+67,4327563,Obserwatorium na Suchorze 02.JPG,https://upload.wikimedia.org/wikipedia/commons/5/5c/Obserwatorium_na_Suchorze_02.JPG,['Mount Suhora Observatory'],"{'Space', 'STEM'}"
+68,85290303,"Raiatea – Avant la pacification. – Officiers indigènes, à Avera (2-cropped).jpg",https://upload.wikimedia.org/wikipedia/commons/c/c6/Raiatea_%E2%80%93_Avant_la_pacification._%E2%80%93_Officiers_indig%C3%A8nes%2C_%C3%A0_Avera_%282-cropped%29.jpg,"['Avera (Taputapuatea)' 'History of Raiatea' 'Eugène Hänni'
+ 'Postcards of people of French Polynesia' 'Leeward Islands War']","{'Culture', 'Places', 'History', 'Art'}"
+69,17737875,M 78 10 amiral Leone Viale min Marine.jpg,https://upload.wikimedia.org/wikipedia/commons/5/5a/M_78_10_amiral_Leone_Viale_min_Marine.jpg,['Le Miroir n°78' 'Leone Viale'],"{'Culture', 'Politics', 'People', 'History', 'Society'}"
+70,1062091,Flag of the Ladakh Nationalist Movement.svg,https://upload.wikimedia.org/wikipedia/commons/5/5e/Flag_of_the_Ladakh_Nationalist_Movement.svg,"['SVG flags of Pakistan' 'SVG flags of subdivisions of India'
+ 'Culture of Ladakh' 'Flags of Ladakh (union territory)']","{'Culture', 'Maps & Flags', 'Places'}"
+71,24745715,Kepplerites japonicus.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fb/Kepplerites_japonicus.jpg,"['Kepplerites' 'Ammonitida fossils'
+ 'Ammonoidea fossils in the National Museum of Nature and Science, Tokyo'
+ 'History of Ono, Fukui' 'Jurassic fossils from Japan']","{'Culture', 'Nature', 'Fossils', 'History', 'STEM'}"
+72,2235939,GreenVioletear.jpg,https://upload.wikimedia.org/wikipedia/commons/9/93/GreenVioletear.jpg,['Colibri cyanotus' 'Perched hummingbirds'],"{'Culture', 'History'}"
+73,3726571,Ancestor worship004.jpg,https://upload.wikimedia.org/wikipedia/commons/7/73/Ancestor_worship004.jpg,"['Household shrines' 'Buddhism in Malaysia' 'Buddhist offerings'
+ 'Food offerings' 'The Three Sages of Western' 'Buddhist home altars']","{'Culture', 'Society'}"
+74,75575387,"Southampton Cenotaph, 4 January 2019 09.jpg",https://upload.wikimedia.org/wikipedia/commons/e/e0/Southampton_Cenotaph%2C_4_January_2019_09.jpg,['Southampton Cenotaph'],"{'Culture', 'History', 'Places', 'Monuments & Memorials'}"
+75,22665656,Alpha Max Beta Min approximation.png,https://upload.wikimedia.org/wikipedia/commons/7/7b/Alpha_Max_Beta_Min_approximation.png,['Numerical analysis' 'Search algorithms'],"{'Culture', 'Mathematics', 'Society', 'STEM'}"
+76,55241304,FeodosiKrasovski(1878-1948).jpg,https://upload.wikimedia.org/wikipedia/commons/7/7a/FeodosiKrasovski%281878-1948%29.jpg,['Astronomers from Russia' 'Feodosy Krasovsky'],"{'Nature', 'Space', 'STEM'}"
+77,22282719,Accet Administrative Building.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a5/Accet_Administrative_Building.jpg,['Alagappa Chettiar College of Engineering and Technology'],"{'Culture', 'Society', 'Technology & Engineering', 'STEM'}"
+78,56311178,Ford Fusion Hybrid WAS 2017 1650.jpg,https://upload.wikimedia.org/wikipedia/commons/0/04/Ford_Fusion_Hybrid_WAS_2017_1650.jpg,"['2017 Washington Auto Show'
+ 'United States photographs taken on 2017-01-28'
+ 'Ford Fusion Hybrid (2nd generation)']","{'Events', 'Politics', 'STEM', 'Society', 'Technology & Engineering'}"
+79,7488923,Porth Clais harbour.JPG,https://upload.wikimedia.org/wikipedia/commons/b/b2/Porth_Clais_harbour.JPG,['Porthclais'],"{'Nature', 'STEM', 'Places'}"
+80,12565901,Homemade minestrone.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c5/Homemade_minestrone.jpg,"['Minestrone' 'Plan views of food' 'Grated cheese' 'Homemade foods'
+ 'Conchiglie dishes' 'Savoy cabbage-based food']","{'Culture', 'Food'}"
+81,6026020,Estemmenosuchus uralensis (2).jpg,https://upload.wikimedia.org/wikipedia/commons/e/ea/Estemmenosuchus_uralensis_%282%29.jpg,['Estemmenosuchus life restorations'],"{'Animals', 'STEM', 'Nature'}"
+82,16644463,0 Dréhance - Château de Walzin (1).jpg,https://upload.wikimedia.org/wikipedia/commons/7/75/0_Dr%C3%A9hance_-_Ch%C3%A2teau_de_Walzin_%281%29.jpg,"['Château de Walzin' '2006 in Dinant' 'Lesse (river)'
+ 'Landscapes of Belgium' 'Summer in Belgium' 'Quality images of Belgium'
+ 'Belgium photographs taken on 2006-07-03']","{'Society', 'Places', 'Landscapes'}"
+83,30561758,"Figure-8---Creme-Angelique,-Illustration.png",https://upload.wikimedia.org/wikipedia/commons/0/03/Figure-8---Creme-Angelique%2C-Illustration.png,['Washington W. Sheffield'],"{'Culture', 'Medicine & Health', 'History', 'Society', 'STEM'}"
+84,15084421,Trewavasia carinata.JPG,https://upload.wikimedia.org/wikipedia/commons/b/b2/Trewavasia_carinata.JPG,['Pycnodontiformes fossils' 'Trewavasia'],"{'Nature', 'Fossils', 'STEM'}"
+85,9554405,Cryptochiton stelleri.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a0/Cryptochiton_stelleri.jpg,['Cryptochiton stelleri'],"{'Animals', 'STEM', 'Nature'}"
+86,48442260,Douglas geologic map.PNG,https://upload.wikimedia.org/wikipedia/commons/9/9f/Douglas_geologic_map.PNG,"['Douglas Island' 'The Juneau Gold Belt, Alaska USGS Bulletin 287, 1906'
+ 'Geological maps of Alaska' 'Gold Creek (Juneau, Alaska)']","{'Maps & Flags', 'Geology', 'Places', 'STEM'}"
+87,20853818,Abrazo del Estrecho B&N.jpg,https://upload.wikimedia.org/wikipedia/commons/5/52/Abrazo_del_Estrecho_B%26N.jpg,"['Federico Errázuriz Echaurren' 'Julio Argentino Roca' 'Jorge Montt'
+ 'Abrazo del Estrecho' 'Photographs of the Beagle conflict'
+ ""Chilean cruiser O'Higgins (1897)"" 'Amancio Alcorta']","{'Culture', 'Politics', 'People', 'History', 'Society'}"
+88,23997615,Bydg ul Gdańska - koszary.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3c/Bydg_ul_Gda%C5%84ska_-_koszary.jpg,['Gdańska 147-161 Koszary' 'Zawisza (Bydgoszcz)'],"{'Architecture', 'Places'}"
+89,56686943,Chicago Sun 1947-06-26-2 Flying Saucer headline-th.jpg,https://upload.wikimedia.org/wikipedia/commons/4/49/Chicago_Sun_1947-06-26-2_Flying_Saucer_headline-th.jpg,['Kenneth Arnold UFO sighting' 'Written documents related to UFOs'],"{'Society', 'Events'}"
+90,78448559,Logo de Converxencia 21.png,https://upload.wikimedia.org/wikipedia/commons/e/e9/Logo_de_Converxencia_21.png,['Political parties in Galicia (Spain)' 'Green and orange logos'],"{'Culture', 'Logos & Symbols'}"
+91,57659604,MC-View from Town Hall-5.jpg,https://upload.wikimedia.org/wikipedia/commons/e/ed/MC-View_from_Town_Hall-5.jpg,['Manchester Cenotaph'],"{'Culture', 'History', 'Places', 'Monuments & Memorials'}"
+92,1333491,SAS 2.gif,https://upload.wikimedia.org/wikipedia/commons/5/55/SAS_2.gif,['Small Astronomy Satellite 2'],"{'Places', 'Space', 'Society', 'STEM'}"
+93,67147669,Richea sprengelioides distrobution.jpg,https://upload.wikimedia.org/wikipedia/commons/3/38/Richea_sprengelioides_distrobution.jpg,['Maps of Tasmania' 'Flora distribution maps' 'Richea sprengelioides'],"{'Maps & Flags', 'Plants', 'Places', 'Nature', 'STEM'}"
+94,31396588,Manchester Dock gate.jpg,https://upload.wikimedia.org/wikipedia/commons/4/4e/Manchester_Dock_gate.jpg,"['Collections of the Museum of Liverpool' 'Manchester Dock, Liverpool'
+ 'Chlorocardium rodiei' 'Laurales wood']","{'Transportation', 'Culture', 'Society'}"
+95,3944929,Diatrymaskeleton.JPG,https://upload.wikimedia.org/wikipedia/commons/b/b7/Diatrymaskeleton.JPG,['Gastornis skulls'],"{'Nature', 'Fossils', 'STEM'}"
+96,27882071,Spiedies on Grill.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0d/Spiedies_on_Grill.jpg,"['Food in Binghamton, New York' 'Meat dishes of the United States']","{'Culture', 'Food'}"
+97,67011,LSD bridge open.jpg,https://upload.wikimedia.org/wikipedia/commons/6/66/LSD_bridge_open.jpg,"['Link Bridge (Lake Shore Drive)' '1987 in Chicago' 'Open bascule bridges'
+ 'Wacker Drive' 'Chicago River' 'Marina City' 'Aon Center'
+ 'Mid-Continental Plaza' 'Illinois Center']","{'Culture', 'Architecture', 'Places', 'Nature', 'Society', 'STEM'}"
+98,64961026,"USN PO2 parka tab, AOR-2.png",https://upload.wikimedia.org/wikipedia/commons/a/ab/USN_PO2_parka_tab%2C_AOR-2.png,"['Military rank insignia of the United States Navy'
+ 'Official emblems with transparent background'
+ 'Navy Working Uniform Type III']","{'Transportation', 'Society'}"
+99,9878393,Helicina rhodostoma shell.png,https://upload.wikimedia.org/wikipedia/commons/d/d9/Helicina_rhodostoma_shell.png,"['Helicina rhodostoma' 'Apertural views'
+ 'Gastropoda with black background']","{'Animals', 'Nature', 'STEM'}"
+100,66808794,The Mount.jpg,https://upload.wikimedia.org/wikipedia/commons/7/72/The_Mount.jpg,"['The Mount, Leeds' '2018 in Woodhouse, Leeds' 'February 2018 in Leeds'
+ 'United Kingdom photographs taken on 2018-02-24']","{'Medicine & Health', 'Places', 'STEM'}"
+101,78186751,Androscoggin-River-Paddle-ca2001.jpg,https://upload.wikimedia.org/wikipedia/commons/4/48/Androscoggin-River-Paddle-ca2001.jpg,"['Free-Black Bridge' 'Androscoggin River' 'Canoeing in the United States'
+ 'June 2001 in Maine']","{'Society', 'Sports', 'Places'}"
+102,61682144,NYPD Bx 52nd Police Precinct Station House and Stable IMG 2182 HLG.png,https://upload.wikimedia.org/wikipedia/commons/4/4b/NYPD_Bx_52nd_Police_Precinct_Station_House_and_Stable_IMG_2182_HLG.png,"['NYPD Bx 52nd Police Precinct Station House and Stable'
+ 'Plaques in the Bronx']","{'Culture', 'Places', 'History', 'Art'}"
+103,30291383,"Bridge No 58, Macclesfield Canal.jpg",https://upload.wikimedia.org/wikipedia/commons/c/c5/Bridge_No_58%2C_Macclesfield_Canal.jpg,"['Macclesfield Canal, Congleton' 'Bridges over the Macclesfield Canal'
+ 'Grade II listed bridges in Cheshire' 'Bridges over canals in Cheshire'
+ 'Bridges numbered 58' 'Bridges in the Borough of Cheshire East']","{'Culture', 'Places', 'Nature', 'Politics', 'History', 'Society', 'STEM', 'Transportation'}"
+104,3347815,Eucalyptus-20070325-011.jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/Eucalyptus-20070325-011.jpg,['Eucalyptus conferruminata'],"{'Nature', 'Plants', 'STEM'}"
+105,86908522,Riccardo Sogliano.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c0/Riccardo_Sogliano.jpg,['Sportspeople from Italy in 1966' 'Riccardo Sogliano'],"{'People', 'Society', 'Sports'}"
+106,1885184,Marktplatz Bayreuth.JPG,https://upload.wikimedia.org/wikipedia/commons/3/39/Marktplatz_Bayreuth.JPG,"['Maximilianstraße (Bayreuth)' 'Market squares in Upper Franconia'
+ 'Spitalkirche (Bayreuth)' 'Church towers in Bayreuth' 'Views of Bayreuth']","{'Transportation', 'Events', 'Places', 'Nature', 'Society', 'STEM'}"
+107,3277879,Xôi ngũ sắc.JPG,https://upload.wikimedia.org/wikipedia/commons/f/fd/X%C3%B4i_ng%C5%A9_s%E1%BA%AFc.JPG,"['Xôi' 'Colorful food' 'Purple, red, white, yellow'
+ 'Red, violet, white, yellow' 'Colored rice']","{'Culture', 'Food'}"
+108,4399660,Montenegro ethnic map 2003.png,https://upload.wikimedia.org/wikipedia/commons/7/7f/Montenegro_ethnic_map_2003.png,['Maps of ethnic groups in Montenegro'],"{'Maps & Flags', 'Places'}"
+109,2399506,CCHR.jpg,https://upload.wikimedia.org/wikipedia/commons/5/58/CCHR.jpg,"['Buildings in Los Angeles' 'Citizens Commission on Human Rights'
+ 'Sunset Boulevard']","{'Transportation', 'Architecture', 'Places', 'Society'}"
+110,17575772,Alkylation.png,https://upload.wikimedia.org/wikipedia/commons/1/13/Alkylation.png,['Asymmetric synthesis' 'Alkylation reactions'],"{'Chemistry', 'STEM'}"
+111,38811524,97th Bombardment Group B-17E Flying Fortress 41-2578.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9c/97th_Bombardment_Group_B-17E_Flying_Fortress_41-2578.jpg,"['RAF Grafton Underwood' 'Boeing B-17E'
+ '97th Bombardment Group (United States Army Air Forces)']","{'Culture', 'Places', 'Politics', 'History', 'Society'}"
+112,4427975,Tetrazolium reduction.png,https://upload.wikimedia.org/wikipedia/commons/7/70/Tetrazolium_reduction.png,['Redox indicators' 'Redox reactions' 'Tetrazolium salts' 'Formazans'],"{'Chemistry', 'STEM'}"
+113,92916205,Halszkaraptor pelvic region.png,https://upload.wikimedia.org/wikipedia/commons/f/f6/Halszkaraptor_pelvic_region.png,"['Halszkaraptor fossils' 'Theropoda fossil holotypes'
+ 'Upper Cretaceous holotypes' 'Type specimens from Mongolia']","{'Nature', 'Fossils', 'STEM'}"
+114,3983698,Chicanopoetry4.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d4/Chicanopoetry4.jpg,"['Chicano literature' 'Book signing in Oregon in 1982'
+ 'Mexican American poetry' 'Poets from the United States'
+ 'Colegio Cesar Chavez' 'Mexican American history of 1982']","{'Culture', 'Places', 'People', 'Literature', 'Society', 'History'}"
+115,3848216,Erevan - La forteresse d'Erébouni 03.JPG,https://upload.wikimedia.org/wikipedia/commons/a/a2/Erevan_-_La_forteresse_d%27Er%C3%A9bouni_03.JPG,['Khaldi Temple in Erebuni Fortress' 'Urartian deities'],"{'Architecture', 'Places', 'People', 'Society'}"
+116,28073589,"Fort George, 2003 (3).JPG",https://upload.wikimedia.org/wikipedia/commons/4/46/Fort_George%2C_2003_%283%29.JPG,"['Fort George, Highland' 'Fort George, 3 K6 Telephone Kiosks, Highland'
+ 'Post boxes in IV postcode area'
+ 'United Kingdom photographs taken on 2013-09-05']","{'STEM', 'Society', 'Technology & Engineering'}"
+117,36882241,Phalaenopsis celebensis Orchi 206-1.jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Phalaenopsis_celebensis_Orchi_206-1.jpg,['Phalaenopsis celebensis'],"{'Nature', 'Plants', 'STEM'}"
+118,19129869,Fremantle War Memorial (front).jpg,https://upload.wikimedia.org/wikipedia/commons/6/60/Fremantle_War_Memorial_%28front%29.jpg,['Fremantle War Memorial'],"{'Culture', 'History', 'Places', 'Monuments & Memorials'}"
+119,23318333,Alloxylon pinnatum rangemap.png,https://upload.wikimedia.org/wikipedia/commons/7/70/Alloxylon_pinnatum_rangemap.png,['Alloxylon pinnatum'],"{'Nature', 'Plants', 'STEM'}"
+120,65625194,American Progress mural 01.jpg,https://upload.wikimedia.org/wikipedia/commons/c/ca/American_Progress_mural_01.jpg,"['20th-century allegorical paintings'
+ 'Plaza lobby of 30 Rockefeller Plaza'
+ 'Allegorical paintings in the United States' 'Art at Rockefeller Center'
+ 'Murals in New York City']","{'Culture', 'Places', 'Art'}"
+121,212170,Kammerflimmer Kollektief German Band.jpeg,https://upload.wikimedia.org/wikipedia/commons/e/e6/Kammerflimmer_Kollektief_German_Band.jpeg,['Kammerflimmer Kollektief'],"{'Culture', 'Music', 'Society'}"
+122,41369068,David O. Dodd Memorial.JPG,https://upload.wikimedia.org/wikipedia/commons/8/85/David_O._Dodd_Memorial.JPG,"['National Register of Historic Places in Pulaski County, Arkansas'
+ 'Monuments and memorials of the Confederate States of America in Arkansas'
+ 'David Owen Dodd'
+ 'Monuments and memorials removed during the George Floyd protests']","{'Culture', 'Places', 'People', 'History', 'Society', 'Monuments & Memorials'}"
+123,4854994,N2 chart definition.JPG,https://upload.wikimedia.org/wikipedia/commons/c/c8/N2_chart_definition.JPG,['N2 Charts'],"{'Diagrams', 'STEM'}"
+124,18186615,"MA-9 Faith 7 Space Center Houston, Houston, TX.JPG",https://upload.wikimedia.org/wikipedia/commons/e/ed/MA-9_Faith_7_Space_Center_Houston%2C_Houston%2C_TX.JPG,"['Faith 7 at Space Center Houston' 'November 2011 in Texas'
+ '2011 in Houston']","{'Culture', 'Belief'}"
+125,13936655,Cronstedtite Pisani.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fa/Cronstedtite_Pisani.jpg,['Cronstedtite' 'Minerals of Wheal Jane' 'Felix Pisani'],"{'Nature', 'Society', 'Chemistry', 'STEM'}"
+126,78432855,Jeff's Gourmet's Sallammin Burger.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0c/Jeff%27s_Gourmet%27s_Sallammin_Burger.jpg,"['Square photos' 'Kosher food' 'Hamburgers in California'
+ 'Food in Los Angeles' 'Hamburgers with cabbage'
+ 'Hamburgers with mayonnaise' 'Hamburgers with pickles'
+ 'Hamburgers with lettuce' 'Hamburgers with bacon'
+ 'Hamburgers with tomatoes']","{'Culture', 'Food', 'Places'}"
+127,56973258,CHP MPs 'No' campaign in Diyarbakır.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e3/CHP_MPs_%27No%27_campaign_in_Diyarbak%C4%B1r.jpg,"[""2017 Turkish constitutional referendum 'No' campaign""]","{'Politics', 'Society'}"
+128,79886696,Clarendon Street Church.jpg,https://upload.wikimedia.org/wikipedia/commons/4/46/Clarendon_Street_Church.jpg,['Churches in Boston' 'Clarendon Street (Boston)'],"{'Nature', 'STEM', 'Society', 'Places'}"
+129,51137471,St Swallow DSC0359.jpg,https://upload.wikimedia.org/wikipedia/commons/2/26/St_Swallow_DSC0359.jpg,['Petrochelidon fluvicola' 'India photographs taken on 2016-08-28'],"{'Culture', 'History'}"
+130,7339198,RAF Metheringham Memorial Garden.jpg,https://upload.wikimedia.org/wikipedia/commons/b/bd/RAF_Metheringham_Memorial_Garden.jpg,"['Monuments and memorials to the Royal Air Force' 'RAF Metheringham'
+ 'Lincolnshire photographs taken on 2007-09-08'
+ 'War memorials in Lincolnshire']","{'Culture', 'Monuments & Memorials', 'Places', 'History'}"
+131,9759163,Nehemiah Hobart poem 1712.jpg,https://upload.wikimedia.org/wikipedia/commons/1/15/Nehemiah_Hobart_poem_1712.jpg,['1712 texts' 'Boston in art' 'Printing'],"{'Technology & Engineering', 'STEM'}"
+132,6641263,Dampierre production.PNG,https://upload.wikimedia.org/wikipedia/commons/8/85/Dampierre_production.PNG,['Electricity graphs' 'Dampierre nuclear power plant'],"{'Places', 'Society', 'Diagrams', 'STEM'}"
+133,98337,Pica serica - Hong Kong.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0d/Pica_serica_-_Hong_Kong.jpg,['Pica serica' 'Corvidae of Hong Kong'],"{'Nature', 'Geology', 'STEM'}"
+134,2269420,David Rabinowitz.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3b/David_Rabinowitz.jpg,['Astronomers from the United States'],"{'Nature', 'Space', 'STEM'}"
+135,69905569,Order of the Knights of Rizal NHCP Historical Marker.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a8/Order_of_the_Knights_of_Rizal_NHCP_Historical_Marker.jpg,['Order of the Knights of Rizal historical marker'],"{'People', 'Society'}"
+136,60388242,Stone Arch Bridge Wapsipincon State Park.jpg,https://upload.wikimedia.org/wikipedia/commons/f/ff/Stone_Arch_Bridge_Wapsipincon_State_Park.jpg,"['Bridges on the National Register of Historic Places in Iowa'
+ 'Stone arch bridges in Iowa' 'Wapsipinicon State Park'
+ 'Rustic architecture in Iowa']","{'Society', 'Architecture', 'Places'}"
+137,19457615,Kumasi.png,https://upload.wikimedia.org/wikipedia/commons/f/fa/Kumasi.png,['Ghana in the 1890s' 'Manhyia Palace' 'Vernacular architecture in Ghana'],"{'Architecture', 'Places'}"
+138,29611785,"Roberto Córdova, Sebastián Piñera y Julio Ibarra junto a cheerleaders del CPS.jpg",https://upload.wikimedia.org/wikipedia/commons/1/15/Roberto_C%C3%B3rdova%2C_Sebasti%C3%A1n_Pi%C3%B1era_y_Julio_Ibarra_junto_a_cheerleaders_del_CPS.jpg,"['Julio Ibarra' 'Gobernación Provincial de Cardenal Caro'
+ 'Roberto Córdova' 'Sebastián Piñera in 2013' 'Cheer C.P.S.'
+ '2013 in Pichilemu']","{'Culture', 'Places', 'Politics', 'People', 'Society', 'Sports'}"
+139,11082719,Prinsenkasteel (3).jpg,https://upload.wikimedia.org/wikipedia/commons/8/8d/Prinsenkasteel_%283%29.jpg,['Prinsenkasteel'],"{'Architecture', 'Places'}"
+140,60549388,Jianianhualong5.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b4/Jianianhualong5.jpg,['Jianianhualong fossils'],"{'Nature', 'Fossils', 'STEM'}"
+141,9250917,Avon Water at Millheugh Bridge - geograph.org.uk - 165433.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a4/Avon_Water_at_Millheugh_Bridge_-_geograph.org.uk_-_165433.jpg,"['Images by Iain Thompson' 'Millheugh Bridge'
+ 'United Kingdom photographs taken on 2006-05-06']",{'Places'}
+142,2969185,PedostibesTuberculosus5.jpg,https://upload.wikimedia.org/wikipedia/commons/8/85/PedostibesTuberculosus5.jpg,['Pedostibes tuberculosus' 'Amphibians of the Wayanad Wildlife Sanctuary'],"{'Nature', 'STEM'}"
+143,9831896,Hamnskar monument.jpg,https://upload.wikimedia.org/wikipedia/commons/5/5c/Hamnskar_monument.jpg,"['Finnish 27th Jäger Battalion' 'War memorials in Finland'
+ 'Ragnar Nordström']","{'Culture', 'Monuments & Memorials', 'Places', 'History'}"
+144,25102565,"Audur Jonsdottir, nominerad till Nordiska radets litteraturpris 2006.jpg",https://upload.wikimedia.org/wikipedia/commons/e/e2/Audur_Jonsdottir%2C_nominerad_till_Nordiska_radets_litteraturpris_2006.jpg,"['Auður Jónsdóttir' 'Nordic Council Literature Prize 2006'
+ 'Smiling women (closed mouths)' 'Female short hair' 'Human heads']","{'Culture', 'Nature', 'People', 'Society', 'STEM', 'Events', 'Literature'}"
+145,12788864,"Flooring in a material handling area at Pharmaceutical company Lilly, France.jpg",https://upload.wikimedia.org/wikipedia/commons/4/4e/Flooring_in_a_material_handling_area_at_Pharmaceutical_company_Lilly%2C_France.jpg,['Hygiene' 'Eli Lilly and Company'],"{'Culture', 'History', 'STEM', 'Society', 'Medicine & Health'}"
+146,26099616,Virtues Speculum Virginum W72 26r.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c0/Virtues_Speculum_Virginum_W72_26r.jpg,['Speculum virginum' 'Virtue' 'Vices and virtues'],"{'Culture', 'Literature', 'Society'}"
+147,5285664,Shankarabharanam scale.svg,https://upload.wikimedia.org/wikipedia/commons/b/b6/Shankarabharanam_scale.svg,['Carnatic ragams (svg)'],"{'Culture', 'Music'}"
+148,75869283,Tabasco Opera 2018 c.jpg,https://upload.wikimedia.org/wikipedia/commons/7/78/Tabasco_Opera_2018_c.jpg,['Musicals' 'Tabasco sauce' 'January 2018 in New Orleans'],"{'Culture', 'Chemistry', 'STEM'}"
+149,71232232,Chancia - Mairie (juil 2018).jpg,https://upload.wikimedia.org/wikipedia/commons/d/da/Chancia_-_Mairie_%28juil_2018%29.jpg,"['France photographs taken on 2018-07-21' 'July 2018 in Jura (department)'
+ 'Town hall of Chancia' 'War memorials in Jura (department)'
+ 'Defibrillators in Jura (department)']","{'Culture', 'History', 'Monuments & Memorials', 'Places'}"
+150,27702447,EdithArchibaldHalifaxNovaScotia.png,https://upload.wikimedia.org/wikipedia/commons/4/43/EdithArchibaldHalifaxNovaScotia.png,['Edith Archibald'],"{'Politics', 'People', 'Society'}"
+151,92337236,"Exit A, Beijing South Railway Station, Beijing Subway.jpg",https://upload.wikimedia.org/wikipedia/commons/3/33/Exit_A%2C_Beijing_South_Railway_Station%2C_Beijing_Subway.jpg,['Beijing South Railway Station (Beijing Subway)'],"{'Politics', 'Society'}"
+152,16038368,"Ecuadorian dress, Carnival del Pueblo 2010, London.jpg",https://upload.wikimedia.org/wikipedia/commons/f/fb/Ecuadorian_dress%2C_Carnival_del_Pueblo_2010%2C_London.jpg,"['Culture of Ecuador' 'Festivals in London' 'Walworth Road, London'
+ 'Events in the London Borough of Southwark'
+ 'People in the London Borough of Southwark']","{'Events', 'Places', 'People', 'Society'}"
+153,35899730,"Winner by municipality in the Portuguese Socialist Party Secretary-General primary, 2014.png",https://upload.wikimedia.org/wikipedia/commons/6/6f/Winner_by_municipality_in_the_Portuguese_Socialist_Party_Secretary-General_primary%2C_2014.png,"['Election maps of Portugal' 'Partido Socialista (Portugal)'
+ 'António Costa in 2014' 'António José Seguro' 'Pink and red']","{'Maps & Flags', 'Culture', 'Places', 'Society'}"
+154,51071142,Long-tailed Ground Dove (Uropelia campestris) (29072741940).jpg,https://upload.wikimedia.org/wikipedia/commons/c/cb/Long-tailed_Ground_Dove_%28Uropelia_campestris%29_%2829072741940%29.jpg,['Uropelia campestris' 'Brazil photographs taken on 2016-07-01'],"{'Geology', 'STEM'}"
+155,4190334,PortadaFeria08.JPG,https://upload.wikimedia.org/wikipedia/commons/d/dd/PortadaFeria08.JPG,['Medina Sidonia' 'Feria gates'],"{'Culture', 'Art', 'Places'}"
+156,47122122,"Ontario Northland train crosses the Missinaibi River at Mattice-Val Côté, Ontario.jpg",https://upload.wikimedia.org/wikipedia/commons/6/67/Ontario_Northland_train_crosses_the_Missinaibi_River_at_Mattice-Val_C%C3%B4t%C3%A9%2C_Ontario.jpg,"['EMD GP38-2 locomotives of the Ontario Northland Railway'
+ 'Trains on bridges in Ontario' 'Missinaibi River'
+ 'Freight trains in Ontario' 'Mattice-Val Côté' 'Panoramics in Ontario'
+ 'Panoramic photographs of trains' 'Trains nearby rivers'
+ 'Photographs taken on 2014-09-25'
+ 'September 2014 in rail transport in Canada']","{'Places', 'STEM', 'Society', 'Technology & Engineering'}"
+157,3696616,"ACSIE010 - The Obelisk now in Central Park, New York, as it Stood in Alexandria, Egypt.jpg",https://upload.wikimedia.org/wikipedia/commons/2/2e/ACSIE010_-_The_Obelisk_now_in_Central_Park%2C_New_York%2C_as_it_Stood_in_Alexandria%2C_Egypt.jpg,"[""Cleopatra's Needles in Alexandria"" 'A Confederate Soldier in Egypt'
+ 'Illustrations of ancient Egyptian art in 1884']","{'Culture', 'Places', 'Monuments & Memorials', 'People', 'Society'}"
+158,18046244,Klaus Härö.jpg,https://upload.wikimedia.org/wikipedia/commons/7/7a/Klaus_H%C3%A4r%C3%B6.jpg,"['Film directors from Finland' 'Men of Finland' '2010 in Helsinki'
+ 'People of Finland in 2010' 'Klaus Härö'
+ 'Finland photographs taken on 2010-02-18']","{'People', 'Society'}"
+159,8394317,CitadelStadium.jpg,https://upload.wikimedia.org/wikipedia/commons/7/7b/CitadelStadium.jpg,"['American football venues in South Carolina'
+ 'Sports clubs established in 1905' 'The Citadel Bulldogs football']","{'Sports', 'Places', 'Society'}"
+160,14483949,StateLibQld 1 142447 Cormoran (ship).jpg,https://upload.wikimedia.org/wikipedia/commons/2/22/StateLibQld_1_142447_Cormoran_%28ship%29.jpg,"['Shipyards in Australia' 'Cormoran (ship, 1893)' 'Ships in Queensland'
+ 'Ships in drydocks' 'Black and white photographs of Queensland']","{'Transportation', 'Technology & Engineering', 'Society', 'STEM'}"
+161,67096088,"Neoregelia carcharodon - Marie Selby Botanical Gardens - Sarasota, Florida - DSC01728.jpg",https://upload.wikimedia.org/wikipedia/commons/d/dd/Neoregelia_carcharodon_-_Marie_Selby_Botanical_Gardens_-_Sarasota%2C_Florida_-_DSC01728.jpg,['Specimens in the Marie Selby Botanical Gardens' 'Neoregelia carcharodon'],"{'Nature', 'Plants', 'STEM'}"
+162,47811663,Four Spiral Semigroup 02.png,https://upload.wikimedia.org/wikipedia/commons/d/d4/Four_Spiral_Semigroup_02.png,['Semigroup theory'],"{'Mathematics', 'STEM'}"
+163,83362360,BIS 2019.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d7/BIS_2019.jpg,['Conferences' 'Conferences in Spain'],"{'Society', 'Events'}"
+164,17843932,Prorhynchus fontinalis pharynx.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a6/Prorhynchus_fontinalis_pharynx.jpg,['Prorhynchus' 'Pharynx'],"{'Animals', 'STEM', 'Nature'}"
+165,25342212,Chicago at Minnesota.jpg,https://upload.wikimedia.org/wikipedia/commons/2/27/Chicago_at_Minnesota.jpg,"['Minnesota Vikings players' 'Chicago Bears players'
+ '2012 Minnesota Vikings season' '2012 Chicago Bears season'
+ 'Hubert H. Humphrey Metrodome']","{'Culture', 'Sports', 'People', 'Society'}"
+166,15933869,Svářečka v DI.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3f/Sv%C3%A1%C5%99e%C4%8Dka_v_DI.jpg,['Electron beam welding'],"{'Technology & Engineering', 'STEM'}"
+167,16800815,Sunspots 1302 Sep 2011 by NASA.jpg,https://upload.wikimedia.org/wikipedia/commons/6/67/Sunspots_1302_Sep_2011_by_NASA.jpg,['Sunspots' 'Solar flares' 'Solar Cycle 24'],"{'Places', 'Nature', 'Space', 'STEM'}"
+168,10253993,Mercator telescope.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f4/Mercator_telescope.jpg,['Mercator Telescope'],"{'Space', 'STEM'}"
+169,30439945,View from Tayelet during Snow 07.jpg,https://upload.wikimedia.org/wikipedia/commons/1/11/View_from_Tayelet_during_Snow_07.jpg,"['Views from Armon Hanatziv Promenade' 'Snowy landscapes in Israel'
+ 'Snow in Jerusalem during 2013 Middle East cold'
+ 'Dome of the Dome of the Rock' 'Remote views of the Dome of the Rock']","{'Culture', 'Landscapes', 'Architecture', 'Places', 'Nature', 'History', 'STEM'}"
+170,14012267,"St Davids' church, Trostrey - geograph.org.uk - 1282666.jpg",https://upload.wikimedia.org/wikipedia/commons/7/7d/St_Davids%27_church%2C_Trostrey_-_geograph.org.uk_-_1282666.jpg,"['April 2009 in Monmouthshire' 'Bell gables in Wales'
+ 'Church porches in Wales' 'Churchyard crosses in Wales'
+ 'Grade II listed buildings in Monmouthshire'
+ ""St David's Church, Trostrey"" 'Stone crosses in Wales'
+ 'Images by Philip Halling'
+ 'United Kingdom photographs taken on 2009-04-26']","{'Culture', 'Places', 'Nature', 'History', 'STEM'}"
+171,42782772,Cuyahoga County Ohio incorporated and unincorporated areas Bedford highlighted.svg,https://upload.wikimedia.org/wikipedia/commons/5/51/Cuyahoga_County_Ohio_incorporated_and_unincorporated_areas_Bedford_highlighted.svg,"['Maps of Cuyahoga County, Ohio (style B)'
+ 'Locator maps of cities in Cuyahoga County, Ohio' 'Maps of Bedford, Ohio']","{'Maps & Flags', 'Places'}"
+172,10522155,CBN TV.PNG,https://upload.wikimedia.org/wikipedia/commons/d/df/CBN_TV.PNG,"['Logos of television channels in Canada' '2005 establishments'
+ 'Logos of television channels']",{'Logos & Symbols'}
+173,89814230,Calliostoma chlorum (MNHN-IM-2000-4555).jpeg,https://upload.wikimedia.org/wikipedia/commons/e/e8/Calliostoma_chlorum_%28MNHN-IM-2000-4555%29.jpeg,['Mollusca in the MNHN' 'Calliostoma chlorum'],"{'Culture', 'Animals', 'STEM', 'Nature'}"
+174,17807498,Pumpehuset København.JPG,https://upload.wikimedia.org/wikipedia/commons/8/83/Pumpehuset_K%C3%B8benhavn.JPG,['Københavns Vandværk' 'Concert halls in Denmark'],"{'Society', 'Events'}"
+175,5066783,Quekettia papillosa 7.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e2/Quekettia_papillosa_7.jpg,['Quekettia papillosa'],"{'Nature', 'Plants', 'STEM'}"
+176,17708534,Enneagon stellations.svg,https://upload.wikimedia.org/wikipedia/commons/4/4e/Enneagon_stellations.svg,['Enneagram' 'SVG diagrams in English' 'Star polygons'],"{'Places', 'Nature', 'Diagrams', 'Society', 'STEM'}"
+177,40148153,FIU PHSW.png,https://upload.wikimedia.org/wikipedia/commons/2/29/FIU_PHSW.png,['Florida International University logos'],{'Logos & Symbols'}
+178,1207218,San Sebastian Festival Entrada.JPG,https://upload.wikimedia.org/wikipedia/commons/7/7a/San_Sebastian_Festival_Entrada.JPG,['2006 San Sebastián International Film Festival'],"{'Society', 'Events'}"
+179,93157644,Eupatorium perfoliatum with bee and caterpillar (cropped).jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Eupatorium_perfoliatum_with_bee_and_caterpillar_%28cropped%29.jpg,"['Eupatorium perfoliatum'
+ 'Unidentified caterpillars to be classified by family'
+ 'Unidentified caterpillars of the United States'
+ 'Lepidoptera of New Hampshire']","{'Nature', 'Plants', 'Society', 'STEM'}"
+180,7458511,Danatinia casca.JPG,https://upload.wikimedia.org/wikipedia/commons/0/05/Danatinia_casca.JPG,['Danatinia' 'Lampridiomorpha life restorations'],"{'Animals', 'Nature', 'STEM'}"
+181,31231610,Makarenko chess 1.svg,https://upload.wikimedia.org/wikipedia/commons/8/8e/Makarenko_chess_1.svg,['Makarenko chess' 'Chess starting position'],"{'Culture', 'STEM', 'Diagrams'}"
+182,14873451,DirectorAdoor.jpg,https://upload.wikimedia.org/wikipedia/commons/5/53/DirectorAdoor.jpg,['Adoor Gopalakrishnan'],"{'People', 'Society'}"
+183,29111316,Ripples of influence.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9a/Ripples_of_influence.jpg,['Belief'],"{'Culture', 'Belief'}"
+184,69029666,Unveiling the Masonville designation sign (9953288823).jpg,https://upload.wikimedia.org/wikipedia/commons/4/41/Unveiling_the_Masonville_designation_sign_%289953288823%29.jpg,['Baltimore Inner Harbor'],"{'Transportation', 'Society'}"
+185,35006963,"Parsipop (Rumbeke), camping - 2.png",https://upload.wikimedia.org/wikipedia/commons/3/3a/Parsipop_%28Rumbeke%29%2C_camping_-_2.png,['Music festivals in Belgium' 'Tents' 'Rumbeke'],"{'Society', 'Events', 'Places'}"
+186,28186747,Kameda's algorithm run.svg,https://upload.wikimedia.org/wikipedia/commons/5/5c/Kameda%27s_algorithm_run.svg,['Directed graphs' 'Graph algorithms'],"{'Mathematics', 'STEM'}"
+187,55181431,"Valdanos, Crna Gora, 2011-08-13 - panoramio.jpg",https://upload.wikimedia.org/wikipedia/commons/8/8f/Valdanos%2C_Crna_Gora%2C_2011-08-13_-_panoramio.jpg,['Landscapes of Montenegro' 'Valdanos Beach'],"{'Landscapes', 'Places'}"
+188,64123109,Jo'ara (1937).jpg,https://upload.wikimedia.org/wikipedia/commons/c/c6/Jo%27ara_%281937%29.jpg,"[""Joa'ra""]","{'STEM', 'Society', 'Places', 'Nature'}"
+189,81946678,BMW F40 Leonberg 2019 IMG 0019.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fa/BMW_F40_Leonberg_2019_IMG_0019.jpg,['BMW F40' 'Grey BMW hatchbacks'],"{'Technology & Engineering', 'STEM'}"
+190,54282356,Wikipedia - Calisus.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c5/Wikipedia_-_Calisus.jpg,"['Hard rock groups from Maryland' 'Group photographs of musicians'
+ 'Musical quintets' 'Groups looking at viewer']","{'Culture', 'Music', 'People', 'Society'}"
+191,7716291,Ankylosaur.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b1/Ankylosaur.jpg,"['Pinacosaurus skeletal mounts' 'Saichania skulls'
+ 'Central Museum of Mongolian Dinosaurs']","{'Culture', 'Nature', 'Fossils', 'STEM'}"
+192,56764321,2015 JWC Men's Podium (2).jpg,https://upload.wikimedia.org/wikipedia/commons/7/7c/2015_JWC_Men%27s_Podium_%282%29.jpg,"['2015 World Junior Figure Skating Championships' 'Shoma Uno'
+ 'Sota Yamamoto' ""Figure skating men's singles medal ceremonies""
+ 'Male sportspeople with medals' 'Sportspeople with flags of Japan']","{'Events', 'Sports', 'Society'}"
+193,38431270,"Beggar's Box ,1968.jpg",https://upload.wikimedia.org/wikipedia/commons/d/d5/Beggar%27s_Box_%2C1968.jpg,['Art of Catalonia'],"{'Culture', 'Art'}"
+194,10536823,Java Transportation Network id.svg,https://upload.wikimedia.org/wikipedia/commons/a/ab/Java_Transportation_Network_id.svg,"['Transport in Java' 'SVG maps of Java' 'Road maps of Indonesia'
+ 'Rail transport maps of Indonesia']","{'Transportation', 'Maps & Flags', 'Places', 'Society'}"
+195,580626,Messier object 023.jpg,https://upload.wikimedia.org/wikipedia/commons/6/63/Messier_object_023.jpg,"['2MASS Atlas Image Gallery: The Messier Catalog (SMALL SIZE)'
+ 'Messier 23']","{'Nature', 'STEM'}"
+196,50653733,Mid Devon - Hillersdon House & Scenery (geograph 3911873).jpg,https://upload.wikimedia.org/wikipedia/commons/1/1e/Mid_Devon_-_Hillersdon_House_%26_Scenery_%28geograph_3911873%29.jpg,"['Hillersdon House, Cullompton']","{'Culture', 'History', 'Society'}"
+197,6565797,Leaf morphology parallel.png,https://upload.wikimedia.org/wikipedia/commons/d/d9/Leaf_morphology_parallel.png,['Leaf vein diagrams'],"{'Diagrams', 'STEM'}"
+198,23924312,Hochfirstpanorama1.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e7/Hochfirstpanorama1.jpg,"['Titisee' 'Landscapes of the Southern Black Forest'
+ 'Panoramics in the Black Forest' 'Views from Hochfirst (Schwarzwald)'
+ 'Cityscapes of Titisee-Neustadt'
+ 'Remote views of Feldberg (Black Forest)']","{'Landscapes', 'Places'}"
+199,6524573,Iodonium tethering on prop-1-enyl ethers.png,https://upload.wikimedia.org/wikipedia/commons/f/f8/Iodonium_tethering_on_prop-1-enyl_ethers.png,['Carbohydrate chemistry'],"{'Chemistry', 'STEM'}"
+200,7789263,PikiWiki Israel 4427 barons farm in mazkeret batya.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d5/PikiWiki_Israel_4427_barons_farm_in_mazkeret_batya.jpg,['Mazkeret Batya'],"{'Culture', 'History'}"
+201,83482486,Plasmalogen-synthesis-pathway.png,https://upload.wikimedia.org/wikipedia/commons/6/67/Plasmalogen-synthesis-pathway.png,['Lipids' 'Biosyntheses'],"{'Chemistry', 'Technology & Engineering', 'STEM'}"
+202,3718857,Non steady state probe tp08 hukseflux.gif,https://upload.wikimedia.org/wikipedia/commons/c/c8/Non_steady_state_probe_tp08_hukseflux.gif,['Thermodynamics' 'Soil science diagrams'],"{'Chemistry', 'Diagrams', 'STEM'}"
+203,67403913,Polymerformation.png,https://upload.wikimedia.org/wikipedia/commons/1/14/Polymerformation.png,['Polymerization'],"{'Chemistry', 'STEM'}"
+204,32955273,Olmec Butterfly tapete by Isaac Vásquez García.jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/Olmec_Butterfly_tapete_by_Isaac_V%C3%A1squez_Garc%C3%ADa.jpg,['Images donated by the Friends of Oaxacan Folk Art' 'Isaac Vasquez'],"{'Culture', 'Art', 'People', 'Society'}"
+205,47552516,COEconventionTerritorialCommunities.svg,https://upload.wikimedia.org/wikipedia/commons/4/43/COEconventionTerritorialCommunities.svg,['Maps of the Council of Europe'],"{'Maps & Flags', 'Places'}"
+206,52653876,Cross section Mansfield.png,https://upload.wikimedia.org/wikipedia/commons/9/9b/Cross_section_Mansfield.png,"['Geological cross sections of the United States'
+ 'Geological cross sections of Ohio'
+ 'Geological cross sections of West Virginia' 'Appalachian Basin'
+ 'Paleozoic geology of Ohio' 'Paleozoic geology of West Virginia'
+ 'Mansfield Natural Gas Field']","{'Geology', 'Diagrams', 'STEM'}"
+207,3001953,Ussr-robertburns1956.jpg,https://upload.wikimedia.org/wikipedia/commons/c/ce/Ussr-robertburns1956.jpg,"['Stamps of the Soviet Union, 1956, all stamps'
+ 'Writers on stamps of the Soviet Union'
+ 'Literature of the United Kingdom in Russia' 'Portraits of Robert Burns'
+ 'Poets on stamps']","{'Culture', 'People', 'Literature', 'Society'}"
+208,21552325,Jedd Fisch 2012.jpg,https://upload.wikimedia.org/wikipedia/commons/a/ac/Jedd_Fisch_2012.jpg,['Miami Hurricanes football coaches'],"{'Society', 'Sports'}"
+209,28368332,Kamienica na ul. Długiej2- fragment fasady.JPG,https://upload.wikimedia.org/wikipedia/commons/8/8d/Kamienica_na_ul._D%C5%82ugiej2-_fragment_fasady.JPG,['Długa 2 Bydgoszcz' 'Poland photographs taken on 2013-09-05'],"{'Architecture', 'Places'}"
+210,343759,Evstafiev-chechnya-women-pray.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e6/Evstafiev-chechnya-women-pray.jpg,"['Groups of women' ""Du'a"" 'First Chechen War' 'Chechen women' 'Keyakinan']","{'Culture', 'Belief', 'People', 'History', 'Society'}"
+211,186299,Van-Veldeke-Denkmal.jpg,https://upload.wikimedia.org/wikipedia/commons/9/91/Van-Veldeke-Denkmal.jpg,"['Statues of sitting men' 'Onroerend erfgoed in Hasselt'
+ 'Monuments and memorials in Hasselt' 'Sculptures in Hasselt'
+ 'Cafés in Hasselt' '2002 in Hasselt' 'August 2002 in Belgium'
+ 'Heinrich von Veldeke']","{'Culture', 'Literature', 'Music'}"
+212,18077719,Dorian Goldfeld.jpg,https://upload.wikimedia.org/wikipedia/commons/b/ba/Dorian_Goldfeld.jpg,['Dorian M. Goldfeld' 'Pictures from Oberwolfach Photo Collection'],"{'Culture', 'Society'}"
+213,54429779,Musrestaurangen i Malmö.jpg,https://upload.wikimedia.org/wikipedia/commons/d/df/Musrestaurangen_i_Malm%C3%B6.jpg,"['Sculptures in Malmö' 'Restaurants in Malmö' 'December 2016 in Malmö'
+ 'Miniature food' 'Anonymouse']","{'Culture', 'Society', 'Food'}"
+214,62016238,Onkel Dannys Plads 01.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e1/Onkel_Dannys_Plads_01.jpg,['Onkel Dannys Plads'],"{'Architecture', 'Places'}"
+215,77249491,"2019-01-25 20 08 29 An unopened cup of Jell-O chocolate pudding in the Franklin Farm section of Oak Hill, Fairfax County, Virginia.jpg",https://upload.wikimedia.org/wikipedia/commons/4/45/2019-01-25_20_08_29_An_unopened_cup_of_Jell-O_chocolate_pudding_in_the_Franklin_Farm_section_of_Oak_Hill%2C_Fairfax_County%2C_Virginia.jpg,"['Food in Franklin Farm, Virginia' 'Jell-O chocolate pudding']","{'Culture', 'Food'}"
+216,55090801,Dinabandhu Mitra (1830-1873).jpg,https://upload.wikimedia.org/wikipedia/commons/f/f8/Dinabandhu_Mitra_%281830-1873%29.jpg,"['Ramtanu Lahiri, Brahman and Reformer - A History of the Renaissance in Bengal'
+ 'Dinabandhu Mitra']","{'Culture', 'People', 'Literature', 'Society'}"
+217,9892789,Steve Saint.jpg,https://upload.wikimedia.org/wikipedia/commons/0/01/Steve_Saint.jpg,"['Steve Saint' '1951 births' 'Christians from the United States'
+ 'Aviators from the United States' 'Christianity in Ecuador'
+ '20th-century people of Quito' 'People of South America'
+ 'Christian missionaries' 'History of Ecuador'
+ 'People of Wheaton, Illinois']","{'Culture', 'People', 'Society'}"
+218,3727180,Medicine aryballos Louvre CA1989-2183 n2.jpg,https://upload.wikimedia.org/wikipedia/commons/6/6c/Medicine_aryballos_Louvre_CA1989-2183_n2.jpg,"['Ancient Greek medicine' 'Ancient Greek pottery aryballoi'
+ 'Clinic Painter' 'Greek antiquities in the Louvre - Room 43'
+ '480s BC pottery in France' '470s BC pottery in France' 'Klismoi in art'
+ 'Attic red-figure pottery in France']","{'Culture', 'Places', 'History', 'STEM', 'Art', 'Medicine & Health'}"
+219,20888156,Tarsophlebia eximia MCZ6129 head.png,https://upload.wikimedia.org/wikipedia/commons/f/f2/Tarsophlebia_eximia_MCZ6129_head.png,['Insecta fossil illustrations' 'Tarsophlebia fossils'],"{'Nature', 'Fossils', 'STEM'}"
+220,45647317,Стационарный-аспиратор-ПУ-4Э+.jpg,https://upload.wikimedia.org/wikipedia/commons/3/35/%D0%A1%D1%82%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D1%80%D0%BD%D1%8B%D0%B9-%D0%B0%D1%81%D0%BF%D0%B8%D1%80%D0%B0%D1%82%D0%BE%D1%80-%D0%9F%D0%A3-4%D0%AD%2B.jpg,"['Occupational safety and health' 'Workplace safety of Russia'
+ 'Workplace exposure monitoring']","{'Medicine & Health', 'STEM'}"
+221,6735733,Oudenodon latirostris.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f6/Oudenodon_latirostris.jpg,['Oudenodon fossils'],"{'Nature', 'Fossils', 'STEM'}"
+222,10056503,Preston Rivulettes 1940 postcard.jpg,https://upload.wikimedia.org/wikipedia/commons/4/40/Preston_Rivulettes_1940_postcard.jpg,"['Historic images of women in Canada' 'Ice hockey in Ontario'
+ 'Ice hockey teams in Ontario' '1940 postcards of Canada'
+ 'Preston, Ontario' 'Cambridge, Ontario in the 1940s'
+ 'Postcards of Cambridge, Ontario' '1940 in ice hockey in Canada'
+ 'Ice hockey goaltenders from Canada' ""Women's ice hockey in Canada""
+ 'Postcards of ice hockey in Canada' 'Postcards of sportspeople']","{'Culture', 'Art', 'Sports', 'Places', 'History', 'Society'}"
+223,12766141,Baseball seventh inning stretch 2004.jpg,https://upload.wikimedia.org/wikipedia/commons/2/28/Baseball_seventh_inning_stretch_2004.jpg,"['2004 in Ohio' 'Cincinnati Reds' 'Spectators in the United States'
+ 'Foam hands' 'Take Me Out to the Ball Game' 'Great American Ball Park'
+ 'Intermissions in sports' 'Women with closed eyes and opened mouth']","{'Culture', 'Music', 'People', 'Society'}"
+224,10502397,Naturally Oil Stained Kern River Field Outcrop.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d8/Naturally_Oil_Stained_Kern_River_Field_Outcrop.jpg,"['Kern River Oil Field' 'Geology of California' 'Sandstone'
+ 'Petroleum bearing geologic formations in California']","{'Geology', 'Places', 'Nature', 'Society', 'STEM'}"
+225,27216633,Calliostoma benedicti 001.jpg,https://upload.wikimedia.org/wikipedia/commons/e/ec/Calliostoma_benedicti_001.jpg,"['Calliostoma benedicti'
+ 'Bulletin of the Museum of Comparative Zoology at Harvard College']","{'Nature', 'Animals', 'STEM'}"
+226,63296509,Spotted small flat laying eggs on Lepidagathis keralensis at Madayipara.jpg,https://upload.wikimedia.org/wikipedia/commons/a/ac/Spotted_small_flat_laying_eggs_on_Lepidagathis_keralensis_at_Madayipara.jpg,"['Lepidagathis keralensis' 'Sarangesa purendra pandra'
+ 'Lepidoptera laying eggs']","{'Nature', 'Plants', 'STEM'}"
+227,22910051,Logo of the Astronomical Society of the Pacific.jpg,https://upload.wikimedia.org/wikipedia/commons/7/78/Logo_of_the_Astronomical_Society_of_the_Pacific.jpg,"['Learned societies' 'Logos of organizations' 'Astronomy organizations'
+ 'Organizations based in San Francisco' 'Logos of San Francisco']","{'Logos & Symbols', 'Society'}"
+228,27485784,LillafüredNarrowGaugeRailway1928.jpg,https://upload.wikimedia.org/wikipedia/commons/5/54/Lillaf%C3%BCredNarrowGaugeRailway1928.jpg,"['Lillafüred railway station' 'Miskolc in the 1920s'
+ '1928 photographs of Hungary' 'Railway bridges in Hungary'
+ 'Narrow gauge steam locomotives of Hungary' '1928 in rail transport']","{'Transportation', 'Culture', 'Places', 'History', 'Society'}"
+229,36623046,Kathiawar map.jpg,https://upload.wikimedia.org/wikipedia/commons/4/4e/Kathiawar_map.jpg,['Gazetteer of the Bombay Presidency (1896)' 'Saurashtra'],"{'Culture', 'Places'}"
+230,88525483,2008 Democratic primaries polling.png,https://upload.wikimedia.org/wikipedia/commons/a/ab/2008_Democratic_primaries_polling.png,"['Hillary Rodham Clinton presidential campaign, 2008'
  'John Edwards presidential campaign, 2008'
  'Joe Biden-related polling data' 'Chris Dodd presidential campaign, 2008'
  'Mike Gravel presidential campaign, 2008 (Democratic Party)'
@@ -13,15 +408,83 @@
  'Barack Obama presidential campaign, 2008' 'John Edwards in 2006'
  'John Edwards in 2007' 'John Edwards in 2008'
  'Hillary Rodham Clinton-related polling data'
- 'Nationwide opinion polling for the Democratic Party 2008 presidential primaries']","{'Society', 'Culture', 'People', 'Belief', 'Politics'}"
-3824203,18186615,"MA-9 Faith 7 Space Center Houston, Houston, TX.JPG",https://upload.wikimedia.org/wikipedia/commons/e/ed/MA-9_Faith_7_Space_Center_Houston%2C_Houston%2C_TX.JPG,"['Faith 7 at Space Center Houston' 'November 2011 in Texas'
- '2011 in Houston']","{'Culture', 'Belief'}"
-3027178,56977077,M-House house divisions.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cd/M-House_house_divisions.jpg,['Astrological diagrams' 'House (astrology)'],"{'Diagrams', 'Society', 'Culture', 'History', 'STEM', 'Belief'}"
-1064122,29111316,Ripples of influence.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9a/Ripples_of_influence.jpg,['Belief'],"{'Culture', 'Belief'}"
-1757658,343759,Evstafiev-chechnya-women-pray.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e6/Evstafiev-chechnya-women-pray.jpg,"['Groups of women' ""Du'a"" 'First Chechen War' 'Chechen women' 'Keyakinan']","{'Society', 'Culture', 'People', 'History', 'Belief'}"
-2363449,17134893,"Jacopo della quercia, fede.JPG",https://upload.wikimedia.org/wikipedia/commons/2/28/Jacopo_della_quercia%2C_fede.JPG,['Sculptures from Fonte Gaia - Faith by Jacopo della Quercia'],"{'Culture', 'Belief'}"
-2641195,56977081,Regimontanus house divisions.jpg,https://upload.wikimedia.org/wikipedia/commons/8/8d/Regimontanus_house_divisions.jpg,['Astrological diagrams' 'House (astrology)' 'Johannes Regiomontanus'],"{'Diagrams', 'Society', 'Culture', 'People', 'History', 'STEM', 'Belief'}"
-3367249,42604522,2008 Democratic Primary Delegate Chart.png,https://upload.wikimedia.org/wikipedia/commons/a/a9/2008_Democratic_Primary_Delegate_Chart.png,"['Statewide opinion polling for the Democratic Party presidential primaries, 2008'
+ 'Nationwide opinion polling for the Democratic Party 2008 presidential primaries']","{'Culture', 'Belief', 'Politics', 'People', 'Society'}"
+231,7789531,Xrtlayout.gif,https://upload.wikimedia.org/wikipedia/commons/5/5f/Xrtlayout.gif,['Swift Gamma-Ray Burst Mission' 'Wolter telescopes'],"{'Space', 'STEM'}"
+232,4242132,Hawaii-Emperor engl.png,https://upload.wikimedia.org/wikipedia/commons/0/0e/Hawaii-Emperor_engl.png,"['Hawaiian–Emperor seamount chain' 'Geology of Hawaii'
+ 'Bathymetric maps of the Pacific Ocean' 'Seamounts in the Pacific Ocean'
+ 'Aleutian Arc' 'Ocean trenches']","{'Maps & Flags', 'Geology', 'Places', 'STEM'}"
+233,11974815,JaitpurKart.jpg,https://upload.wikimedia.org/wikipedia/commons/1/1d/JaitpurKart.jpg,['Maps of princely states of India'],"{'Maps & Flags', 'Places'}"
+234,80630528,Ernest Benn Bekenntnisse 1926 cover.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b1/Ernest_Benn_Bekenntnisse_1926_cover.jpg,"['Ernest Benn' 'German-language book covers' 'Book covers from Germany'
+ 'F. Bruckmann Verlag, Munich']","{'Culture', 'Society', 'People', 'Literature', 'Art'}"
+235,10089052,Sanicle at Spier's.JPG,https://upload.wikimedia.org/wikipedia/commons/0/0c/Sanicle_at_Spier%27s.JPG,"['Sanicula europaea' ""Spier's School"" 'April 2010 in Scotland']","{'Nature', 'Plants', 'Places', 'STEM'}"
+236,18808773,OldRoad Qc5.png,https://upload.wikimedia.org/wikipedia/commons/4/46/OldRoad_Qc5.png,['Diagrams of old road signs of Quebec'],"{'Diagrams', 'STEM'}"
+237,772291,Poland Narew Góra Strękowa.jpg,https://upload.wikimedia.org/wikipedia/commons/5/51/Poland_Narew_G%C3%B3ra_Str%C4%99kowa.jpg,"['Narew' 'Góra Strękowa' 'Landscapes of Poland' 'Narew National Park'
+ 'Narew floodplains']","{'Landscapes', 'Society', 'Places'}"
+238,6154295,MarkusHowell.jpg,https://upload.wikimedia.org/wikipedia/commons/4/4e/MarkusHowell.jpg,"['Calgary Stampeders players' '2007 Calgary Stampeders season'
+ 'Markus Howell']",{'Society'}
+239,10886487,The Hiker (Kitson) in Morristown New Jersey jeh.jpg,https://upload.wikimedia.org/wikipedia/commons/e/eb/The_Hiker_%28Kitson%29_in_Morristown_New_Jersey_jeh.jpg,"['Morristown, New Jersey' 'Statues of standing men in New Jersey'
+ 'War memorials in New Jersey' 'The Hiker (Kitson)'
+ 'March 2010 in New Jersey']","{'Culture', 'Monuments & Memorials', 'Sports', 'Places', 'History', 'Society'}"
+240,194140,Codex Manesse Konrad von Würzburg.jpg,https://upload.wikimedia.org/wikipedia/commons/1/17/Codex_Manesse_Konrad_von_W%C3%BCrzburg.jpg,"['Meister des Codex Manesse (Grundstockmaler)' 'Males writing in art'
+ 'Pointing in art' 'Pointing down in art' 'Male fur clothing in art'
+ 'Squirrel (clothing) in art' 'Fur linings in art' 'Konrad von Würzburg']","{'Culture', 'Music', 'Literature', 'Society'}"
+241,24650118,Stenocoris sp. (Rice Bug) (6023721068).jpg,https://upload.wikimedia.org/wikipedia/commons/7/77/Stenocoris_sp._%28Rice_Bug%29_%286023721068%29.jpg,"['Stenocoris' 'Insects of Juno Dunes Natural Area' 'Hemiptera of Florida'
+ 'Heteroptera of the United States']","{'Nature', 'STEM'}"
+242,68838335,Paulsen Medical Building.jpg,https://upload.wikimedia.org/wikipedia/commons/9/98/Paulsen_Medical_Building.jpg,"['Paulsen Medical and Dental Building'
+ 'Fire escapes in Washington (state)']","{'STEM', 'Society', 'Medicine & Health'}"
+243,46739765,Song of intent.jpg,https://upload.wikimedia.org/wikipedia/commons/7/73/Song_of_intent.jpg,['Performance art'],"{'Culture', 'Art'}"
+244,6747987,Vamdrup toldsal.jpg,https://upload.wikimedia.org/wikipedia/commons/3/31/Vamdrup_toldsal.jpg,"['Postcards of people in Denmark'
+ 'Postcards from the collection of Hans Jørgen Jensen Høj'
+ 'Civil servants of Denmark' 'Customs services of Denmark'
+ 'Old Customs officers photo' 'Vamdrup' 'Borders of Denmark-Germany'
+ 'Postcards of people' 'Vamdrup Station' 'Kongeå']","{'Culture', 'Society', 'Places', 'People', 'History', 'Art'}"
+245,56977077,M-House house divisions.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cd/M-House_house_divisions.jpg,['Astrological diagrams' 'House (astrology)'],"{'Culture', 'Belief', 'Diagrams', 'History', 'Society', 'STEM'}"
+246,42557173,Horse-Drawn China Clay Wagon at the St Austell terminus of the Pentewan Railway.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0f/Horse-Drawn_China_Clay_Wagon_at_the_St_Austell_terminus_of_the_Pentewan_Railway.jpg,"['St Austell' 'Pentewan Railway'
+ 'Horse-drawn wagons in the United Kingdom']","{'STEM', 'Technology & Engineering', 'Places'}"
+247,344343,Godefroy de Bouillon.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dc/Godefroy_de_Bouillon.jpg,"['Engravings of men' 'Alexios I Komnenos'
+ 'Godfrey of Bouillon in engravings'
+ 'Baldwin I of Jerusalem in engravings' 'Eustace III, Count of Boulogne'
+ 'First Crusade' '19th-century engravings' '1891'
+ 'Byzantine Empire in history paintings']","{'Culture', 'Literature', 'People', 'History', 'Society'}"
+248,7448054,Soft edge road.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9f/Soft_edge_road.jpg,['Forestry' 'Forests in Virginia'],"{'Nature', 'STEM'}"
+249,48340738,Katja Eichinger - Berlinale 66 (437) (24680938210).jpg,https://upload.wikimedia.org/wikipedia/commons/b/be/Katja_Eichinger_-_Berlinale_66_%28437%29_%2824680938210%29.jpg,['2016 Berlin Film Festival' 'Katja Eichinger'],"{'People', 'Society', 'Events'}"
+250,7099207,AS Vietnam 3.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f4/AS_Vietnam_3.jpg,['Australian Vietnam Forces National Memorial'],"{'Culture', 'History', 'Places', 'Monuments & Memorials'}"
+251,4904926,Acianthera heringeri.jpg,https://upload.wikimedia.org/wikipedia/commons/1/16/Acianthera_heringeri.jpg,['Acianthera heringeri'],"{'Nature', 'Plants', 'STEM'}"
+252,74137298,Turkmen drummer.jpeg,https://upload.wikimedia.org/wikipedia/commons/3/3b/Turkmen_drummer.jpeg,"['Parade celebrating the 20th anniversary of Turkmenistani independence'
+ 'Military bands of Turkmenistan']","{'Culture', 'Music', 'Events', 'History', 'Society'}"
+253,9390666,Knotted cord.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9e/Knotted_cord.jpg,"['People holding newborn infants'
+ 'Labour and delivery complicated by umbilical cord complications']","{'People', 'STEM', 'Society', 'Medicine & Health'}"
+254,21034392,Dale Earnhardt - NASCAR Photography By Darryl Moran.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e7/Dale_Earnhardt_-_NASCAR_Photography_By_Darryl_Moran.jpg,['Dale Earnhardt' 'Phoenix International Raceway'],"{'People', 'Society'}"
+255,15136268,SemnopithecusHoseiSmit.jpg,https://upload.wikimedia.org/wikipedia/commons/8/8a/SemnopithecusHoseiSmit.jpg,"['PZSL 1889-2' 'Mammal illustrations by Joseph Smit' 'Presbytis hosei'
+ 'Cercopithecidae illustrations']","{'Culture', 'History', 'Geology', 'STEM'}"
+256,66348541,Mplwp legendreP26a2.svg,https://upload.wikimedia.org/wikipedia/commons/2/26/Mplwp_legendreP26a2.svg,['Legendre polynomials'],"{'Mathematics', 'STEM'}"
+257,12748023,Pfaffia glomerata-costapppr.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d8/Pfaffia_glomerata-costapppr.jpg,['Medicinal botanical gardens' 'Medicinal plants' 'Pfaffia glomerata'],"{'Nature', 'Plants', 'STEM'}"
+258,24506977,Canis latrans latrans Pennington County SD.jpg,https://upload.wikimedia.org/wikipedia/commons/3/38/Canis_latrans_latrans_Pennington_County_SD.jpg,['Canis latrans latrans' 'Side views of coyotes'],"{'Geology', 'STEM'}"
+259,36887985,"Census Bureau map of West New York, New Jersey.png",https://upload.wikimedia.org/wikipedia/commons/6/69/Census_Bureau_map_of_West_New_York%2C_New_Jersey.png,"['2000 United States Census TIGER maps of populated places in New Jersey'
+ 'West New York, New Jersey']","{'Maps & Flags', 'Places'}"
+260,77244245,Herbert-Morawetz-2004.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d9/Herbert-Morawetz-2004.jpg,['Herbert Morawetz'],"{'Chemistry', 'STEM'}"
+261,22996831,12 Taher Ville (3).jpg,https://upload.wikimedia.org/wikipedia/commons/2/25/12_Taher_Ville_%283%29.jpg,['Churches in Taher' 'Clocks in Jijel Province'],"{'STEM', 'Technology & Engineering', 'Places'}"
+262,82431508,New Jersey Junction RR 1886 reverse.JPG,https://upload.wikimedia.org/wikipedia/commons/9/9d/New_Jersey_Junction_RR_1886_reverse.JPG,"['New Jersey Junction Railroad' 'J. P. Morgan (banker)'
+ 'Harris Charles Fahnestock']","{'Technology & Engineering', 'STEM'}"
+263,16345623,BUNDES-1 JeanneAshworth.jpg,https://upload.wikimedia.org/wikipedia/commons/6/63/BUNDES-1_JeanneAshworth.jpg,['Jeanne Ashworth' '1964 in speed skating' 'Müggelturm' 'Telescopes'],"{'Society', 'Sports', 'Space', 'STEM'}"
+264,32786942,Echter Leipziger Allasch Vorderseite.JPG,https://upload.wikimedia.org/wikipedia/commons/1/1f/Echter_Leipziger_Allasch_Vorderseite.JPG,['Food of Leipzig' 'Allasch' 'May 2014 in Leipzig'],"{'Culture', 'Food'}"
+265,11278742,Ptrajan.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0b/Ptrajan.jpg,['Chief ministers of Tamil Nadu'],"{'Politics', 'People', 'Society'}"
+266,8244790,RR5011-0005R PL 50-летие Победы на Волге.gif,https://upload.wikimedia.org/wikipedia/commons/7/78/RR5011-0005R_PL_50-%D0%BB%D0%B5%D1%82%D0%B8%D0%B5_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B_%D0%BD%D0%B0_%D0%92%D0%BE%D0%BB%D0%B3%D0%B5.gif,"['Commemorative coins of the Russian Federation, 1993'
+ 'Coins with transparent background'
+ 'Reverses of coins of the Russian Federation' 'Battle of Stalingrad'
+ 'Fight to the Death sculpture on Mamayev Kurgan'
+ 'The Motherland Calls in art' 'Volgograd on coins'
+ '3 Russian rubles coins (1993)' 'Melchior coins']","{'Culture', 'Places', 'Monuments & Memorials', 'History', 'Society'}"
+267,9475911,Forboutaedje anusse moultea waerbeas3.JPG,,"['Veterinary medicine for mules and donkeys'
+ 'Veterinary medicine in Morocco' 'Rectal prolapse in mammals'
+ 'Gasterophilus haemorrhoidalis']","{'Medicine & Health', 'STEM'}"
+268,26844062,"Stromberg-Voisinet Aero-uke (c.1930), National Music Museum, Vermillion.jpg",https://upload.wikimedia.org/wikipedia/commons/4/41/Stromberg-Voisinet_Aero-uke_%28c.1930%29%2C_National_Music_Museum%2C_Vermillion.jpg,"['Stromberg-Voisinet' 'Aero-uke' 'Ukulele' '1930s instrument productions'
+ 'National Music Museum, Vermillion']","{'Culture', 'Music'}"
+269,59052498,Trey Hollingsworth official photo.jpg,https://upload.wikimedia.org/wikipedia/commons/7/73/Trey_Hollingsworth_official_photo.jpg,['Trey Hollingsworth'],{'Society'}
+270,2897141,Boys King Arthur - N. C. Wyeth - p278.jpg,https://upload.wikimedia.org/wikipedia/commons/3/38/Boys_King_Arthur_-_N._C._Wyeth_-_p278.jpg,"[""The Boy's King Arthur (1922)"" 'Lancelot' 'Guinevere'
+ 'Grey horses in art' 'Horse riding in art']","{'Culture', 'Literature', 'Nature', 'People', 'History', 'Society', 'STEM'}"
+271,53327464,Main Road Sungai Pinang 2 - panoramio.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0a/Main_Road_Sungai_Pinang_2_-_panoramio.jpg,"['Streets in George Town, Penang']",{'Places'}
+272,42604522,2008 Democratic Primary Delegate Chart.png,https://upload.wikimedia.org/wikipedia/commons/a/a9/2008_Democratic_Primary_Delegate_Chart.png,"['Statewide opinion polling for the Democratic Party presidential primaries, 2008'
  'Hillary Rodham Clinton charts and graphs'
  'Hillary Clinton presidential campaign in January 2008'
  'Barack Obama presidential campaign in January 2008'
@@ -32,489 +495,33 @@
  'Hillary Clinton presidential campaign in April 2008'
  'Barack Obama presidential campaign in April 2008'
  'Hillary Clinton presidential campaign in May 2008'
- 'Barack Obama presidential campaign in May 2008']","{'Belief', 'Society', 'Culture', 'People', 'Places', 'Politics'}"
-660231,3277879,Xôi ngũ sắc.JPG,https://upload.wikimedia.org/wikipedia/commons/f/fd/X%C3%B4i_ng%C5%A9_s%E1%BA%AFc.JPG,"['Xôi' 'Colorful food' 'Purple, red, white, yellow'
- 'Red, violet, white, yellow' 'Colored rice']","{'Culture', 'Food'}"
-1713009,42341723,2015 0804 Zwetschkenkuchen Gaislachalm Sölden.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cc/2015_0804_Zwetschkenkuchen_Gaislachalm_S%C3%B6lden.jpg,"['Plum cakes' 'Cakes of Austria' 'Austria photographs taken on 2015-08-04'
- 'Food in Sölden' 'Alpengasthof Gaislachalm']","{'Culture', 'Food'}"
-3786929,54429779,Musrestaurangen i Malmö.jpg,https://upload.wikimedia.org/wikipedia/commons/d/df/Musrestaurangen_i_Malm%C3%B6.jpg,"['Sculptures in Malmö' 'Restaurants in Malmö' 'December 2016 in Malmö'
- 'Miniature food' 'Anonymouse']","{'Society', 'Culture', 'Food'}"
-894550,77250236,"2019-02-15 03 33 27 A bowl of Wheaties in the Franklin Farm section of Oak Hill, Fairfax County, Virginia.jpg",https://upload.wikimedia.org/wikipedia/commons/4/4f/2019-02-15_03_33_27_A_bowl_of_Wheaties_in_the_Franklin_Farm_section_of_Oak_Hill%2C_Fairfax_County%2C_Virginia.jpg,"['Food in Franklin Farm, Virginia' 'Wheaties']","{'Culture', 'Food'}"
-1874207,32786942,Echter Leipziger Allasch Vorderseite.JPG,https://upload.wikimedia.org/wikipedia/commons/1/1f/Echter_Leipziger_Allasch_Vorderseite.JPG,['Food of Leipzig' 'Allasch' 'May 2014 in Leipzig'],"{'Culture', 'Food'}"
-599255,27882071,Spiedies on Grill.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0d/Spiedies_on_Grill.jpg,"['Food in Binghamton, New York' 'Meat dishes of the United States']","{'Culture', 'Food'}"
-1985816,76721249,2019 01 Khao soi noi songkhrueang.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a6/2019_01_Khao_soi_noi_songkhrueang.jpg,['Khao soi noi songkhrueang' 'Peanut-based food'],"{'Culture', 'Food'}"
-2169619,78432855,Jeff's Gourmet's Sallammin Burger.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0c/Jeff%27s_Gourmet%27s_Sallammin_Burger.jpg,"['Square photos' 'Kosher food' 'Hamburgers in California'
- 'Food in Los Angeles' 'Hamburgers with cabbage'
- 'Hamburgers with mayonnaise' 'Hamburgers with pickles'
- 'Hamburgers with lettuce' 'Hamburgers with bacon'
- 'Hamburgers with tomatoes']","{'Culture', 'Places', 'Food'}"
-3841111,12565901,Homemade minestrone.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c5/Homemade_minestrone.jpg,"['Minestrone' 'Plan views of food' 'Grated cheese' 'Homemade foods'
- 'Conchiglie dishes' 'Savoy cabbage-based food']","{'Culture', 'Food'}"
-564187,77249491,"2019-01-25 20 08 29 An unopened cup of Jell-O chocolate pudding in the Franklin Farm section of Oak Hill, Fairfax County, Virginia.jpg",https://upload.wikimedia.org/wikipedia/commons/4/45/2019-01-25_20_08_29_An_unopened_cup_of_Jell-O_chocolate_pudding_in_the_Franklin_Farm_section_of_Oak_Hill%2C_Fairfax_County%2C_Virginia.jpg,"['Food in Franklin Farm, Virginia' 'Jell-O chocolate pudding']","{'Culture', 'Food'}"
-1070435,22665656,Alpha Max Beta Min approximation.png,https://upload.wikimedia.org/wikipedia/commons/7/7b/Alpha_Max_Beta_Min_approximation.png,['Numerical analysis' 'Search algorithms'],"{'Culture', 'STEM', 'Society', 'Mathematics'}"
-2088558,5639793,Equilibrium refinements.svg,https://upload.wikimedia.org/wikipedia/commons/a/a7/Equilibrium_refinements.svg,['Game theory'],"{'STEM', 'Mathematics'}"
-186448,66348541,Mplwp legendreP26a2.svg,https://upload.wikimedia.org/wikipedia/commons/2/26/Mplwp_legendreP26a2.svg,['Legendre polynomials'],"{'STEM', 'Mathematics'}"
-843055,21036243,Gradient 1-form.svg,https://upload.wikimedia.org/wikipedia/commons/0/04/Gradient_1-form.svg,"['Differential geometry' 'Gradient fields' 'SVG geometry'
- 'Dual vector spaces']","{'Society', 'Mathematics', 'Culture', 'Places', 'STEM'}"
-2340178,18013845,Cube t012 af4.png,https://upload.wikimedia.org/wikipedia/commons/7/75/Cube_t012_af4.png,"['Set of colored Coxeter plane graphs (red, orange, yellow, green... vertices)']","{'Culture', 'STEM', 'Mathematics'}"
-3064653,28186747,Kameda's algorithm run.svg,https://upload.wikimedia.org/wikipedia/commons/5/5c/Kameda%27s_algorithm_run.svg,['Directed graphs' 'Graph algorithms'],"{'STEM', 'Mathematics'}"
-1464239,17366712,Dodecahedron t01 v.png,https://upload.wikimedia.org/wikipedia/commons/a/a9/Dodecahedron_t01_v.png,"['Set of colored Coxeter plane graphs (red, orange, yellow, green... vertices)']","{'Culture', 'STEM', 'Mathematics'}"
-2962736,10424030,Collatz-graph-50-no27.svg,https://upload.wikimedia.org/wikipedia/commons/c/c2/Collatz-graph-50-no27.svg,['Collatz conjecture'],"{'STEM', 'Mathematics'}"
-3424399,4231274,Works of Archimedes Lemmas.PNG,https://upload.wikimedia.org/wikipedia/commons/b/b5/Works_of_Archimedes_Lemmas.PNG,"['Pages of books about mathematics' 'Arbelos' 'The works of Archimedes'
- 'Euclidean geometry' 'Mathematical theorems' 'Lemmas']","{'Mathematics', 'Culture', 'History', 'STEM', 'Nature'}"
-453316,47811663,Four Spiral Semigroup 02.png,https://upload.wikimedia.org/wikipedia/commons/d/d4/Four_Spiral_Semigroup_02.png,['Semigroup theory'],"{'STEM', 'Mathematics'}"
-1965158,88781312,"Weekly excess flu death rates per 100,000 for 4 US cities final 16 weeks of 1918.png",https://upload.wikimedia.org/wikipedia/commons/0/06/Weekly_excess_flu_death_rates_per_100%2C000_for_4_US_cities_final_16_weeks_of_1918.png,['Spanish flu in the United States' 'Pandemic statistics'],"{'Society', 'Culture', 'Medicine & Health', 'History', 'STEM'}"
-1612813,42956501,Treatment of knee with Oudin coil.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f7/Treatment_of_knee_with_Oudin_coil.jpg,['Oudin coils' 'Electrotherapy'],"{'Culture', 'Medicine & Health', 'STEM', 'Society'}"
-3658249,45647317,Стационарный-аспиратор-ПУ-4Э+.jpg,https://upload.wikimedia.org/wikipedia/commons/3/35/%D0%A1%D1%82%D0%B0%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D1%80%D0%BD%D1%8B%D0%B9-%D0%B0%D1%81%D0%BF%D0%B8%D1%80%D0%B0%D1%82%D0%BE%D1%80-%D0%9F%D0%A3-4%D0%AD%2B.jpg,"['Occupational safety and health' 'Workplace safety of Russia'
- 'Workplace exposure monitoring']","{'Medicine & Health', 'STEM'}"
-2730124,30561758,"Figure-8---Creme-Angelique,-Illustration.png",https://upload.wikimedia.org/wikipedia/commons/0/03/Figure-8---Creme-Angelique%2C-Illustration.png,['Washington W. Sheffield'],"{'Society', 'Culture', 'Medicine & Health', 'History', 'STEM'}"
-2443738,3727180,Medicine aryballos Louvre CA1989-2183 n2.jpg,https://upload.wikimedia.org/wikipedia/commons/6/6c/Medicine_aryballos_Louvre_CA1989-2183_n2.jpg,"['Ancient Greek medicine' 'Ancient Greek pottery aryballoi'
- 'Clinic Painter' 'Greek antiquities in the Louvre - Room 43'
- '480s BC pottery in France' '470s BC pottery in France' 'Klismoi in art'
- 'Attic red-figure pottery in France']","{'Places', 'Art', 'Culture', 'Medicine & Health', 'History', 'STEM'}"
-1807642,66808794,The Mount.jpg,https://upload.wikimedia.org/wikipedia/commons/7/72/The_Mount.jpg,"['The Mount, Leeds' '2018 in Woodhouse, Leeds' 'February 2018 in Leeds'
- 'United Kingdom photographs taken on 2018-02-24']","{'Medicine & Health', 'Places', 'STEM'}"
-745202,12788864,"Flooring in a material handling area at Pharmaceutical company Lilly, France.jpg",https://upload.wikimedia.org/wikipedia/commons/4/4e/Flooring_in_a_material_handling_area_at_Pharmaceutical_company_Lilly%2C_France.jpg,['Hygiene' 'Eli Lilly and Company'],"{'Society', 'Culture', 'Medicine & Health', 'History', 'STEM'}"
-3399570,68838335,Paulsen Medical Building.jpg,https://upload.wikimedia.org/wikipedia/commons/9/98/Paulsen_Medical_Building.jpg,"['Paulsen Medical and Dental Building'
- 'Fire escapes in Washington (state)']","{'Medicine & Health', 'STEM', 'Society'}"
-2928953,9390666,Knotted cord.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9e/Knotted_cord.jpg,"['People holding newborn infants'
- 'Labour and delivery complicated by umbilical cord complications']","{'People', 'STEM', 'Society', 'Medicine & Health'}"
-3692650,1333491,SAS 2.gif,https://upload.wikimedia.org/wikipedia/commons/5/55/SAS_2.gif,['Small Astronomy Satellite 2'],"{'Places', 'STEM', 'Society', 'Space'}"
-341566,10253993,Mercator telescope.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f4/Mercator_telescope.jpg,['Mercator Telescope'],"{'STEM', 'Space'}"
-1757878,55241304,FeodosiKrasovski(1878-1948).jpg,https://upload.wikimedia.org/wikipedia/commons/7/7a/FeodosiKrasovski%281878-1948%29.jpg,['Astronomers from Russia' 'Feodosy Krasovsky'],"{'STEM', 'Nature', 'Space'}"
-2248215,206734,Karl-Schwarzschild-Observatorium.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dc/Karl-Schwarzschild-Observatorium.jpg,['Thüringer Landessternwarte Tautenburg'],"{'STEM', 'Nature', 'Space'}"
-2429523,16800815,Sunspots 1302 Sep 2011 by NASA.jpg,https://upload.wikimedia.org/wikipedia/commons/6/67/Sunspots_1302_Sep_2011_by_NASA.jpg,['Sunspots' 'Solar flares' 'Solar Cycle 24'],"{'Space', 'Places', 'STEM', 'Nature'}"
-1440935,4804838,Alma antenna in transit.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f4/Alma_antenna_in_transit.jpg,"['ALMA telescopes' 'Construction of ALMA'
- 'Lore (ALMA antenna transporter)' 'Photographs taken on 2008-07-08']","{'Places', 'STEM', 'Space'}"
-2912376,4327563,Obserwatorium na Suchorze 02.JPG,https://upload.wikimedia.org/wikipedia/commons/5/5c/Obserwatorium_na_Suchorze_02.JPG,['Mount Suhora Observatory'],"{'STEM', 'Space'}"
-218119,2269420,David Rabinowitz.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3b/David_Rabinowitz.jpg,['Astronomers from the United States'],"{'STEM', 'Nature', 'Space'}"
-2473477,16345623,BUNDES-1 JeanneAshworth.jpg,https://upload.wikimedia.org/wikipedia/commons/6/63/BUNDES-1_JeanneAshworth.jpg,['Jeanne Ashworth' '1964 in speed skating' 'Müggelturm' 'Telescopes'],"{'Sports', 'STEM', 'Society', 'Space'}"
-2296289,7789531,Xrtlayout.gif,https://upload.wikimedia.org/wikipedia/commons/5/5f/Xrtlayout.gif,['Swift Gamma-Ray Burst Mission' 'Wolter telescopes'],"{'STEM', 'Space'}"
-2187094,19129869,Fremantle War Memorial (front).jpg,https://upload.wikimedia.org/wikipedia/commons/6/60/Fremantle_War_Memorial_%28front%29.jpg,['Fremantle War Memorial'],"{'Culture', 'Monuments & Memorials', 'History', 'Places'}"
-39918,7099207,AS Vietnam 3.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f4/AS_Vietnam_3.jpg,['Australian Vietnam Forces National Memorial'],"{'Culture', 'Monuments & Memorials', 'History', 'Places'}"
-1648569,8244790,RR5011-0005R PL 50-летие Победы на Волге.gif,https://upload.wikimedia.org/wikipedia/commons/7/78/RR5011-0005R_PL_50-%D0%BB%D0%B5%D1%82%D0%B8%D0%B5_%D0%9F%D0%BE%D0%B1%D0%B5%D0%B4%D1%8B_%D0%BD%D0%B0_%D0%92%D0%BE%D0%BB%D0%B3%D0%B5.gif,"['Commemorative coins of the Russian Federation, 1993'
- 'Coins with transparent background'
- 'Reverses of coins of the Russian Federation' 'Battle of Stalingrad'
- 'Fight to the Death sculpture on Mamayev Kurgan'
- 'The Motherland Calls in art' 'Volgograd on coins'
- '3 Russian rubles coins (1993)' 'Melchior coins']","{'Society', 'Places', 'Culture', 'Monuments & Memorials', 'History'}"
-3789170,7339198,RAF Metheringham Memorial Garden.jpg,https://upload.wikimedia.org/wikipedia/commons/b/bd/RAF_Metheringham_Memorial_Garden.jpg,"['Monuments and memorials to the Royal Air Force' 'RAF Metheringham'
- 'Lincolnshire photographs taken on 2007-09-08'
- 'War memorials in Lincolnshire']","{'Culture', 'Monuments & Memorials', 'Places', 'History'}"
-4963,41369068,David O. Dodd Memorial.JPG,https://upload.wikimedia.org/wikipedia/commons/8/85/David_O._Dodd_Memorial.JPG,"['National Register of Historic Places in Pulaski County, Arkansas'
- 'Monuments and memorials of the Confederate States of America in Arkansas'
- 'David Owen Dodd'
- 'Monuments and memorials removed during the George Floyd protests']","{'History', 'Society', 'Culture', 'People', 'Places', 'Monuments & Memorials'}"
-3882541,57659604,MC-View from Town Hall-5.jpg,https://upload.wikimedia.org/wikipedia/commons/e/ed/MC-View_from_Town_Hall-5.jpg,['Manchester Cenotaph'],"{'Culture', 'Monuments & Memorials', 'History', 'Places'}"
-3000984,71232232,Chancia - Mairie (juil 2018).jpg,https://upload.wikimedia.org/wikipedia/commons/d/da/Chancia_-_Mairie_%28juil_2018%29.jpg,"['France photographs taken on 2018-07-21' 'July 2018 in Jura (department)'
- 'Town hall of Chancia' 'War memorials in Jura (department)'
- 'Defibrillators in Jura (department)']","{'Culture', 'Monuments & Memorials', 'History', 'Places'}"
-1455436,75575387,"Southampton Cenotaph, 4 January 2019 09.jpg",https://upload.wikimedia.org/wikipedia/commons/e/e0/Southampton_Cenotaph%2C_4_January_2019_09.jpg,['Southampton Cenotaph'],"{'Culture', 'Monuments & Memorials', 'History', 'Places'}"
-415146,9831896,Hamnskar monument.jpg,https://upload.wikimedia.org/wikipedia/commons/5/5c/Hamnskar_monument.jpg,"['Finnish 27th Jäger Battalion' 'War memorials in Finland'
- 'Ragnar Nordström']","{'Places', 'Culture', 'Monuments & Memorials', 'History'}"
-3228247,10886487,The Hiker (Kitson) in Morristown New Jersey jeh.jpg,https://upload.wikimedia.org/wikipedia/commons/e/eb/The_Hiker_%28Kitson%29_in_Morristown_New_Jersey_jeh.jpg,"['Morristown, New Jersey' 'Statues of standing men in New Jersey'
- 'War memorials in New Jersey' 'The Hiker (Kitson)'
- 'March 2010 in New Jersey']","{'Sports', 'Society', 'Culture', 'Monuments & Memorials', 'Places', 'History'}"
-1189415,27216633,Calliostoma benedicti 001.jpg,https://upload.wikimedia.org/wikipedia/commons/e/ec/Calliostoma_benedicti_001.jpg,"['Calliostoma benedicti'
- 'Bulletin of the Museum of Comparative Zoology at Harvard College']","{'STEM', 'Animals', 'Nature'}"
-3642461,89814230,Calliostoma chlorum (MNHN-IM-2000-4555).jpeg,https://upload.wikimedia.org/wikipedia/commons/e/e8/Calliostoma_chlorum_%28MNHN-IM-2000-4555%29.jpeg,['Mollusca in the MNHN' 'Calliostoma chlorum'],"{'Culture', 'STEM', 'Animals', 'Nature'}"
-3118335,9554405,Cryptochiton stelleri.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a0/Cryptochiton_stelleri.jpg,['Cryptochiton stelleri'],"{'STEM', 'Animals', 'Nature'}"
-785350,9878393,Helicina rhodostoma shell.png,https://upload.wikimedia.org/wikipedia/commons/d/d9/Helicina_rhodostoma_shell.png,"['Helicina rhodostoma' 'Apertural views'
- 'Gastropoda with black background']","{'STEM', 'Animals', 'Nature'}"
-2582482,17843932,Prorhynchus fontinalis pharynx.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a6/Prorhynchus_fontinalis_pharynx.jpg,['Prorhynchus' 'Pharynx'],"{'STEM', 'Animals', 'Nature'}"
-1430872,2865278,Lymnea auricularia1pl.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a1/Lymnea_auricularia1pl.jpg,['Radix auricularia'],"{'STEM', 'Animals', 'Nature'}"
-2387553,11462898,Phyllidiopsis papilligera (Black-spotted Nudibranch - North Haiti).jpg,https://upload.wikimedia.org/wikipedia/commons/1/1e/Phyllidiopsis_papilligera_%28Black-spotted_Nudibranch_-_North_Haiti%29.jpg,"['Marine animals of Haiti' 'Ceratophyllidia papilligera'
- 'Featured pictures of molluscs' 'Featured pictures of Haiti'
- 'Gastropoda of Haiti' 'Featured pictures taken underwater']","{'STEM', 'Animals', 'Nature'}"
-2787356,7458511,Danatinia casca.JPG,https://upload.wikimedia.org/wikipedia/commons/0/05/Danatinia_casca.JPG,['Danatinia' 'Lampridiomorpha life restorations'],"{'STEM', 'Animals', 'Nature'}"
-3625624,6026020,Estemmenosuchus uralensis (2).jpg,https://upload.wikimedia.org/wikipedia/commons/e/ea/Estemmenosuchus_uralensis_%282%29.jpg,['Estemmenosuchus life restorations'],"{'STEM', 'Animals', 'Nature'}"
-2312182,1700417,Scolopendra fg02.JPG,https://upload.wikimedia.org/wikipedia/commons/0/09/Scolopendra_fg02.JPG,['Scolopendra cingulata' 'Chilopoda heads'],"{'STEM', 'Animals', 'Nature'}"
-3293371,3983698,Chicanopoetry4.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d4/Chicanopoetry4.jpg,"['Chicano literature' 'Book signing in Oregon in 1982'
- 'Mexican American poetry' 'Poets from the United States'
- 'Colegio Cesar Chavez' 'Mexican American history of 1982']","{'Society', 'Places', 'Culture', 'People', 'Literature', 'History'}"
-2186328,80630528,Ernest Benn Bekenntnisse 1926 cover.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b1/Ernest_Benn_Bekenntnisse_1926_cover.jpg,"['Ernest Benn' 'German-language book covers' 'Book covers from Germany'
- 'F. Bruckmann Verlag, Munich']","{'Society', 'Art', 'Culture', 'People', 'Literature'}"
-1808902,28637662,W. Otway Cannell 1.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cd/W._Otway_Cannell_1.jpg,"['Book illustrations of fairies' 'Medieval knights on horseback'
- 'Arthurian characters' 'Arthurian legend'
- 'Legends and Romances of Brittany (1917)']","{'Society', 'Culture', 'People', 'Literature'}"
-1847825,26099616,Virtues Speculum Virginum W72 26r.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c0/Virtues_Speculum_Virginum_W72_26r.jpg,['Speculum virginum' 'Virtue' 'Vices and virtues'],"{'Society', 'Culture', 'Literature'}"
-1406153,55090801,Dinabandhu Mitra (1830-1873).jpg,https://upload.wikimedia.org/wikipedia/commons/f/f8/Dinabandhu_Mitra_%281830-1873%29.jpg,"['Ramtanu Lahiri, Brahman and Reformer - A History of the Renaissance in Bengal'
- 'Dinabandhu Mitra']","{'Society', 'Culture', 'People', 'Literature'}"
-2946135,344343,Godefroy de Bouillon.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dc/Godefroy_de_Bouillon.jpg,"['Engravings of men' 'Alexios I Komnenos'
- 'Godfrey of Bouillon in engravings'
- 'Baldwin I of Jerusalem in engravings' 'Eustace III, Count of Boulogne'
- 'First Crusade' '19th-century engravings' '1891'
- 'Byzantine Empire in history paintings']","{'Society', 'Literature', 'Culture', 'People', 'History'}"
-2786833,194140,Codex Manesse Konrad von Würzburg.jpg,https://upload.wikimedia.org/wikipedia/commons/1/17/Codex_Manesse_Konrad_von_W%C3%BCrzburg.jpg,"['Meister des Codex Manesse (Grundstockmaler)' 'Males writing in art'
- 'Pointing in art' 'Pointing down in art' 'Male fur clothing in art'
- 'Squirrel (clothing) in art' 'Fur linings in art' 'Konrad von Würzburg']","{'Society', 'Culture', 'Literature', 'Music'}"
-993341,25102565,"Audur Jonsdottir, nominerad till Nordiska radets litteraturpris 2006.jpg",https://upload.wikimedia.org/wikipedia/commons/e/e2/Audur_Jonsdottir%2C_nominerad_till_Nordiska_radets_litteraturpris_2006.jpg,"['Auður Jónsdóttir' 'Nordic Council Literature Prize 2006'
- 'Smiling women (closed mouths)' 'Female short hair' 'Human heads']","{'Literature', 'Events', 'Society', 'Culture', 'People', 'STEM', 'Nature'}"
-3214169,2897141,Boys King Arthur - N. C. Wyeth - p278.jpg,https://upload.wikimedia.org/wikipedia/commons/3/38/Boys_King_Arthur_-_N._C._Wyeth_-_p278.jpg,"[""The Boy's King Arthur (1922)"" 'Lancelot' 'Guinevere'
- 'Grey horses in art' 'Horse riding in art']","{'Society', 'Literature', 'Culture', 'People', 'History', 'STEM', 'Nature'}"
-2003291,3001953,Ussr-robertburns1956.jpg,https://upload.wikimedia.org/wikipedia/commons/c/ce/Ussr-robertburns1956.jpg,"['Stamps of the Soviet Union, 1956, all stamps'
- 'Writers on stamps of the Soviet Union'
- 'Literature of the United Kingdom in Russia' 'Portraits of Robert Burns'
- 'Poets on stamps']","{'Society', 'Culture', 'People', 'Literature'}"
-1356449,83482486,Plasmalogen-synthesis-pathway.png,https://upload.wikimedia.org/wikipedia/commons/6/67/Plasmalogen-synthesis-pathway.png,['Lipids' 'Biosyntheses'],"{'Technology & Engineering', 'STEM', 'Chemistry'}"
-2940242,17575772,Alkylation.png,https://upload.wikimedia.org/wikipedia/commons/1/13/Alkylation.png,['Asymmetric synthesis' 'Alkylation reactions'],"{'STEM', 'Chemistry'}"
-2643414,75869283,Tabasco Opera 2018 c.jpg,https://upload.wikimedia.org/wikipedia/commons/7/78/Tabasco_Opera_2018_c.jpg,['Musicals' 'Tabasco sauce' 'January 2018 in New Orleans'],"{'Culture', 'STEM', 'Chemistry'}"
-207496,67403913,Polymerformation.png,https://upload.wikimedia.org/wikipedia/commons/1/14/Polymerformation.png,['Polymerization'],"{'STEM', 'Chemistry'}"
-2819493,31164855,Three Common Methods of Synthesis of Graft Polymers.png,https://upload.wikimedia.org/wikipedia/commons/e/ea/Three_Common_Methods_of_Synthesis_of_Graft_Polymers.png,['Branched polymers'],"{'STEM', 'Chemistry'}"
-3655958,4427975,Tetrazolium reduction.png,https://upload.wikimedia.org/wikipedia/commons/7/70/Tetrazolium_reduction.png,['Redox indicators' 'Redox reactions' 'Tetrazolium salts' 'Formazans'],"{'STEM', 'Chemistry'}"
-3857040,13936655,Cronstedtite Pisani.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fa/Cronstedtite_Pisani.jpg,['Cronstedtite' 'Minerals of Wheal Jane' 'Felix Pisani'],"{'Society', 'Chemistry', 'STEM', 'Nature'}"
-415398,77244245,Herbert-Morawetz-2004.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d9/Herbert-Morawetz-2004.jpg,['Herbert Morawetz'],"{'STEM', 'Chemistry'}"
-1257261,3718857,Non steady state probe tp08 hukseflux.gif,https://upload.wikimedia.org/wikipedia/commons/c/c8/Non_steady_state_probe_tp08_hukseflux.gif,['Thermodynamics' 'Soil science diagrams'],"{'Diagrams', 'STEM', 'Chemistry'}"
-3569793,6524573,Iodonium tethering on prop-1-enyl ethers.png,https://upload.wikimedia.org/wikipedia/commons/f/f8/Iodonium_tethering_on_prop-1-enyl_ethers.png,['Carbohydrate chemistry'],"{'STEM', 'Chemistry'}"
-851163,74553628,Scaphognathus crassirostris cast - Pterosaurs Flight in the Age of Dinosaurs.jpg,https://upload.wikimedia.org/wikipedia/commons/9/99/Scaphognathus_crassirostris_cast_-_Pterosaurs_Flight_in_the_Age_of_Dinosaurs.jpg,"['Scaphognathus fossils' 'Pterosaurs: Flight in the Age of Dinosaurs'
- 'Pterosauria holotypes']","{'Society', 'Events', 'Fossils', 'STEM', 'Nature'}"
-1291868,92916205,Halszkaraptor pelvic region.png,https://upload.wikimedia.org/wikipedia/commons/f/f6/Halszkaraptor_pelvic_region.png,"['Halszkaraptor fossils' 'Theropoda fossil holotypes'
- 'Upper Cretaceous holotypes' 'Type specimens from Mongolia']","{'Fossils', 'STEM', 'Nature'}"
-2052656,60549388,Jianianhualong5.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b4/Jianianhualong5.jpg,['Jianianhualong fossils'],"{'Fossils', 'STEM', 'Nature'}"
-833930,15084421,Trewavasia carinata.JPG,https://upload.wikimedia.org/wikipedia/commons/b/b2/Trewavasia_carinata.JPG,['Pycnodontiformes fossils' 'Trewavasia'],"{'Fossils', 'STEM', 'Nature'}"
-1226834,7716291,Ankylosaur.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b1/Ankylosaur.jpg,"['Pinacosaurus skeletal mounts' 'Saichania skulls'
- 'Central Museum of Mongolian Dinosaurs']","{'Culture', 'Fossils', 'STEM', 'Nature'}"
-1670667,79109839,Tarbosaurus & Saurolophus.jpg,https://upload.wikimedia.org/wikipedia/commons/8/8e/Tarbosaurus_%26_Saurolophus.jpg,"['Tarbosaurus skeletal mounts' 'Central Museum of Mongolian Dinosaurs'
- 'Saurolophus skeletal mounts']","{'Culture', 'Fossils', 'STEM', 'Nature'}"
-2059004,16215583,Saniwa ensidens.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fc/Saniwa_ensidens.jpg,['Saniwa fossils' 'Fossil Butte Member'],"{'Fossils', 'Places', 'STEM', 'Nature'}"
-763492,3944929,Diatrymaskeleton.JPG,https://upload.wikimedia.org/wikipedia/commons/b/b7/Diatrymaskeleton.JPG,['Gastornis skulls'],"{'Fossils', 'STEM', 'Nature'}"
-479201,6735733,Oudenodon latirostris.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f6/Oudenodon_latirostris.jpg,['Oudenodon fossils'],"{'Fossils', 'STEM', 'Nature'}"
-1027851,20888156,Tarsophlebia eximia MCZ6129 head.png,https://upload.wikimedia.org/wikipedia/commons/f/f2/Tarsophlebia_eximia_MCZ6129_head.png,['Insecta fossil illustrations' 'Tarsophlebia fossils'],"{'Fossils', 'STEM', 'Nature'}"
-2659874,772291,Poland Narew Góra Strękowa.jpg,https://upload.wikimedia.org/wikipedia/commons/5/51/Poland_Narew_G%C3%B3ra_Str%C4%99kowa.jpg,"['Narew' 'Góra Strękowa' 'Landscapes of Poland' 'Narew National Park'
- 'Narew floodplains']","{'Places', 'Landscapes', 'Society'}"
-1681424,23924312,Hochfirstpanorama1.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e7/Hochfirstpanorama1.jpg,"['Titisee' 'Landscapes of the Southern Black Forest'
- 'Panoramics in the Black Forest' 'Views from Hochfirst (Schwarzwald)'
- 'Cityscapes of Titisee-Neustadt'
- 'Remote views of Feldberg (Black Forest)']","{'Places', 'Landscapes'}"
-946968,61538864,Princetown - HM Prison Dartmoor (geograph 5487986).jpg,https://upload.wikimedia.org/wikipedia/commons/e/e7/Princetown_-_HM_Prison_Dartmoor_%28geograph_5487986%29.jpg,['August 2017 in Devon' 'Dartmoor Prison'],"{'Places', 'Landscapes'}"
-3501279,55181431,"Valdanos, Crna Gora, 2011-08-13 - panoramio.jpg",https://upload.wikimedia.org/wikipedia/commons/8/8f/Valdanos%2C_Crna_Gora%2C_2011-08-13_-_panoramio.jpg,['Landscapes of Montenegro' 'Valdanos Beach'],"{'Places', 'Landscapes'}"
-1964693,5167848,Vallecalle-Village.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f0/Vallecalle-Village.jpg,['Landscapes of Corsica' 'Vallecalle'],"{'Places', 'Landscapes'}"
-3153913,24913879,Alaska mountain range.jpg,https://upload.wikimedia.org/wikipedia/commons/4/47/Alaska_mountain_range.jpg,"['Snowy landscapes in Alaska' 'Mountain ranges of Alaska'
- 'U-shaped valleys in Alaska']","{'Places', 'Landscapes'}"
-910070,19946918,Skuleskogen North entrance.jpg,https://upload.wikimedia.org/wikipedia/commons/6/61/Skuleskogen_North_entrance.jpg,['Skuleskogen National Park'],"{'Places', 'Landscapes', 'Society'}"
-1030321,16644463,0 Dréhance - Château de Walzin (1).jpg,https://upload.wikimedia.org/wikipedia/commons/7/75/0_Dr%C3%A9hance_-_Ch%C3%A2teau_de_Walzin_%281%29.jpg,"['Château de Walzin' '2006 in Dinant' 'Lesse (river)'
- 'Landscapes of Belgium' 'Summer in Belgium' 'Quality images of Belgium'
- 'Belgium photographs taken on 2006-07-03']","{'Places', 'Landscapes', 'Society'}"
-2411693,30439945,View from Tayelet during Snow 07.jpg,https://upload.wikimedia.org/wikipedia/commons/1/11/View_from_Tayelet_during_Snow_07.jpg,"['Views from Armon Hanatziv Promenade' 'Snowy landscapes in Israel'
- 'Snow in Jerusalem during 2013 Middle East cold'
- 'Dome of the Dome of the Rock' 'Remote views of the Dome of the Rock']","{'Architecture', 'STEM', 'Culture', 'Places', 'Landscapes', 'History', 'Nature'}"
-310094,66384816,YadkinRiver.jpg,https://upload.wikimedia.org/wikipedia/commons/3/35/YadkinRiver.jpg,['Yadkin River' 'Landscapes of North Carolina'],"{'Places', 'Landscapes'}"
-1274925,51071142,Long-tailed Ground Dove (Uropelia campestris) (29072741940).jpg,https://upload.wikimedia.org/wikipedia/commons/c/cb/Long-tailed_Ground_Dove_%28Uropelia_campestris%29_%2829072741940%29.jpg,['Uropelia campestris' 'Brazil photographs taken on 2016-07-01'],"{'STEM', 'Geology'}"
-731693,10502397,Naturally Oil Stained Kern River Field Outcrop.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d8/Naturally_Oil_Stained_Kern_River_Field_Outcrop.jpg,"['Kern River Oil Field' 'Geology of California' 'Sandstone'
- 'Petroleum bearing geologic formations in California']","{'Society', 'Geology', 'Places', 'STEM', 'Nature'}"
-1798321,4242132,Hawaii-Emperor engl.png,https://upload.wikimedia.org/wikipedia/commons/0/0e/Hawaii-Emperor_engl.png,"['Hawaiian–Emperor seamount chain' 'Geology of Hawaii'
- 'Bathymetric maps of the Pacific Ocean' 'Seamounts in the Pacific Ocean'
- 'Aleutian Arc' 'Ocean trenches']","{'Maps & Flags', 'Geology', 'Places', 'STEM'}"
-1171002,52653876,Cross section Mansfield.png,https://upload.wikimedia.org/wikipedia/commons/9/9b/Cross_section_Mansfield.png,"['Geological cross sections of the United States'
- 'Geological cross sections of Ohio'
- 'Geological cross sections of West Virginia' 'Appalachian Basin'
- 'Paleozoic geology of Ohio' 'Paleozoic geology of West Virginia'
- 'Mansfield Natural Gas Field']","{'Diagrams', 'Geology', 'STEM'}"
-363000,98337,Pica serica - Hong Kong.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0d/Pica_serica_-_Hong_Kong.jpg,['Pica serica' 'Corvidae of Hong Kong'],"{'STEM', 'Nature', 'Geology'}"
-3757064,35543209,"Anomalocaris canadensis grasping claw, Burgess Shale.jpg",https://upload.wikimedia.org/wikipedia/commons/1/1b/Anomalocaris_canadensis_grasping_claw%2C_Burgess_Shale.jpg,"['Anomalocaris fossils' 'Radiodonta appendages'
- 'Fossils in the Peabody Museum of Natural History'
- 'Fossils of the Burgess Shale' 'Museum collections from British Columbia'
- 'Precambrian geology of Canada' 'Fossils from British Columbia']","{'History', 'Geology', 'Culture', 'Fossils', 'STEM', 'Nature'}"
-209237,15136268,SemnopithecusHoseiSmit.jpg,https://upload.wikimedia.org/wikipedia/commons/8/8a/SemnopithecusHoseiSmit.jpg,"['PZSL 1889-2' 'Mammal illustrations by Joseph Smit' 'Presbytis hosei'
- 'Cercopithecidae illustrations']","{'Culture', 'History', 'STEM', 'Geology'}"
-2794585,33228532,Nao Lake at the Mistik Creek outlet.jpg,https://upload.wikimedia.org/wikipedia/commons/4/41/Nao_Lake_at_the_Mistik_Creek_outlet.jpg,['Nao Lake' 'Canadian Shield'],"{'STEM', 'Geology'}"
-2496150,48442260,Douglas geologic map.PNG,https://upload.wikimedia.org/wikipedia/commons/9/9f/Douglas_geologic_map.PNG,"['Douglas Island' 'The Juneau Gold Belt, Alaska USGS Bulletin 287, 1906'
- 'Geological maps of Alaska' 'Gold Creek (Juneau, Alaska)']","{'Maps & Flags', 'Geology', 'Places', 'STEM'}"
-2572112,24506977,Canis latrans latrans Pennington County SD.jpg,https://upload.wikimedia.org/wikipedia/commons/3/38/Canis_latrans_latrans_Pennington_County_SD.jpg,['Canis latrans latrans' 'Side views of coyotes'],"{'STEM', 'Geology'}"
-1438767,54282356,Wikipedia - Calisus.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c5/Wikipedia_-_Calisus.jpg,"['Hard rock groups from Maryland' 'Group photographs of musicians'
- 'Musical quintets' 'Groups looking at viewer']","{'Society', 'Culture', 'People', 'Music'}"
-2357216,12766141,Baseball seventh inning stretch 2004.jpg,https://upload.wikimedia.org/wikipedia/commons/2/28/Baseball_seventh_inning_stretch_2004.jpg,"['2004 in Ohio' 'Cincinnati Reds' 'Spectators in the United States'
- 'Foam hands' 'Take Me Out to the Ball Game' 'Great American Ball Park'
- 'Intermissions in sports' 'Women with closed eyes and opened mouth']","{'Society', 'Culture', 'People', 'Music'}"
-3298676,212170,Kammerflimmer Kollektief German Band.jpeg,https://upload.wikimedia.org/wikipedia/commons/e/e6/Kammerflimmer_Kollektief_German_Band.jpeg,['Kammerflimmer Kollektief'],"{'Culture', 'Music', 'Society'}"
-2551270,878516,BWV1001-cropped.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e2/BWV1001-cropped.jpg,"['Sheet music of Johann Sebastian Bach'
- 'BWV 1001 – Sonata No. 1 in G minor for violin solo']","{'Culture', 'Music'}"
-911872,74137298,Turkmen drummer.jpeg,https://upload.wikimedia.org/wikipedia/commons/3/3b/Turkmen_drummer.jpeg,"['Parade celebrating the 20th anniversary of Turkmenistani independence'
- 'Military bands of Turkmenistan']","{'Events', 'Society', 'Culture', 'History', 'Music'}"
-746526,75840745,Haze'evot 12.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f3/Haze%27evot_12.jpg,"[""Haze'evot"" 'Talia Ishai' 'Yifat Balassiano']","{'Society', 'Culture', 'People', 'Music'}"
-1493881,5285664,Shankarabharanam scale.svg,https://upload.wikimedia.org/wikipedia/commons/b/b6/Shankarabharanam_scale.svg,['Carnatic ragams (svg)'],"{'Culture', 'Music'}"
-1650814,26844062,"Stromberg-Voisinet Aero-uke (c.1930), National Music Museum, Vermillion.jpg",https://upload.wikimedia.org/wikipedia/commons/4/41/Stromberg-Voisinet_Aero-uke_%28c.1930%29%2C_National_Music_Museum%2C_Vermillion.jpg,"['Stromberg-Voisinet' 'Aero-uke' 'Ukulele' '1930s instrument productions'
- 'National Music Museum, Vermillion']","{'Culture', 'Music'}"
-494991,10081915,Jorge Arraiza1.JPG,https://upload.wikimedia.org/wikipedia/commons/8/81/Jorge_Arraiza1.JPG,['1970 births' 'Fiel a la Vega' 'Male bass guitarists'],"{'Culture', 'Music', 'Society'}"
-1457538,186299,Van-Veldeke-Denkmal.jpg,https://upload.wikimedia.org/wikipedia/commons/9/91/Van-Veldeke-Denkmal.jpg,"['Statues of sitting men' 'Onroerend erfgoed in Hasselt'
- 'Monuments and memorials in Hasselt' 'Sculptures in Hasselt'
- 'Cafés in Hasselt' '2002 in Hasselt' 'August 2002 in Belgium'
- 'Heinrich von Veldeke']","{'Culture', 'Literature', 'Music'}"
-1644656,19865249,Logo Nuevo Banco de Santa Fe.svg,https://upload.wikimedia.org/wikipedia/commons/2/27/Logo_Nuevo_Banco_de_Santa_Fe.svg,['SVG logos of banks in Argentina' 'SVG logos of banks'],{'Logos & Symbols'}
-2712613,44716073,IMessage logo (Apple Inc.).png,https://upload.wikimedia.org/wikipedia/commons/5/56/IMessage_logo_%28Apple_Inc.%29.png,['Logos' 'IMessage'],"{'Society', 'People', 'Logos & Symbols'}"
-453567,80617100,Galneryus logo.svg,https://upload.wikimedia.org/wikipedia/commons/9/96/Galneryus_logo.svg,"['Galneryus' 'SVG logos associated with music'
- 'Logos of musical groups from Japan'
- 'Logos of heavy metal musical groups' 'SVG logos of Japan']","{'Society', 'Culture', 'Music', 'Logos & Symbols'}"
-2380538,60109421,Fertagus.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fb/Fertagus.jpg,"['Logos of rail transport companies' 'Fertagus'
- 'Logos of companies associated with transport in Portugal']","{'Society', 'Logos & Symbols', 'Transportation'}"
-2890603,78448559,Logo de Converxencia 21.png,https://upload.wikimedia.org/wikipedia/commons/e/e9/Logo_de_Converxencia_21.png,['Political parties in Galicia (Spain)' 'Green and orange logos'],"{'Culture', 'Logos & Symbols'}"
-502523,92939566,Tabcorp logo Blue RGB.jpg,https://upload.wikimedia.org/wikipedia/commons/5/55/Tabcorp_logo_Blue_RGB.jpg,['Logos'],{'Logos & Symbols'}
-994778,10522560,CSFB logo.png,https://upload.wikimedia.org/wikipedia/commons/7/78/CSFB_logo.png,"['Credit Suisse' 'Companies based in New York City' 'Financial economics'
- 'Logos of banks']","{'Logos & Symbols', 'Society'}"
-2166807,40148153,FIU PHSW.png,https://upload.wikimedia.org/wikipedia/commons/2/29/FIU_PHSW.png,['Florida International University logos'],{'Logos & Symbols'}
-3331302,10522155,CBN TV.PNG,https://upload.wikimedia.org/wikipedia/commons/d/df/CBN_TV.PNG,"['Logos of television channels in Canada' '2005 establishments'
- 'Logos of television channels']",{'Logos & Symbols'}
-884988,22910051,Logo of the Astronomical Society of the Pacific.jpg,https://upload.wikimedia.org/wikipedia/commons/7/78/Logo_of_the_Astronomical_Society_of_the_Pacific.jpg,"['Learned societies' 'Logos of organizations' 'Astronomy organizations'
- 'Organizations based in San Francisco' 'Logos of San Francisco']","{'Logos & Symbols', 'Society'}"
-2274208,62751496,Sportfreunde Lotte Performance Chart.png,https://upload.wikimedia.org/wikipedia/commons/d/d2/Sportfreunde_Lotte_Performance_Chart.png,['Table rank diagrams of Germany' 'Sportfreunde Lotte'],"{'Diagrams', 'Sports', 'STEM', 'Society'}"
-2068994,17708534,Enneagon stellations.svg,https://upload.wikimedia.org/wikipedia/commons/4/4e/Enneagon_stellations.svg,['Enneagram' 'SVG diagrams in English' 'Star polygons'],"{'Diagrams', 'Society', 'Places', 'STEM', 'Nature'}"
-2114195,4854994,N2 chart definition.JPG,https://upload.wikimedia.org/wikipedia/commons/c/c8/N2_chart_definition.JPG,['N2 Charts'],"{'Diagrams', 'STEM'}"
-3340702,18808773,OldRoad Qc5.png,https://upload.wikimedia.org/wikipedia/commons/4/46/OldRoad_Qc5.png,['Diagrams of old road signs of Quebec'],"{'Diagrams', 'STEM'}"
-1176455,6565797,Leaf morphology parallel.png,https://upload.wikimedia.org/wikipedia/commons/d/d9/Leaf_morphology_parallel.png,['Leaf vein diagrams'],"{'Diagrams', 'STEM'}"
-1942762,7444088,Sensornode.svg,https://upload.wikimedia.org/wikipedia/commons/8/8d/Sensornode.svg,['Computer diagrams' 'Computer architecture diagrams'],"{'Diagrams', 'STEM'}"
-615385,6187052,Ontario Rb-84A.svg,https://upload.wikimedia.org/wikipedia/commons/e/e6/Ontario_Rb-84A.svg,"['SVG regulatory road signs of Ontario' 'Cycle lanes in Ontario'
- 'Diagrams of cycle lane road signs']","{'Diagrams', 'Places', 'STEM', 'Society'}"
-2384864,31231610,Makarenko chess 1.svg,https://upload.wikimedia.org/wikipedia/commons/8/8e/Makarenko_chess_1.svg,['Makarenko chess' 'Chess starting position'],"{'Culture', 'STEM', 'Diagrams'}"
-284788,16143644,PC DiamondAnatomy B-W.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e8/PC_DiamondAnatomy_B-W.jpg,"['Drawings of diamonds' 'Facet cutting' 'Passion cut' 'Gem cut diagrams'
- 'Brilliant cut diagrams']","{'Diagrams', 'Culture', 'STEM', 'Nature'}"
-43765,35129019,DMAICWebdingsI.png,https://upload.wikimedia.org/wikipedia/commons/8/88/DMAICWebdingsI.png,['DMAIC'],"{'Diagrams', 'STEM', 'Society'}"
-1649559,10089052,Sanicle at Spier's.JPG,https://upload.wikimedia.org/wikipedia/commons/0/0c/Sanicle_at_Spier%27s.JPG,"['Sanicula europaea' ""Spier's School"" 'April 2010 in Scotland']","{'Plants', 'Places', 'STEM', 'Nature'}"
-977627,6902974,Eriophyes tilae tilae underside.JPG,https://upload.wikimedia.org/wikipedia/commons/2/2f/Eriophyes_tilae_tilae_underside.JPG,"['Tilia × europaea' 'Galls on Tilia' 'Tilia leaves' 'Leaf veins'
- 'Eriophyes tiliae' 'Eriophyes leaf galls']","{'Plants', 'STEM', 'Nature'}"
-2444651,67096088,"Neoregelia carcharodon - Marie Selby Botanical Gardens - Sarasota, Florida - DSC01728.jpg",https://upload.wikimedia.org/wikipedia/commons/d/dd/Neoregelia_carcharodon_-_Marie_Selby_Botanical_Gardens_-_Sarasota%2C_Florida_-_DSC01728.jpg,['Specimens in the Marie Selby Botanical Gardens' 'Neoregelia carcharodon'],"{'Plants', 'STEM', 'Nature'}"
-822468,93157644,Eupatorium perfoliatum with bee and caterpillar (cropped).jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Eupatorium_perfoliatum_with_bee_and_caterpillar_%28cropped%29.jpg,"['Eupatorium perfoliatum'
- 'Unidentified caterpillars to be classified by family'
- 'Unidentified caterpillars of the United States'
- 'Lepidoptera of New Hampshire']","{'Society', 'Plants', 'STEM', 'Nature'}"
-655908,67147669,Richea sprengelioides distrobution.jpg,https://upload.wikimedia.org/wikipedia/commons/3/38/Richea_sprengelioides_distrobution.jpg,['Maps of Tasmania' 'Flora distribution maps' 'Richea sprengelioides'],"{'Maps & Flags', 'Plants', 'Places', 'STEM', 'Nature'}"
-674195,12748023,Pfaffia glomerata-costapppr.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d8/Pfaffia_glomerata-costapppr.jpg,['Medicinal botanical gardens' 'Medicinal plants' 'Pfaffia glomerata'],"{'Plants', 'STEM', 'Nature'}"
-2186411,3347815,Eucalyptus-20070325-011.jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/Eucalyptus-20070325-011.jpg,['Eucalyptus conferruminata'],"{'Plants', 'STEM', 'Nature'}"
-2744714,23318333,Alloxylon pinnatum rangemap.png,https://upload.wikimedia.org/wikipedia/commons/7/70/Alloxylon_pinnatum_rangemap.png,['Alloxylon pinnatum'],"{'Plants', 'STEM', 'Nature'}"
-1421504,4904926,Acianthera heringeri.jpg,https://upload.wikimedia.org/wikipedia/commons/1/16/Acianthera_heringeri.jpg,['Acianthera heringeri'],"{'Plants', 'STEM', 'Nature'}"
-209778,63296509,Spotted small flat laying eggs on Lepidagathis keralensis at Madayipara.jpg,https://upload.wikimedia.org/wikipedia/commons/a/ac/Spotted_small_flat_laying_eggs_on_Lepidagathis_keralensis_at_Madayipara.jpg,"['Lepidagathis keralensis' 'Sarangesa purendra pandra'
- 'Lepidoptera laying eggs']","{'Plants', 'STEM', 'Nature'}"
-3751595,90186647,"Shelter at King's Esplanade, Hove (near Lansdowne Place) (NHLE Code 1280525) (January 2012).jpg",https://upload.wikimedia.org/wikipedia/commons/8/87/Shelter_at_King%27s_Esplanade%2C_Hove_%28near_Lansdowne_Place%29_%28NHLE_Code_1280525%29_%28January_2012%29.jpg,"['19th-century architecture in East Sussex'
- 'Buildings in Hove, East Sussex'
- 'Grade II listed buildings in Brighton and Hove'
- 'Shelters in East Sussex' ""King's Esplanade, Hove""]","{'Architecture', 'Culture', 'Places', 'History'}"
-1667858,11082719,Prinsenkasteel (3).jpg,https://upload.wikimedia.org/wikipedia/commons/8/8d/Prinsenkasteel_%283%29.jpg,['Prinsenkasteel'],"{'Architecture', 'Places'}"
-2643111,60388242,Stone Arch Bridge Wapsipincon State Park.jpg,https://upload.wikimedia.org/wikipedia/commons/f/ff/Stone_Arch_Bridge_Wapsipincon_State_Park.jpg,"['Bridges on the National Register of Historic Places in Iowa'
- 'Stone arch bridges in Iowa' 'Wapsipinicon State Park'
- 'Rustic architecture in Iowa']","{'Architecture', 'Places', 'Society'}"
-1101049,62016238,Onkel Dannys Plads 01.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e1/Onkel_Dannys_Plads_01.jpg,['Onkel Dannys Plads'],"{'Architecture', 'Places'}"
-3547626,3848216,Erevan - La forteresse d'Erébouni 03.JPG,https://upload.wikimedia.org/wikipedia/commons/a/a2/Erevan_-_La_forteresse_d%27Er%C3%A9bouni_03.JPG,['Khaldi Temple in Erebuni Fortress' 'Urartian deities'],"{'Architecture', 'Society', 'People', 'Places'}"
-3784228,28368332,Kamienica na ul. Długiej2- fragment fasady.JPG,https://upload.wikimedia.org/wikipedia/commons/8/8d/Kamienica_na_ul._D%C5%82ugiej2-_fragment_fasady.JPG,['Długa 2 Bydgoszcz' 'Poland photographs taken on 2013-09-05'],"{'Architecture', 'Places'}"
-3778214,2399506,CCHR.jpg,https://upload.wikimedia.org/wikipedia/commons/5/58/CCHR.jpg,"['Buildings in Los Angeles' 'Citizens Commission on Human Rights'
- 'Sunset Boulevard']","{'Architecture', 'Society', 'Places', 'Transportation'}"
-805355,52490573,Ignition SQL Bridge Diagram.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fc/Ignition_SQL_Bridge_Diagram.jpg,['Software frameworks'],"{'Architecture', 'Places'}"
-22912,23997615,Bydg ul Gdańska - koszary.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3c/Bydg_ul_Gda%C5%84ska_-_koszary.jpg,['Gdańska 147-161 Koszary' 'Zawisza (Bydgoszcz)'],"{'Architecture', 'Places'}"
-2889961,19457615,Kumasi.png,https://upload.wikimedia.org/wikipedia/commons/f/fa/Kumasi.png,['Ghana in the 1890s' 'Manhyia Palace' 'Vernacular architecture in Ghana'],"{'Architecture', 'Places'}"
-1948664,28997685,"Ausztria, Grác, Schloßbergbahn, 0082.JPG",https://upload.wikimedia.org/wikipedia/commons/3/35/Ausztria%2C_Gr%C3%A1c%2C_Schlo%C3%9Fbergbahn%2C_0082.JPG,"['Schloßbergbahn, Graz']","{'Society', 'Transportation'}"
-2695605,31396588,Manchester Dock gate.jpg,https://upload.wikimedia.org/wikipedia/commons/4/4e/Manchester_Dock_gate.jpg,"['Collections of the Museum of Liverpool' 'Manchester Dock, Liverpool'
- 'Chlorocardium rodiei' 'Laurales wood']","{'Culture', 'Society', 'Transportation'}"
-1699814,426312,Gb-tramlink-tickets.jpg,https://upload.wikimedia.org/wikipedia/commons/b/b5/Gb-tramlink-tickets.jpg,"['Tramlink ticket machines' '2005 on Tramlink' 'Birkbeck station'
- 'October 2005 in London' '2005 in the London Borough of Bromley'
- 'Tramlink at night' 'United Kingdom photographs taken on 2005-10-24']","{'Technology & Engineering', 'Society', 'STEM', 'Transportation'}"
-1041434,1885184,Marktplatz Bayreuth.JPG,https://upload.wikimedia.org/wikipedia/commons/3/39/Marktplatz_Bayreuth.JPG,"['Maximilianstraße (Bayreuth)' 'Market squares in Upper Franconia'
- 'Spitalkirche (Bayreuth)' 'Church towers in Bayreuth' 'Views of Bayreuth']","{'Society', 'Events', 'Places', 'STEM', 'Transportation', 'Nature'}"
-145770,27485784,LillafüredNarrowGaugeRailway1928.jpg,https://upload.wikimedia.org/wikipedia/commons/5/54/Lillaf%C3%BCredNarrowGaugeRailway1928.jpg,"['Lillafüred railway station' 'Miskolc in the 1920s'
- '1928 photographs of Hungary' 'Railway bridges in Hungary'
- 'Narrow gauge steam locomotives of Hungary' '1928 in rail transport']","{'Society', 'Culture', 'Places', 'History', 'Transportation'}"
-639734,64961026,"USN PO2 parka tab, AOR-2.png",https://upload.wikimedia.org/wikipedia/commons/a/ab/USN_PO2_parka_tab%2C_AOR-2.png,"['Military rank insignia of the United States Navy'
- 'Official emblems with transparent background'
- 'Navy Working Uniform Type III']","{'Society', 'Transportation'}"
-50776,12342401,MuhuruBay.jpg,https://upload.wikimedia.org/wikipedia/commons/1/1b/MuhuruBay.jpg,['Lake Victoria' 'Nyanza Province' 'Donkey transport' 'Transport in Kenya'],"{'Places', 'Society', 'Transportation'}"
-928770,65385865,"Sandal & Walton railway station (site), Yorkshire (geograph 3483382).jpg",https://upload.wikimedia.org/wikipedia/commons/e/ef/Sandal_%26_Walton_railway_station_%28site%29%2C_Yorkshire_%28geograph_3483382%29.jpg,"['Sandal and Walton railway station' 'Rail tracks in England'
+ 'Barack Obama presidential campaign in May 2008']","{'Culture', 'Belief', 'Places', 'Politics', 'People', 'Society'}"
+273,44328718,"Trimeresurus macrops, Large-eyed pit viper.jpg",https://upload.wikimedia.org/wikipedia/commons/0/0f/Trimeresurus_macrops%2C_Large-eyed_pit_viper.jpg,"['Trimeresurus macrops' 'Reptiles of Khao Yai National Park'
+ 'Snakes of Thailand']","{'Nature', 'People', 'Society', 'STEM'}"
+274,88444692,William O'Dwyer (cropped).jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/William_O%27Dwyer_%28cropped%29.jpg,"[""William O'Dwyer"" 'ACME Newspictures'
+ 'People of the United States in 1943']","{'Politics', 'Society'}"
+275,3241466,Old lga Richmond.png,https://upload.wikimedia.org/wikipedia/commons/e/e8/Old_lga_Richmond.png,['Former local government areas in Victoria'],"{'Politics', 'Maps & Flags', 'Society', 'Places'}"
+276,51050939,Eremophila fraseri fraseri (habit).jpg,https://upload.wikimedia.org/wikipedia/commons/c/c4/Eremophila_fraseri_fraseri_%28habit%29.jpg,['Eremophila fraseri' 'Flora of Western Australia'],"{'Nature', 'Plants', 'STEM'}"
+277,33384615,Cologne Germany Flora-Köln-00.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cd/Cologne_Germany_Flora-K%C3%B6ln-00.jpg,"['Flora Festhaus' 'Featured pictures of buildings'
+ 'Featured pictures of Cologne' 'Quality images of buildings in Cologne'
+ '2014 photographs of Cologne'
+ 'Quality images of cultural heritage monuments in Cologne'
+ 'Germany photographs taken on 2014-06-14']",{'Places'}
+278,65385865,"Sandal & Walton railway station (site), Yorkshire (geograph 3483382).jpg",https://upload.wikimedia.org/wikipedia/commons/e/ef/Sandal_%26_Walton_railway_station_%28site%29%2C_Yorkshire_%28geograph_3483382%29.jpg,"['Sandal and Walton railway station' 'Rail tracks in England'
  'Stone walls in the City of Wakefield'
  'May 2013 in the City of Wakefield' 'Images by Nigel Thompson'
- 'Views from bridges in Yorkshire']","{'Technology & Engineering', 'STEM', 'Society', 'Transportation'}"
-2586367,69029666,Unveiling the Masonville designation sign (9953288823).jpg,https://upload.wikimedia.org/wikipedia/commons/4/41/Unveiling_the_Masonville_designation_sign_%289953288823%29.jpg,['Baltimore Inner Harbor'],"{'Society', 'Transportation'}"
-2372445,9283286,"Ty Frannan, birthplace of author W. D. Owen (1874) - geograph.org.uk - 111671.jpg",https://upload.wikimedia.org/wikipedia/commons/f/f7/Ty_Frannan%2C_birthplace_of_author_W._D._Owen_%281874%29_-_geograph.org.uk_-_111671.jpg,"['Bryngwran' 'Cottages in Anglesey' 'Roads in Anglesey'
- 'Welsh-language writers' '19th-century architecture in Wales'
- 'January 2006 in Wales' 'United Kingdom photographs taken on 2006-01-25']","{'Technology & Engineering', 'Transportation', 'Architecture', 'Society', 'Culture', 'People', 'Places', 'STEM', 'Politics'}"
-770370,61682144,NYPD Bx 52nd Police Precinct Station House and Stable IMG 2182 HLG.png,https://upload.wikimedia.org/wikipedia/commons/4/4b/NYPD_Bx_52nd_Police_Precinct_Station_House_and_Stable_IMG_2182_HLG.png,"['NYPD Bx 52nd Police Precinct Station House and Stable'
- 'Plaques in the Bronx']","{'Art', 'Culture', 'Places', 'History'}"
-2454954,16336331,British Museum Yemen 05.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c0/British_Museum_Yemen_05.jpg,"['Room 53, British Museum' 'Art of Ancient Yemen']","{'Culture', 'Art'}"
-853990,6747987,Vamdrup toldsal.jpg,https://upload.wikimedia.org/wikipedia/commons/3/31/Vamdrup_toldsal.jpg,"['Postcards of people in Denmark'
- 'Postcards from the collection of Hans Jørgen Jensen Høj'
- 'Civil servants of Denmark' 'Customs services of Denmark'
- 'Old Customs officers photo' 'Vamdrup' 'Borders of Denmark-Germany'
- 'Postcards of people' 'Vamdrup Station' 'Kongeå']","{'Society', 'Art', 'Places', 'Culture', 'People', 'History'}"
-2291349,4190334,PortadaFeria08.JPG,https://upload.wikimedia.org/wikipedia/commons/d/dd/PortadaFeria08.JPG,['Medina Sidonia' 'Feria gates'],"{'Culture', 'Places', 'Art'}"
-540441,46739765,Song of intent.jpg,https://upload.wikimedia.org/wikipedia/commons/7/73/Song_of_intent.jpg,['Performance art'],"{'Culture', 'Art'}"
-918907,18553986,Dome Richelieu 1.jpg,https://upload.wikimedia.org/wikipedia/commons/9/90/Dome_Richelieu_1.jpg,"['Louis XIII style'
- 'Pavillon du manège, dit le Dôme, château de Richelieu']","{'Technology & Engineering', 'Society', 'Art', 'Culture', 'People', 'STEM'}"
-188638,10056503,Preston Rivulettes 1940 postcard.jpg,https://upload.wikimedia.org/wikipedia/commons/4/40/Preston_Rivulettes_1940_postcard.jpg,"['Historic images of women in Canada' 'Ice hockey in Ontario'
- 'Ice hockey teams in Ontario' '1940 postcards of Canada'
- 'Preston, Ontario' 'Cambridge, Ontario in the 1940s'
- 'Postcards of Cambridge, Ontario' '1940 in ice hockey in Canada'
- 'Ice hockey goaltenders from Canada' ""Women's ice hockey in Canada""
- 'Postcards of ice hockey in Canada' 'Postcards of sportspeople']","{'Sports', 'Society', 'Places', 'Art', 'Culture', 'History'}"
-1025323,85290303,"Raiatea – Avant la pacification. – Officiers indigènes, à Avera (2-cropped).jpg",https://upload.wikimedia.org/wikipedia/commons/c/c6/Raiatea_%E2%80%93_Avant_la_pacification._%E2%80%93_Officiers_indig%C3%A8nes%2C_%C3%A0_Avera_%282-cropped%29.jpg,"['Avera (Taputapuatea)' 'History of Raiatea' 'Eugène Hänni'
- 'Postcards of people of French Polynesia' 'Leeward Islands War']","{'Art', 'Culture', 'Places', 'History'}"
-1698418,55437863,Early medieval silver hooked tag (FindID 468363).jpg,https://upload.wikimedia.org/wikipedia/commons/b/b5/Early_medieval_silver_hooked_tag_%28FindID_468363%29.jpg,"['Portable Antiquities Scheme, LON' 'Trewhiddle style']","{'Culture', 'Art'}"
-2784930,38431270,"Beggar's Box ,1968.jpg",https://upload.wikimedia.org/wikipedia/commons/d/d5/Beggar%27s_Box_%2C1968.jpg,['Art of Catalonia'],"{'Culture', 'Art'}"
-3113907,9922858,1910 CityCouncil office Boston.png,https://upload.wikimedia.org/wikipedia/commons/a/ab/1910_CityCouncil_office_Boston.png,"['Old City Hall, Boston (interior)' 'Boston City Council']","{'Events', 'Society', 'Politics'}"
-1391064,48340738,Katja Eichinger - Berlinale 66 (437) (24680938210).jpg,https://upload.wikimedia.org/wikipedia/commons/b/be/Katja_Eichinger_-_Berlinale_66_%28437%29_%2824680938210%29.jpg,['2016 Berlin Film Festival' 'Katja Eichinger'],"{'Events', 'People', 'Society'}"
-3494368,68202252,"Martin Kohlstedt, Gamma Festival 2017, Russia.png",https://upload.wikimedia.org/wikipedia/commons/9/9d/Martin_Kohlstedt%2C_Gamma_Festival_2017%2C_Russia.png,"['Music events in Saint Petersburg' 'Piano music' 'Martin Kohlstedt'
- '2017 events in Saint Petersburg' 'August 2017 in Saint Petersburg']","{'Society', 'Culture', 'Events', 'Music'}"
-2485281,17807498,Pumpehuset København.JPG,https://upload.wikimedia.org/wikipedia/commons/8/83/Pumpehuset_K%C3%B8benhavn.JPG,['Københavns Vandværk' 'Concert halls in Denmark'],"{'Events', 'Society'}"
-137753,83362360,BIS 2019.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d7/BIS_2019.jpg,['Conferences' 'Conferences in Spain'],"{'Events', 'Society'}"
-601185,535631,VM-firande.jpg,https://upload.wikimedia.org/wikipedia/commons/5/52/VM-firande.jpg,"['People of Piteå' 'Lina Andersson' 'Emelie Öhrstig'
- 'Sportspeople from Sweden in 2005'
- 'FIS Nordic World Ski Championships 2005' 'Cross-country skiers in 2005']","{'Events', 'People', 'Society'}"
-2416919,56686943,Chicago Sun 1947-06-26-2 Flying Saucer headline-th.jpg,https://upload.wikimedia.org/wikipedia/commons/4/49/Chicago_Sun_1947-06-26-2_Flying_Saucer_headline-th.jpg,['Kenneth Arnold UFO sighting' 'Written documents related to UFOs'],"{'Events', 'Society'}"
-803589,56311178,Ford Fusion Hybrid WAS 2017 1650.jpg,https://upload.wikimedia.org/wikipedia/commons/0/04/Ford_Fusion_Hybrid_WAS_2017_1650.jpg,"['2017 Washington Auto Show'
- 'United States photographs taken on 2017-01-28'
- 'Ford Fusion Hybrid (2nd generation)']","{'Technology & Engineering', 'Society', 'Events', 'STEM', 'Politics'}"
-187900,35006963,"Parsipop (Rumbeke), camping - 2.png",https://upload.wikimedia.org/wikipedia/commons/3/3a/Parsipop_%28Rumbeke%29%2C_camping_-_2.png,['Music festivals in Belgium' 'Tents' 'Rumbeke'],"{'Events', 'Places', 'Society'}"
-1045535,1207218,San Sebastian Festival Entrada.JPG,https://upload.wikimedia.org/wikipedia/commons/7/7a/San_Sebastian_Festival_Entrada.JPG,['2006 San Sebastián International Film Festival'],"{'Events', 'Society'}"
-1116808,17217001,Jean Tremblay01 cropped.jpg,https://upload.wikimedia.org/wikipedia/commons/7/74/Jean_Tremblay01_cropped.jpg,['Jean Tremblay'],"{'People', 'Society', 'Politics'}"
-713042,86126880,"Patricia Mora, FA - Costa Rica (cropped).JPG",https://upload.wikimedia.org/wikipedia/commons/e/eb/Patricia_Mora%2C_FA_-_Costa_Rica_%28cropped%29.JPG,['Deputies of Costa Rica' 'Frente Amplio (Costa Rica)'],"{'Culture', 'Society', 'Politics'}"
-2456788,47269215,De Witt Clinton by Henry Inman.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c1/De_Witt_Clinton_by_Henry_Inman.jpg,['DeWitt Clinton' 'Henry Inman'],"{'Society', 'Politics'}"
-1988553,56973258,CHP MPs 'No' campaign in Diyarbakır.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e3/CHP_MPs_%27No%27_campaign_in_Diyarbak%C4%B1r.jpg,"[""2017 Turkish constitutional referendum 'No' campaign""]","{'Society', 'Politics'}"
-324855,11278742,Ptrajan.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0b/Ptrajan.jpg,['Chief ministers of Tamil Nadu'],"{'People', 'Society', 'Politics'}"
-2632418,27702447,EdithArchibaldHalifaxNovaScotia.png,https://upload.wikimedia.org/wikipedia/commons/4/43/EdithArchibaldHalifaxNovaScotia.png,['Edith Archibald'],"{'People', 'Society', 'Politics'}"
-445979,88444692,William O'Dwyer (cropped).jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/William_O%27Dwyer_%28cropped%29.jpg,"[""William O'Dwyer"" 'ACME Newspictures'
- 'People of the United States in 1943']","{'Society', 'Politics'}"
-2419059,92337236,"Exit A, Beijing South Railway Station, Beijing Subway.jpg",https://upload.wikimedia.org/wikipedia/commons/3/33/Exit_A%2C_Beijing_South_Railway_Station%2C_Beijing_Subway.jpg,['Beijing South Railway Station (Beijing Subway)'],"{'Society', 'Politics'}"
-780731,30291383,"Bridge No 58, Macclesfield Canal.jpg",https://upload.wikimedia.org/wikipedia/commons/c/c5/Bridge_No_58%2C_Macclesfield_Canal.jpg,"['Macclesfield Canal, Congleton' 'Bridges over the Macclesfield Canal'
- 'Grade II listed bridges in Cheshire' 'Bridges over canals in Cheshire'
- 'Bridges numbered 58' 'Bridges in the Borough of Cheshire East']","{'Nature', 'History', 'Transportation', 'Society', 'Culture', 'Places', 'STEM', 'Politics'}"
-2536488,25762312,Gaston Gourde.JPG,https://upload.wikimedia.org/wikipedia/commons/0/0b/Gaston_Gourde.JPG,"['Lawyers from Quebec'
- 'Members of the House of Commons of Canada from Quebec'
- 'Liberal Party of Canada members of Parliament'
- 'Members of the Bloc Québécois' 'Mayors from Quebec'
- 'Male politicians of Canada' '1950 births'
- 'Canadian federal election, 2011' 'Federal elections of Canada in Quebec'
- 'April 2011 in Quebec City']","{'Places', 'Society', 'Politics'}"
-1616942,81946678,BMW F40 Leonberg 2019 IMG 0019.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fa/BMW_F40_Leonberg_2019_IMG_0019.jpg,['BMW F40' 'Grey BMW hatchbacks'],"{'Technology & Engineering', 'STEM'}"
-439880,47122122,"Ontario Northland train crosses the Missinaibi River at Mattice-Val Côté, Ontario.jpg",https://upload.wikimedia.org/wikipedia/commons/6/67/Ontario_Northland_train_crosses_the_Missinaibi_River_at_Mattice-Val_C%C3%B4t%C3%A9%2C_Ontario.jpg,"['EMD GP38-2 locomotives of the Ontario Northland Railway'
- 'Trains on bridges in Ontario' 'Missinaibi River'
- 'Freight trains in Ontario' 'Mattice-Val Côté' 'Panoramics in Ontario'
- 'Panoramic photographs of trains' 'Trains nearby rivers'
- 'Photographs taken on 2014-09-25'
- 'September 2014 in rail transport in Canada']","{'Technology & Engineering', 'Society', 'Places', 'STEM'}"
-3480519,15933869,Svářečka v DI.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3f/Sv%C3%A1%C5%99e%C4%8Dka_v_DI.jpg,['Electron beam welding'],"{'Technology & Engineering', 'STEM'}"
-3480215,14483949,StateLibQld 1 142447 Cormoran (ship).jpg,https://upload.wikimedia.org/wikipedia/commons/2/22/StateLibQld_1_142447_Cormoran_%28ship%29.jpg,"['Shipyards in Australia' 'Cormoran (ship, 1893)' 'Ships in Queensland'
- 'Ships in drydocks' 'Black and white photographs of Queensland']","{'Technology & Engineering', 'Society', 'STEM', 'Transportation'}"
-1758159,28073589,"Fort George, 2003 (3).JPG",https://upload.wikimedia.org/wikipedia/commons/4/46/Fort_George%2C_2003_%283%29.JPG,"['Fort George, Highland' 'Fort George, 3 K6 Telephone Kiosks, Highland'
- 'Post boxes in IV postcode area'
- 'United Kingdom photographs taken on 2013-09-05']","{'Technology & Engineering', 'STEM', 'Society'}"
-3581830,22282719,Accet Administrative Building.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a5/Accet_Administrative_Building.jpg,['Alagappa Chettiar College of Engineering and Technology'],"{'Culture', 'Technology & Engineering', 'STEM', 'Society'}"
-3091227,939660,Swedish scrabble tiles.jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Swedish_scrabble_tiles.jpg,['Scrabble tile sets'],"{'Culture', 'Technology & Engineering', 'STEM'}"
-984561,52490475,Optimus Sound Level Meter.jpg,https://upload.wikimedia.org/wikipedia/commons/0/09/Optimus_Sound_Level_Meter.jpg,['Sound level meters'],"{'Technology & Engineering', 'STEM'}"
-3748174,9759163,Nehemiah Hobart poem 1712.jpg,https://upload.wikimedia.org/wikipedia/commons/1/15/Nehemiah_Hobart_poem_1712.jpg,['1712 texts' 'Boston in art' 'Printing'],"{'Technology & Engineering', 'STEM'}"
-826450,26083497,Legacy Trail Overpass.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3b/Legacy_Trail_Overpass.jpg,"['Bridges in Sarasota County, Florida' 'Rail trail bridges in Florida'
- 'Tamiami Trail' 'Venice, Florida' 'Legacy Trail, Florida'
- 'Bridges in the United States photographed in 2013' 'May 2013 in Florida']","{'Culture', 'Technology & Engineering', 'Places', 'STEM'}"
-889278,29611785,"Roberto Córdova, Sebastián Piñera y Julio Ibarra junto a cheerleaders del CPS.jpg",https://upload.wikimedia.org/wikipedia/commons/1/15/Roberto_C%C3%B3rdova%2C_Sebasti%C3%A1n_Pi%C3%B1era_y_Julio_Ibarra_junto_a_cheerleaders_del_CPS.jpg,"['Julio Ibarra' 'Gobernación Provincial de Cardenal Caro'
- 'Roberto Córdova' 'Sebastián Piñera in 2013' 'Cheer C.P.S.'
- '2013 in Pichilemu']","{'Sports', 'Society', 'Culture', 'People', 'Places', 'Politics'}"
-758870,56764321,2015 JWC Men's Podium (2).jpg,https://upload.wikimedia.org/wikipedia/commons/7/7c/2015_JWC_Men%27s_Podium_%282%29.jpg,"['2015 World Junior Figure Skating Championships' 'Shoma Uno'
- 'Sota Yamamoto' ""Figure skating men's singles medal ceremonies""
- 'Male sportspeople with medals' 'Sportspeople with flags of Japan']","{'Sports', 'Society', 'Events'}"
-2375812,78186751,Androscoggin-River-Paddle-ca2001.jpg,https://upload.wikimedia.org/wikipedia/commons/4/48/Androscoggin-River-Paddle-ca2001.jpg,"['Free-Black Bridge' 'Androscoggin River' 'Canoeing in the United States'
- 'June 2001 in Maine']","{'Society', 'Places', 'Sports'}"
-703928,25342212,Chicago at Minnesota.jpg,https://upload.wikimedia.org/wikipedia/commons/2/27/Chicago_at_Minnesota.jpg,"['Minnesota Vikings players' 'Chicago Bears players'
- '2012 Minnesota Vikings season' '2012 Chicago Bears season'
- 'Hubert H. Humphrey Metrodome']","{'Sports', 'Society', 'Culture', 'People'}"
-3550551,40395914,Jared Landers 777 Lucas Oil Late Model 2015 Oshkosh pan.jpg,https://upload.wikimedia.org/wikipedia/commons/3/3a/Jared_Landers_777_Lucas_Oil_Late_Model_2015_Oshkosh_pan.jpg,"['Lucas Oil Late Model Dirt Series cars' 'NASCAR drivers'
- 'Sunnyview Expo Center' 'Panning of racing automobiles']","{'Sports', 'Society', 'People'}"
-1100692,11611720,Nobiling - SC Germania (SP).jpg,https://upload.wikimedia.org/wikipedia/commons/a/a7/Nobiling_-_SC_Germania_%28SP%29.jpg,"['SC Germânia' 'Group photographs of association football teams in Brazil'
- 'Group photographs of association football clubs in 1900'
- 'Black and white photographs of groups' 'Historical sports clothing'
- 'Black and white photographs of Brazil'
- 'Black and white photographs in the 1900s']","{'Sports', 'Society'}"
-811755,86908522,Riccardo Sogliano.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c0/Riccardo_Sogliano.jpg,['Sportspeople from Italy in 1966' 'Riccardo Sogliano'],"{'People', 'Sports', 'Society'}"
-3298277,21552325,Jedd Fisch 2012.jpg,https://upload.wikimedia.org/wikipedia/commons/a/ac/Jedd_Fisch_2012.jpg,['Miami Hurricanes football coaches'],"{'Sports', 'Society'}"
-2623625,47458858,Stadion Moroni.JPG,https://upload.wikimedia.org/wikipedia/commons/1/11/Stadion_Moroni.JPG,"['Association football venues in the Comoros' 'Moroni'
- '2008 in the Comoros']","{'Culture', 'Places', 'Sports', 'Society'}"
-3371001,8394317,CitadelStadium.jpg,https://upload.wikimedia.org/wikipedia/commons/7/7b/CitadelStadium.jpg,"['American football venues in South Carolina'
- 'Sports clubs established in 1905' 'The Citadel Bulldogs football']","{'Sports', 'Society', 'Places'}"
-2105512,47552516,COEconventionTerritorialCommunities.svg,https://upload.wikimedia.org/wikipedia/commons/4/43/COEconventionTerritorialCommunities.svg,['Maps of the Council of Europe'],"{'Places', 'Maps & Flags'}"
-1393439,4399660,Montenegro ethnic map 2003.png,https://upload.wikimedia.org/wikipedia/commons/7/7f/Montenegro_ethnic_map_2003.png,['Maps of ethnic groups in Montenegro'],"{'Places', 'Maps & Flags'}"
-613527,572074,Map of New Mexico highlighting Cibola County.svg,https://upload.wikimedia.org/wikipedia/commons/d/dd/Map_of_New_Mexico_highlighting_Cibola_County.svg,"['Maps of Cibola County, New Mexico' 'New Mexico county locator maps'
- 'SVG maps of New Mexico']","{'Places', 'Maps & Flags'}"
-2204492,42782772,Cuyahoga County Ohio incorporated and unincorporated areas Bedford highlighted.svg,https://upload.wikimedia.org/wikipedia/commons/5/51/Cuyahoga_County_Ohio_incorporated_and_unincorporated_areas_Bedford_highlighted.svg,"['Maps of Cuyahoga County, Ohio (style B)'
- 'Locator maps of cities in Cuyahoga County, Ohio' 'Maps of Bedford, Ohio']","{'Places', 'Maps & Flags'}"
-3302076,3241466,Old lga Richmond.png,https://upload.wikimedia.org/wikipedia/commons/e/e8/Old_lga_Richmond.png,['Former local government areas in Victoria'],"{'Places', 'Maps & Flags', 'Society', 'Politics'}"
-664487,36887985,"Census Bureau map of West New York, New Jersey.png",https://upload.wikimedia.org/wikipedia/commons/6/69/Census_Bureau_map_of_West_New_York%2C_New_Jersey.png,"['2000 United States Census TIGER maps of populated places in New Jersey'
- 'West New York, New Jersey']","{'Places', 'Maps & Flags'}"
-3141848,11974815,JaitpurKart.jpg,https://upload.wikimedia.org/wikipedia/commons/1/1d/JaitpurKart.jpg,['Maps of princely states of India'],"{'Places', 'Maps & Flags'}"
-2742572,35899730,"Winner by municipality in the Portuguese Socialist Party Secretary-General primary, 2014.png",https://upload.wikimedia.org/wikipedia/commons/6/6f/Winner_by_municipality_in_the_Portuguese_Socialist_Party_Secretary-General_primary%2C_2014.png,"['Election maps of Portugal' 'Partido Socialista (Portugal)'
- 'António Costa in 2014' 'António José Seguro' 'Pink and red']","{'Maps & Flags', 'Society', 'Culture', 'Places'}"
-1662083,1243668,Hyderabad state 1909.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dd/Hyderabad_state_1909.jpg,"['The Imperial Gazetteer of India (new edition 1909)'
- 'Maps of Hyderabad State' '1909 maps of India' '1909 in Hyderabad, India']","{'Maps & Flags', 'Culture', 'Places'}"
-3183079,2531603,Map of Morocco and Western Sahara-fr.svg,https://upload.wikimedia.org/wikipedia/commons/7/74/Map_of_Morocco_and_Western_Sahara-fr.svg,"['French-language SVG maps' 'SVG maps of Morocco'
- 'SVG maps of Western Sahara']","{'Places', 'Maps & Flags'}"
-113019,51137471,St Swallow DSC0359.jpg,https://upload.wikimedia.org/wikipedia/commons/2/26/St_Swallow_DSC0359.jpg,['Petrochelidon fluvicola' 'India photographs taken on 2016-08-28'],"{'Culture', 'History'}"
-3026036,24745715,Kepplerites japonicus.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fb/Kepplerites_japonicus.jpg,"['Kepplerites' 'Ammonitida fossils'
- 'Ammonoidea fossils in the National Museum of Nature and Science, Tokyo'
- 'History of Ono, Fukui' 'Jurassic fossils from Japan']","{'Culture', 'Fossils', 'History', 'STEM', 'Nature'}"
-3782234,2235939,GreenVioletear.jpg,https://upload.wikimedia.org/wikipedia/commons/9/93/GreenVioletear.jpg,['Colibri cyanotus' 'Perched hummingbirds'],"{'Culture', 'History'}"
-724869,18629102,E-2 10 TL arka.jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/E-2_10_TL_arka.jpg,['Banknotes of Turkey' 'Banknotes with a face value of 10'],"{'Culture', 'History', 'Society'}"
-2974134,68414479,"Singapore Art Museum, 2012.jpg",https://upload.wikimedia.org/wikipedia/commons/4/41/Singapore_Art_Museum%2C_2012.jpg,['Singapore Art Museum'],"{'Culture', 'Places', 'History'}"
-2520645,17737875,M 78 10 amiral Leone Viale min Marine.jpg,https://upload.wikimedia.org/wikipedia/commons/5/5a/M_78_10_amiral_Leone_Viale_min_Marine.jpg,['Le Miroir n°78' 'Leone Viale'],"{'Society', 'Culture', 'People', 'History', 'Politics'}"
-2763862,16198564,AcrocephalusMendanaeKeulemans.jpg,https://upload.wikimedia.org/wikipedia/commons/c/c6/AcrocephalusMendanaeKeulemans.jpg,"['Ibis (1883)' 'Acrocephalus mendanae' 'Acrocephalus nests'
- 'Acrocephalus (juvenile)']","{'Culture', 'History', 'Society'}"
-3060312,15805026,Dechow Mustin ehemalige innerdeutsche Grenze 2011-07-10 007.JPG,https://upload.wikimedia.org/wikipedia/commons/3/33/Dechow_Mustin_ehemalige_innerdeutsche_Grenze_2011-07-10_007.JPG,"['Mustin' 'Dechow' 'Naturschutzgebiet Lankower See'
- 'Inner German border in Landkreis Nordwestmecklenburg' 'Bundesstraße 208'
- 'Monuments and memorials to the Unity of Germany in Schleswig-Holstein']","{'Places', 'Culture', 'History', 'STEM', 'Nature'}"
-1518280,38811524,97th Bombardment Group B-17E Flying Fortress 41-2578.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9c/97th_Bombardment_Group_B-17E_Flying_Fortress_41-2578.jpg,"['RAF Grafton Underwood' 'Boeing B-17E'
- '97th Bombardment Group (United States Army Air Forces)']","{'Society', 'Culture', 'Places', 'History', 'Politics'}"
-1360650,30435955,US-$50-IBN-1865-Fr.212d.jpg,https://upload.wikimedia.org/wikipedia/commons/6/6c/US-%2450-IBN-1865-Fr.212d.jpg,"['NNC United States Banknotes (1861-present)'
- '50 dollar Interest Bearing Notes' 'Eagles on banknotes'
- 'NNC Compound & Interest Bearing Notes']","{'Culture', 'History', 'Society'}"
-3082941,9497186,Huntsmen retrieve racehorse - geograph.org.uk - 733727.jpg,https://upload.wikimedia.org/wikipedia/commons/9/98/Huntsmen_retrieve_racehorse_-_geograph.org.uk_-_733727.jpg,"['Whittington, Lancashire' 'Horses of Lancashire'
- 'United Kingdom photographs taken on 2008-03-22']","{'Places', 'STEM', 'Society', 'Nature'}"
-2436638,79886696,Clarendon Street Church.jpg,https://upload.wikimedia.org/wikipedia/commons/4/46/Clarendon_Street_Church.jpg,['Churches in Boston' 'Clarendon Street (Boston)'],"{'Places', 'STEM', 'Society', 'Nature'}"
-1660165,22299021,Fibroblastid (BPAE).jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Fibroblastid_%28BPAE%29.jpg,"['Fibroblasts' 'Quality images of Estonia' 'Confocal microscopic images'
+ 'Views from bridges in Yorkshire']","{'Transportation', 'STEM', 'Society', 'Technology & Engineering'}"
+279,939660,Swedish scrabble tiles.jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Swedish_scrabble_tiles.jpg,['Scrabble tile sets'],"{'Culture', 'STEM', 'Technology & Engineering'}"
+280,22299021,Fibroblastid (BPAE).jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Fibroblastid_%28BPAE%29.jpg,"['Fibroblasts' 'Quality images of Estonia' 'Confocal microscopic images'
  'Images by Heiti Paves'
- 'Fluorescence microscopic images with mitochondria specific stains']","{'STEM', 'Nature'}"
-2383925,67011,LSD bridge open.jpg,https://upload.wikimedia.org/wikipedia/commons/6/66/LSD_bridge_open.jpg,"['Link Bridge (Lake Shore Drive)' '1987 in Chicago' 'Open bascule bridges'
- 'Wacker Drive' 'Chicago River' 'Marina City' 'Aon Center'
- 'Mid-Continental Plaza' 'Illinois Center']","{'Architecture', 'Society', 'Culture', 'Places', 'STEM', 'Nature'}"
-2371133,24650118,Stenocoris sp. (Rice Bug) (6023721068).jpg,https://upload.wikimedia.org/wikipedia/commons/7/77/Stenocoris_sp._%28Rice_Bug%29_%286023721068%29.jpg,"['Stenocoris' 'Insects of Juno Dunes Natural Area' 'Hemiptera of Florida'
- 'Heteroptera of the United States']","{'STEM', 'Nature'}"
-3418904,2969185,PedostibesTuberculosus5.jpg,https://upload.wikimedia.org/wikipedia/commons/8/85/PedostibesTuberculosus5.jpg,['Pedostibes tuberculosus' 'Amphibians of the Wayanad Wildlife Sanctuary'],"{'STEM', 'Nature'}"
-304638,36882241,Phalaenopsis celebensis Orchi 206-1.jpg,https://upload.wikimedia.org/wikipedia/commons/2/2f/Phalaenopsis_celebensis_Orchi_206-1.jpg,['Phalaenopsis celebensis'],"{'Plants', 'STEM', 'Nature'}"
-180577,51050939,Eremophila fraseri fraseri (habit).jpg,https://upload.wikimedia.org/wikipedia/commons/c/c4/Eremophila_fraseri_fraseri_%28habit%29.jpg,['Eremophila fraseri' 'Flora of Western Australia'],"{'Plants', 'STEM', 'Nature'}"
-2403685,26056680,Leptobrachium bompu.jpeg,https://upload.wikimedia.org/wikipedia/commons/4/41/Leptobrachium_bompu.jpeg,"['Animals of Eaglenest Wildlife Sanctuary' 'Anura of India'
- 'Leptobrachium bompu' 'Amphibians of Arunachal Pradesh']","{'STEM', 'Nature'}"
-1321538,44328718,"Trimeresurus macrops, Large-eyed pit viper.jpg",https://upload.wikimedia.org/wikipedia/commons/0/0f/Trimeresurus_macrops%2C_Large-eyed_pit_viper.jpg,"['Trimeresurus macrops' 'Reptiles of Khao Yai National Park'
- 'Snakes of Thailand']","{'Society', 'People', 'STEM', 'Nature'}"
-1401087,22996831,12 Taher Ville (3).jpg,https://upload.wikimedia.org/wikipedia/commons/2/25/12_Taher_Ville_%283%29.jpg,['Churches in Taher' 'Clocks in Jijel Province'],"{'Technology & Engineering', 'Places', 'STEM'}"
-2446242,7488923,Porth Clais harbour.JPG,https://upload.wikimedia.org/wikipedia/commons/b/b2/Porth_Clais_harbour.JPG,['Porthclais'],"{'Places', 'STEM', 'Nature'}"
-712035,82431508,New Jersey Junction RR 1886 reverse.JPG,https://upload.wikimedia.org/wikipedia/commons/9/9d/New_Jersey_Junction_RR_1886_reverse.JPG,"['New Jersey Junction Railroad' 'J. P. Morgan (banker)'
- 'Harris Charles Fahnestock']","{'Technology & Engineering', 'STEM'}"
-1669766,7448054,Soft edge road.jpg,https://upload.wikimedia.org/wikipedia/commons/9/9f/Soft_edge_road.jpg,['Forestry' 'Forests in Virginia'],"{'STEM', 'Nature'}"
-3674442,14626163,Soyuz TMA-01M seen as it lands.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fe/Soyuz_TMA-01M_seen_as_it_lands.jpg,['Soyuz TMA-01M'],"{'Places', 'STEM', 'Nature'}"
-2422940,354771,Lake Toba location.png,https://upload.wikimedia.org/wikipedia/commons/7/79/Lake_Toba_location.png,"['Lake Toba' 'Locator maps of islands of Indonesia'
- 'Toba catastrophe theory']","{'Places', 'STEM', 'Nature'}"
-2149274,42557173,Horse-Drawn China Clay Wagon at the St Austell terminus of the Pentewan Railway.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0f/Horse-Drawn_China_Clay_Wagon_at_the_St_Austell_terminus_of_the_Pentewan_Railway.jpg,"['St Austell' 'Pentewan Railway'
- 'Horse-drawn wagons in the United Kingdom']","{'Technology & Engineering', 'Places', 'STEM'}"
-266448,5066783,Quekettia papillosa 7.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e2/Quekettia_papillosa_7.jpg,['Quekettia papillosa'],"{'Plants', 'STEM', 'Nature'}"
-2458146,15656065,Fire of 1795 (Gammel Strand).jpg,https://upload.wikimedia.org/wikipedia/commons/5/5c/Fire_of_1795_%28Gammel_Strand%29.jpg,"['Great Fire of Copenhagen 1795' 'Gammel Strand in art'
- 'Burning buildings in Denmark']","{'Society', 'Culture', 'History', 'STEM', 'Nature'}"
-89059,580626,Messier object 023.jpg,https://upload.wikimedia.org/wikipedia/commons/6/63/Messier_object_023.jpg,"['2MASS Atlas Image Gallery: The Messier Catalog (SMALL SIZE)'
- 'Messier 23']","{'STEM', 'Nature'}"
-373466,21034392,Dale Earnhardt - NASCAR Photography By Darryl Moran.jpg,https://upload.wikimedia.org/wikipedia/commons/e/e7/Dale_Earnhardt_-_NASCAR_Photography_By_Darryl_Moran.jpg,['Dale Earnhardt' 'Phoenix International Raceway'],"{'People', 'Society'}"
-1682996,18046244,Klaus Härö.jpg,https://upload.wikimedia.org/wikipedia/commons/7/7a/Klaus_H%C3%A4r%C3%B6.jpg,"['Film directors from Finland' 'Men of Finland' '2010 in Helsinki'
- 'People of Finland in 2010' 'Klaus Härö'
- 'Finland photographs taken on 2010-02-18']","{'People', 'Society'}"
-1704905,63740160,Musical band.jpg,https://upload.wikimedia.org/wikipedia/commons/4/45/Musical_band.jpg,"['Musicians from Rwanda' 'Military people of Rwanda'
- 'Military bands of Rwanda']","{'Society', 'Culture', 'People', 'Music'}"
-1048434,85951053,Villarroya Vilalta.jpg,https://upload.wikimedia.org/wikipedia/commons/1/13/Villarroya_Vilalta.jpg,['Generals of Spain' 'Miguel Ángel Villarroya Vilalta'],"{'People', 'Society'}"
-3607207,6037443,Gherman Solovetski.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dc/Gherman_Solovetski.jpg,"['18th-century icons of Russia' 'Icons of saints - H' 'Icons in Solovki'
- 'Gherman of Solovki' 'Icons of saints with Mandylion on the top']","{'People', 'Society'}"
-3289212,25219085,דורון ספיר.JPG,https://upload.wikimedia.org/wikipedia/commons/9/93/%D7%93%D7%95%D7%A8%D7%95%D7%9F_%D7%A1%D7%A4%D7%99%D7%A8.JPG,"['People of Tel Aviv-Yafo' 'Environmentalists from Israel'
- 'Chief executive officers from Israel']","{'Society', 'People', 'STEM', 'Nature'}"
-2351253,29740134,Slide28ior.JPG,https://upload.wikimedia.org/wikipedia/commons/1/17/Slide28ior.JPG,['Human dissection'],"{'People', 'Society'}"
-1503385,16038368,"Ecuadorian dress, Carnival del Pueblo 2010, London.jpg",https://upload.wikimedia.org/wikipedia/commons/f/fb/Ecuadorian_dress%2C_Carnival_del_Pueblo_2010%2C_London.jpg,"['Culture of Ecuador' 'Festivals in London' 'Walworth Road, London'
- 'Events in the London Borough of Southwark'
- 'People in the London Borough of Southwark']","{'Society', 'Events', 'People', 'Places'}"
-1693717,31520196,A Small Town Idol (1921) - 4.jpg,https://upload.wikimedia.org/wikipedia/commons/6/6a/A_Small_Town_Idol_%281921%29_-_4.jpg,['A Small Town Idol' 'Ben Turpin' 'Marie Prevost'],"{'Culture', 'People', 'Society'}"
-450539,4336030,Charles W. Woodworth reading.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d1/Charles_W._Woodworth_reading.jpg,"['Charles W. Woodworth' 'People sitting at tables in the United States'
- 'Reading men' 'Sitting men' 'Black and white portrait photographs of men']","{'People', 'Society'}"
-1616294,65625194,American Progress mural 01.jpg,https://upload.wikimedia.org/wikipedia/commons/c/ca/American_Progress_mural_01.jpg,"['20th-century allegorical paintings'
- 'Plaza lobby of 30 Rockefeller Plaza'
- 'Allegorical paintings in the United States' 'Art at Rockefeller Center'
- 'Murals in New York City']","{'Art', 'Culture', 'Places'}"
-2608314,3696616,"ACSIE010 - The Obelisk now in Central Park, New York, as it Stood in Alexandria, Egypt.jpg",https://upload.wikimedia.org/wikipedia/commons/2/2e/ACSIE010_-_The_Obelisk_now_in_Central_Park%2C_New_York%2C_as_it_Stood_in_Alexandria%2C_Egypt.jpg,"[""Cleopatra's Needles in Alexandria"" 'A Confederate Soldier in Egypt'
- 'Illustrations of ancient Egyptian art in 1884']","{'Society', 'People', 'Culture', 'Monuments & Memorials', 'Places'}"
-993583,11574227,Balinovahouse.jpg,https://upload.wikimedia.org/wikipedia/commons/2/27/Balinovahouse.jpg,['Balinova House'],{'Culture'}
-1131113,7569705,Central Mine Methodist Church Central MI 2009.jpg,https://upload.wikimedia.org/wikipedia/commons/d/df/Central_Mine_Methodist_Church_Central_MI_2009.jpg,"['Wooden churches in Michigan' 'Bell towers in Michigan'
+ 'Fluorescence microscopic images with mitochondria specific stains']","{'Nature', 'STEM'}"
+281,60109421,Fertagus.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fb/Fertagus.jpg,"['Logos of rail transport companies' 'Fertagus'
+ 'Logos of companies associated with transport in Portugal']","{'Transportation', 'Logos & Symbols', 'Society'}"
+282,22588364,Constantine arch datation en.svg,https://upload.wikimedia.org/wikipedia/commons/8/82/Constantine_arch_datation_en.svg,"['Arch of Constantine' 'Arch of Constantine - Graphics and maps'
+ 'Spolia in Rome']","{'Culture', 'History', 'STEM', 'Technology & Engineering'}"
+283,21036243,Gradient 1-form.svg,https://upload.wikimedia.org/wikipedia/commons/0/04/Gradient_1-form.svg,"['Differential geometry' 'Gradient fields' 'SVG geometry'
+ 'Dual vector spaces']","{'Culture', 'Mathematics', 'Places', 'Society', 'STEM'}"
+284,7569705,Central Mine Methodist Church Central MI 2009.jpg,https://upload.wikimedia.org/wikipedia/commons/d/df/Central_Mine_Methodist_Church_Central_MI_2009.jpg,"['Wooden churches in Michigan' 'Bell towers in Michigan'
  'Buildings of religious function on the National Register of Historic Places in Michigan'
  'National Register of Historic Places in Keweenaw County, Michigan'
  'Central Mine Historic District'
@@ -522,51 +529,47 @@
  'Methodist churches in Michigan'
  'Wooden buildings in Keweenaw County, Michigan'
  'Churches in Keweenaw County, Michigan']","{'Culture', 'Places', 'History'}"
-3242014,50653733,Mid Devon - Hillersdon House & Scenery (geograph 3911873).jpg,https://upload.wikimedia.org/wikipedia/commons/1/1e/Mid_Devon_-_Hillersdon_House_%26_Scenery_%28geograph_3911873%29.jpg,"['Hillersdon House, Cullompton']","{'Culture', 'History', 'Society'}"
-3107774,7789263,PikiWiki Israel 4427 barons farm in mazkeret batya.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d5/PikiWiki_Israel_4427_barons_farm_in_mazkeret_batya.jpg,['Mazkeret Batya'],"{'Culture', 'History'}"
-988008,14012267,"St Davids' church, Trostrey - geograph.org.uk - 1282666.jpg",https://upload.wikimedia.org/wikipedia/commons/7/7d/St_Davids%27_church%2C_Trostrey_-_geograph.org.uk_-_1282666.jpg,"['April 2009 in Monmouthshire' 'Bell gables in Wales'
- 'Church porches in Wales' 'Churchyard crosses in Wales'
- 'Grade II listed buildings in Monmouthshire'
- ""St David's Church, Trostrey"" 'Stone crosses in Wales'
- 'Images by Philip Halling'
- 'United Kingdom photographs taken on 2009-04-26']","{'Culture', 'Places', 'STEM', 'History', 'Nature'}"
-2028821,22588364,Constantine arch datation en.svg,https://upload.wikimedia.org/wikipedia/commons/8/82/Constantine_arch_datation_en.svg,"['Arch of Constantine' 'Arch of Constantine - Graphics and maps'
- 'Spolia in Rome']","{'Culture', 'Technology & Engineering', 'History', 'STEM'}"
-39990,20853818,Abrazo del Estrecho B&N.jpg,https://upload.wikimedia.org/wikipedia/commons/5/52/Abrazo_del_Estrecho_B%26N.jpg,"['Federico Errázuriz Echaurren' 'Julio Argentino Roca' 'Jorge Montt'
- 'Abrazo del Estrecho' 'Photographs of the Beagle conflict'
- ""Chilean cruiser O'Higgins (1897)"" 'Amancio Alcorta']","{'Society', 'Culture', 'People', 'History', 'Politics'}"
-1074302,18077719,Dorian Goldfeld.jpg,https://upload.wikimedia.org/wikipedia/commons/b/ba/Dorian_Goldfeld.jpg,['Dorian M. Goldfeld' 'Pictures from Oberwolfach Photo Collection'],"{'Culture', 'Society'}"
-71525,19914023,Pelorus River from Pelorus Bridge.jpg,https://upload.wikimedia.org/wikipedia/commons/5/51/Pelorus_River_from_Pelorus_Bridge.jpg,['Pelorus River' 'Pelorus Bridge'],{'Places'}
-3525584,2971889,Camden County New Jersey Incorporated and Unincorporated areas Pine Valley Highlighted.svg,https://upload.wikimedia.org/wikipedia/commons/2/20/Camden_County_New_Jersey_Incorporated_and_Unincorporated_areas_Pine_Valley_Highlighted.svg,"['Locator maps of populated places in Camden County, New Jersey'
- 'Pine Valley, New Jersey']",{'Places'}
-2845406,33384615,Cologne Germany Flora-Köln-00.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cd/Cologne_Germany_Flora-K%C3%B6ln-00.jpg,"['Flora Festhaus' 'Featured pictures of buildings'
- 'Featured pictures of Cologne' 'Quality images of buildings in Cologne'
- '2014 photographs of Cologne'
- 'Quality images of cultural heritage monuments in Cologne'
- 'Germany photographs taken on 2014-06-14']",{'Places'}
-1795423,6641263,Dampierre production.PNG,https://upload.wikimedia.org/wikipedia/commons/8/85/Dampierre_production.PNG,['Electricity graphs' 'Dampierre nuclear power plant'],"{'Diagrams', 'Places', 'STEM', 'Society'}"
-1019309,12424009,Icefields Parkway-01.jpg,https://upload.wikimedia.org/wikipedia/commons/d/d2/Icefields_Parkway-01.jpg,['Icefields Parkway'],"{'Places', 'Society'}"
-3397045,53327464,Main Road Sungai Pinang 2 - panoramio.jpg,https://upload.wikimedia.org/wikipedia/commons/0/0a/Main_Road_Sungai_Pinang_2_-_panoramio.jpg,"['Streets in George Town, Penang']",{'Places'}
-1543152,1062091,Flag of the Ladakh Nationalist Movement.svg,https://upload.wikimedia.org/wikipedia/commons/5/5e/Flag_of_the_Ladakh_Nationalist_Movement.svg,"['SVG flags of Pakistan' 'SVG flags of subdivisions of India'
- 'Culture of Ladakh' 'Flags of Ladakh (union territory)']","{'Culture', 'Places', 'Maps & Flags'}"
-1293646,36623046,Kathiawar map.jpg,https://upload.wikimedia.org/wikipedia/commons/4/4e/Kathiawar_map.jpg,['Gazetteer of the Bombay Presidency (1896)' 'Saurashtra'],"{'Culture', 'Places'}"
-2901743,9250917,Avon Water at Millheugh Bridge - geograph.org.uk - 165433.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a4/Avon_Water_at_Millheugh_Bridge_-_geograph.org.uk_-_165433.jpg,"['Images by Iain Thompson' 'Millheugh Bridge'
- 'United Kingdom photographs taken on 2006-05-06']",{'Places'}
-820349,47230951,Chapel of the Immaculate Conception (University of Dayton).JPG,https://upload.wikimedia.org/wikipedia/commons/3/3a/Chapel_of_the_Immaculate_Conception_%28University_of_Dayton%29.JPG,['Immaculate Conception Chapel (University of Dayton)'],"{'Culture', 'Places'}"
-3149568,9892789,Steve Saint.jpg,https://upload.wikimedia.org/wikipedia/commons/0/01/Steve_Saint.jpg,"['Steve Saint' '1951 births' 'Christians from the United States'
- 'Aviators from the United States' 'Christianity in Ecuador'
- '20th-century people of Quito' 'People of South America'
- 'Christian missionaries' 'History of Ecuador'
- 'People of Wheaton, Illinois']","{'Society', 'Culture', 'People'}"
-1214410,10536823,Java Transportation Network id.svg,https://upload.wikimedia.org/wikipedia/commons/a/ab/Java_Transportation_Network_id.svg,"['Transport in Java' 'SVG maps of Java' 'Road maps of Indonesia'
- 'Rail transport maps of Indonesia']","{'Maps & Flags', 'Society', 'Places', 'Transportation'}"
-2443523,6154295,MarkusHowell.jpg,https://upload.wikimedia.org/wikipedia/commons/4/4e/MarkusHowell.jpg,"['Calgary Stampeders players' '2007 Calgary Stampeders season'
- 'Markus Howell']",{'Society'}
-2752233,64123109,Jo'ara (1937).jpg,https://upload.wikimedia.org/wikipedia/commons/c/c6/Jo%27ara_%281937%29.jpg,"[""Joa'ra""]","{'Places', 'STEM', 'Society', 'Nature'}"
-2865856,14873451,DirectorAdoor.jpg,https://upload.wikimedia.org/wikipedia/commons/5/53/DirectorAdoor.jpg,['Adoor Gopalakrishnan'],"{'People', 'Society'}"
-351096,3726571,Ancestor worship004.jpg,https://upload.wikimedia.org/wikipedia/commons/7/73/Ancestor_worship004.jpg,"['Household shrines' 'Buddhism in Malaysia' 'Buddhist offerings'
- 'Food offerings' 'The Three Sages of Western' 'Buddhist home altars']","{'Culture', 'Society'}"
-2294936,59052498,Trey Hollingsworth official photo.jpg,https://upload.wikimedia.org/wikipedia/commons/7/73/Trey_Hollingsworth_official_photo.jpg,['Trey Hollingsworth'],{'Society'}
-1939916,32955273,Olmec Butterfly tapete by Isaac Vásquez García.jpg,https://upload.wikimedia.org/wikipedia/commons/8/89/Olmec_Butterfly_tapete_by_Isaac_V%C3%A1squez_Garc%C3%ADa.jpg,['Images donated by the Friends of Oaxacan Folk Art' 'Isaac Vasquez'],"{'Society', 'Art', 'Culture', 'People'}"
-964982,69905569,Order of the Knights of Rizal NHCP Historical Marker.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a8/Order_of_the_Knights_of_Rizal_NHCP_Historical_Marker.jpg,['Order of the Knights of Rizal historical marker'],"{'People', 'Society'}"
-426297,83641489,Whitby through the Lobster Pots.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f3/Whitby_through_the_Lobster_Pots.jpg,"['Whitby, North Yorkshire' 'Fishing in North Yorkshire' 'Lobster traps']","{'Society', 'Culture', 'Sports', 'Places'}"
+285,1243668,Hyderabad state 1909.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dd/Hyderabad_state_1909.jpg,"['The Imperial Gazetteer of India (new edition 1909)'
+ 'Maps of Hyderabad State' '1909 maps of India' '1909 in Hyderabad, India']","{'Maps & Flags', 'Culture', 'Places'}"
+286,28637662,W. Otway Cannell 1.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cd/W._Otway_Cannell_1.jpg,"['Book illustrations of fairies' 'Medieval knights on horseback'
+ 'Arthurian characters' 'Arthurian legend'
+ 'Legends and Romances of Brittany (1917)']","{'Culture', 'People', 'Literature', 'Society'}"
+287,31164855,Three Common Methods of Synthesis of Graft Polymers.png,https://upload.wikimedia.org/wikipedia/commons/e/ea/Three_Common_Methods_of_Synthesis_of_Graft_Polymers.png,['Branched polymers'],"{'Chemistry', 'STEM'}"
+288,77250236,"2019-02-15 03 33 27 A bowl of Wheaties in the Franklin Farm section of Oak Hill, Fairfax County, Virginia.jpg",https://upload.wikimedia.org/wikipedia/commons/4/4f/2019-02-15_03_33_27_A_bowl_of_Wheaties_in_the_Franklin_Farm_section_of_Oak_Hill%2C_Fairfax_County%2C_Virginia.jpg,"['Food in Franklin Farm, Virginia' 'Wheaties']","{'Culture', 'Food'}"
+289,80617100,Galneryus logo.svg,https://upload.wikimedia.org/wikipedia/commons/9/96/Galneryus_logo.svg,"['Galneryus' 'SVG logos associated with music'
+ 'Logos of musical groups from Japan'
+ 'Logos of heavy metal musical groups' 'SVG logos of Japan']","{'Culture', 'Music', 'Logos & Symbols', 'Society'}"
+290,24913879,Alaska mountain range.jpg,https://upload.wikimedia.org/wikipedia/commons/4/47/Alaska_mountain_range.jpg,"['Snowy landscapes in Alaska' 'Mountain ranges of Alaska'
+ 'U-shaped valleys in Alaska']","{'Landscapes', 'Places'}"
+291,42956501,Treatment of knee with Oudin coil.jpg,https://upload.wikimedia.org/wikipedia/commons/f/f7/Treatment_of_knee_with_Oudin_coil.jpg,['Oudin coils' 'Electrotherapy'],"{'Medicine & Health', 'Culture', 'Society', 'STEM'}"
+292,206734,Karl-Schwarzschild-Observatorium.jpg,https://upload.wikimedia.org/wikipedia/commons/d/dc/Karl-Schwarzschild-Observatorium.jpg,['Thüringer Landessternwarte Tautenburg'],"{'Nature', 'Space', 'STEM'}"
+293,35543209,"Anomalocaris canadensis grasping claw, Burgess Shale.jpg",https://upload.wikimedia.org/wikipedia/commons/1/1b/Anomalocaris_canadensis_grasping_claw%2C_Burgess_Shale.jpg,"['Anomalocaris fossils' 'Radiodonta appendages'
+ 'Fossils in the Peabody Museum of Natural History'
+ 'Fossils of the Burgess Shale' 'Museum collections from British Columbia'
+ 'Precambrian geology of Canada' 'Fossils from British Columbia']","{'Culture', 'Geology', 'Nature', 'Fossils', 'History', 'STEM'}"
+294,9922858,1910 CityCouncil office Boston.png,https://upload.wikimedia.org/wikipedia/commons/a/ab/1910_CityCouncil_office_Boston.png,"['Old City Hall, Boston (interior)' 'Boston City Council']","{'Politics', 'Society', 'Events'}"
+295,9497186,Huntsmen retrieve racehorse - geograph.org.uk - 733727.jpg,https://upload.wikimedia.org/wikipedia/commons/9/98/Huntsmen_retrieve_racehorse_-_geograph.org.uk_-_733727.jpg,"['Whittington, Lancashire' 'Horses of Lancashire'
+ 'United Kingdom photographs taken on 2008-03-22']","{'Nature', 'STEM', 'Society', 'Places'}"
+296,47458858,Stadion Moroni.JPG,https://upload.wikimedia.org/wikipedia/commons/1/11/Stadion_Moroni.JPG,"['Association football venues in the Comoros' 'Moroni'
+ '2008 in the Comoros']","{'Culture', 'Society', 'Sports', 'Places'}"
+297,35129019,DMAICWebdingsI.png,https://upload.wikimedia.org/wikipedia/commons/8/88/DMAICWebdingsI.png,['DMAIC'],"{'Society', 'Diagrams', 'STEM'}"
+298,47230951,Chapel of the Immaculate Conception (University of Dayton).JPG,https://upload.wikimedia.org/wikipedia/commons/3/3a/Chapel_of_the_Immaculate_Conception_%28University_of_Dayton%29.JPG,['Immaculate Conception Chapel (University of Dayton)'],"{'Culture', 'Places'}"
+299,42341723,2015 0804 Zwetschkenkuchen Gaislachalm Sölden.jpg,https://upload.wikimedia.org/wikipedia/commons/c/cc/2015_0804_Zwetschkenkuchen_Gaislachalm_S%C3%B6lden.jpg,"['Plum cakes' 'Cakes of Austria' 'Austria photographs taken on 2015-08-04'
+ 'Food in Sölden' 'Alpengasthof Gaislachalm']","{'Culture', 'Food'}"
+300,11462898,Phyllidiopsis papilligera (Black-spotted Nudibranch - North Haiti).jpg,https://upload.wikimedia.org/wikipedia/commons/1/1e/Phyllidiopsis_papilligera_%28Black-spotted_Nudibranch_-_North_Haiti%29.jpg,"['Marine animals of Haiti' 'Ceratophyllidia papilligera'
+ 'Featured pictures of molluscs' 'Featured pictures of Haiti'
+ 'Gastropoda of Haiti' 'Featured pictures taken underwater']","{'Animals', 'Nature', 'STEM'}"
+301,1700417,Scolopendra fg02.JPG,https://upload.wikimedia.org/wikipedia/commons/0/09/Scolopendra_fg02.JPG,['Scolopendra cingulata' 'Chilopoda heads'],"{'Nature', 'Animals', 'STEM'}"
+302,12342401,MuhuruBay.jpg,https://upload.wikimedia.org/wikipedia/commons/1/1b/MuhuruBay.jpg,['Lake Victoria' 'Nyanza Province' 'Donkey transport' 'Transport in Kenya'],"{'Transportation', 'Society', 'Places'}"
+303,10522560,CSFB logo.png,https://upload.wikimedia.org/wikipedia/commons/7/78/CSFB_logo.png,"['Credit Suisse' 'Companies based in New York City' 'Financial economics'
+ 'Logos of banks']","{'Logos & Symbols', 'Society'}"
+304,14626163,Soyuz TMA-01M seen as it lands.jpg,https://upload.wikimedia.org/wikipedia/commons/f/fe/Soyuz_TMA-01M_seen_as_it_lands.jpg,['Soyuz TMA-01M'],"{'Nature', 'STEM', 'Places'}"
+305,33228532,Nao Lake at the Mistik Creek outlet.jpg,https://upload.wikimedia.org/wikipedia/commons/4/41/Nao_Lake_at_the_Mistik_Creek_outlet.jpg,['Nao Lake' 'Canadian Shield'],"{'Geology', 'STEM'}"
+306,76721249,2019 01 Khao soi noi songkhrueang.jpg,https://upload.wikimedia.org/wikipedia/commons/a/a6/2019_01_Khao_soi_noi_songkhrueang.jpg,['Khao soi noi songkhrueang' 'Peanut-based food'],"{'Culture', 'Food'}"
+307,52490475,Optimus Sound Level Meter.jpg,https://upload.wikimedia.org/wikipedia/commons/0/09/Optimus_Sound_Level_Meter.jpg,['Sound level meters'],"{'Technology & Engineering', 'STEM'}"
+308,11611720,Nobiling - SC Germania (SP).jpg,https://upload.wikimedia.org/wikipedia/commons/a/a7/Nobiling_-_SC_Germania_%28SP%29.jpg,"['SC Germânia' 'Group photographs of association football teams in Brazil'
+ 'Group photographs of association football clubs in 1900'
+ 'Black and white photographs of groups' 'Historical sports clothing'
+ 'Black and white photographs of Brazil'
+ 'Black and white photographs in the 1900s']","{'Society', 'Sports'}"
+309,17217001,Jean Tremblay01 cropped.jpg,https://upload.wikimedia.org/wikipedia/commons/7/74/Jean_Tremblay01_cropped.jpg,['Jean Tremblay'],"{'Politics', 'People', 'Society'}"
