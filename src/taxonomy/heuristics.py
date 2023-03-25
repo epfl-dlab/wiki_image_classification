@@ -125,11 +125,13 @@ class Heuristics:
                 self.heuristics.append(self._depth_check)
 
             elif heuristic.startswith("embedding"):
-                threshold = float("0." + heuristic.split("embedding")[1])
+                threshold = heuristic.split("embedding")[1]
+                threshold = None if len(threshold) == 0 else float("0." + threshold)
                 self.heuristics.append(
                     partial(self._embedding_similarity, threshold=threshold)
                 )
-
+            elif heuristic == "lookahead":
+                self.heuristics.append(self._lookahead)
             else:
                 raise ValueError(f"Invalid heuristic {heuristic}")
 
@@ -171,6 +173,8 @@ class Heuristics:
             only if their depth is lower than the current category
             (proxy for is_ancestor check, too slow to be used).
             When jumping, we allow heads composed of multiple words.
+        multiple_words : bool
+            If true, allow heads composed of multiple words.
         debug : bool
             If true, print debug information.
 
@@ -295,7 +299,7 @@ class Heuristics:
         category : str
             Category to be processed.
         threshold : float
-            Threshold for the cosine similarity.
+            Threshold for the cosine similarity. If None, then return always the most similar parent.
         debug : bool
             If true, print debug information.
 
@@ -306,33 +310,102 @@ class Heuristics:
         """
         embedding = self.get_embedding(category)
         next_queries = []
+        distances = []
         for parent in self.G.neighbors(category):
-            similarity = spatial.distance.cosine(embedding, self.get_embedding(parent))
-            if similarity < threshold:
+            distance = spatial.distance.cosine(embedding, self.get_embedding(parent))
+            if threshold is not None:
+                if distance < threshold:
+                    next_queries.append(parent)
+                    debug and logger.debug(
+                        "[ES"
+                        + str(threshold)[2:]
+                        + "] ["
+                        + category
+                        + "] Found "
+                        + parent
+                        + " with distance "
+                        + str(distance)
+                    )
+                else:
+                    debug and logger.debug(
+                        "[ES"
+                        + str(threshold)[2:]
+                        + "] ["
+                        + category
+                        + "] Skipping parent "
+                        + parent
+                        + " (distance "
+                        + str(distance)
+                        + ")"
+                    )
+            else:
+                distances.append((distance, parent))
+                debug and logger.debug(
+                    "[ES] ["
+                    + category
+                    + "] Appending "
+                    + parent
+                    + " with distance "
+                    + str(distance)
+                )
+
+        if threshold is None:
+            distances.sort()
+            next_queries.append(distances[0][1])
+
+            debug and logger.debug(
+                "[ES] ["
+                + category
+                + "] Most similar is "
+                + distances[0][1]
+                + " with distance "
+                + str(distances[0][0])
+            )
+
+        return next_queries
+
+    def _lookahead(self, category, debug=False):
+        """
+        Lookahead heuristic: parent categories are queried if
+        they are a top-level category, i.e. they are directly
+        part of the taxonomy mapping.
+
+        Parameters
+        ----------
+        category : str
+            Category to be processed.
+        debug : bool
+            If true, print debug information.
+
+        Returns
+        ----------
+        list of str
+            List of next categories to query.
+        """
+        next_queries = []
+
+        top_level_categories = np.unique(
+            [
+                category
+                for categories in self.mapping.values()
+                for category in categories
+            ]
+        )
+
+        for parent in self.G.neighbors(category):
+            if parent in top_level_categories:
                 next_queries.append(parent)
                 debug and logger.debug(
-                    "[ES"
-                    + str(threshold)[2:]
-                    + "] ["
-                    + category
-                    + "] Found "
-                    + parent
-                    + " with similarity "
-                    + str(similarity)
+                    "[LA] [" + category + "] Found top-level parent " + parent
                 )
             else:
                 debug and logger.debug(
-                    "[ES"
-                    + str(threshold)[2:]
-                    + "] ["
+                    "[LA] ["
                     + category
                     + "] Skipping parent "
                     + parent
-                    + " (similarity "
-                    + str(similarity)
-                    + ")"
+                    + " (not top-level)"
                 )
-
         return next_queries
 
     def query_category(self, category, debug=False):
