@@ -40,6 +40,7 @@ def iterativeSampling(
     random_state=42,
     verbose=1,
     weighted=False,
+    classes=None,
 ):
     """
     Iterative sampling of images, to construct a balanced dataset.
@@ -95,8 +96,11 @@ def iterativeSampling(
     count_per_class = count_per_class.sort_values()
     count_per_class = count_per_class[count_per_class >= min_images]
     n_classes = len(count_per_class)
-    ifiles = ifiles[count_per_class.index]
-
+    if classes is None:
+        allowed_classes = count_per_class.index
+    else:
+        allowed_classes = list(set(classes) & set(count_per_class.index))
+    ifiles = ifiles[allowed_classes]
     balanced_count_per_class = pd.Series({ind: 0 for ind in count_per_class.index})
 
     for label, _ in tqdm(count_per_class.iteritems(), total=n_classes):
@@ -153,7 +157,9 @@ def uniform_sampling(files, n, seed):
     return files_sample
 
 
-def stratified_sampling(files, n, seed, taxonomy_version, heuristics_version):
+def stratified_sampling(
+    files, n, seed, taxonomy_version, heuristics_version, classes=None
+):
     """
     Stratified sampling of images, to construct a balanced dataset.
     """
@@ -182,6 +188,7 @@ def stratified_sampling(files, n, seed, taxonomy_version, heuristics_version):
         random_state=seed,
         verbose=1,
         weighted=False,
+        classes=classes,
     )
     return files_sample
 
@@ -301,6 +308,7 @@ if __name__ == "__main__":
     ## MTURK STUDY
     mode = "balanced"
     saving = "mturk"
+    classes = None
     ############################################################
 
     printt("Reading files...")
@@ -311,7 +319,7 @@ if __name__ == "__main__":
         files_sample = uniform_sampling(files, n, seed)
         name = f"{n}_{seed}_uniform_sample"
     elif mode == "balanced":
-        files_sample = stratified_sampling(files, n, seed, version, how)
+        files_sample = stratified_sampling(files, n, seed, version, how, classes)
         name = f"{n}_{seed}_{version}_{how}_balanced_sample"
     elif mode == "probabilistic":
         files.url = files.url.apply(
