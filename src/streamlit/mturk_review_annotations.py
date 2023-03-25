@@ -38,8 +38,9 @@ def showFile():
     st.markdown("")
     st.markdown(f"HIT {file.HITId}")
     for i in range(st.session_state.n_assignments + 1):
+        emoji = "✔" if file[f"AssignmentStatus{i}"] == "Approved" else "❓"
         markdown_str = (
-            f"Labels {file[f'WorkerId{i}']}: ["
+            f"{emoji} Labels {file[f'WorkerId{i}']}: ["
             + ", ".join(
                 [
                     f'<span style="color:{["red", "green"][int(label in file.labels_enriched_majority)]}">{label}</span>'

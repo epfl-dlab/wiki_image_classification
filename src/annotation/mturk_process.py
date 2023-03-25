@@ -21,7 +21,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     n = int(args.n) if args.n else 1000
     seed = int(args.seed) if args.seed else 42
-    pilot = True
+    pilot = False
 
     if pilot:
         name = f"{n}_{seed}_uniform_sample"
@@ -30,6 +30,11 @@ if __name__ == "__main__":
 
     files_sample = pd.read_csv(MTURK_PATH + name + "_plain.csv")
     annotated_files = pd.read_csv(MTURK_PATH + name + "_annotated.csv")
+
+    # Remove already rejected
+    annotated_files = annotated_files[
+        annotated_files.AssignmentStatus.isin(["Approved", "Submitted"])
+    ]
 
     taxonomy = Taxonomy()
     taxonomy.set_taxonomy(TAXONOMY_VERSION)
@@ -43,7 +48,14 @@ if __name__ == "__main__":
 
     def extract_labels(row):
         df = pd.DataFrame(
-            dtype=object, columns=["HITId", "WorkerId", "labels", "labels_enriched"]
+            dtype=object,
+            columns=[
+                "HITId",
+                "WorkerId",
+                "AssignmentStatus",
+                "labels",
+                "labels_enriched",
+            ],
         )
         for i in range(batch_size):
             labels = set()
@@ -71,6 +83,7 @@ if __name__ == "__main__":
             df.loc[row[f"Input.url{i}"]] = [
                 row["HITId"],
                 row["WorkerId"],
+                row["AssignmentStatus"],
                 labels,
                 labels_enriched,
             ]
@@ -84,14 +97,21 @@ if __name__ == "__main__":
         .groupby(["index", "HITId"])
         .apply(
             lambda x: pd.Series(
-                x[["WorkerId", "labels", "labels_enriched"]].values.reshape([-1])
+                x[
+                    ["WorkerId", "AssignmentStatus", "labels", "labels_enriched"]
+                ].values.reshape([-1])
             )
         )
     )
     labels.columns = [
         col
         for lis in [
-            [f"WorkerId{i}", f"labels{i}", f"labels_enriched{i}"]
+            [
+                f"WorkerId{i}",
+                f"AssignmentStatus{i}",
+                f"labels{i}",
+                f"labels_enriched{i}",
+            ]
             for i in range(n_assignments)
         ]
         for col in lis
@@ -109,6 +129,9 @@ if __name__ == "__main__":
             "WorkerId0",
             "WorkerId1",
             "WorkerId2",
+            "AssignmentStatus0",
+            "AssignmentStatus1",
+            "AssignmentStatus2",
             "labels0",
             "labels1",
             "labels2",
