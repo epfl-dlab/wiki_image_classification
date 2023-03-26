@@ -41,6 +41,7 @@ STREAMLIT_PATH = "./data/streamlit/"
 STREAMLIT_LOG_FILE = "streamlit_preparation.log"
 GTRUTH_PATH = "./data/grounded_truth/"
 MTURK_PATH = "./data/mturk/"
+EVALUATION_PATH = "./data/evaluation/"
 
 
 ### Versions (!!!)
