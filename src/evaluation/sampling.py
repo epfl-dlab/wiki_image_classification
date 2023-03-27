@@ -95,13 +95,14 @@ def iterativeSampling(
     count_per_class = ifiles.sum(axis=0)
     count_per_class = count_per_class.sort_values()
     count_per_class = count_per_class[count_per_class >= min_images]
-    n_classes = len(count_per_class)
     if classes is None:
         allowed_classes = count_per_class.index
     else:
         allowed_classes = list(set(classes) & set(count_per_class.index))
+    count_per_class = count_per_class[allowed_classes]
     ifiles = ifiles[allowed_classes]
-    balanced_count_per_class = pd.Series({ind: 0 for ind in count_per_class.index})
+    balanced_count_per_class = pd.Series({ind: 0 for ind in allowed_classes})
+    n_classes = len(count_per_class)
 
     for label, _ in tqdm(count_per_class.iteritems(), total=n_classes):
         n_remaining = images_per_class
@@ -308,7 +309,21 @@ if __name__ == "__main__":
     ## MTURK STUDY
     mode = "balanced"
     saving = "mturk"
-    classes = None
+    classes = [
+        "Politics",
+        "Literature",
+        "Belief",
+        "Medicine & Health",
+        "Mathematics",
+        "Space",
+        "Chemistry",
+        "Geology",
+        "Music",
+        "Sports",
+        "Food",
+        "Transportation",
+        "Fossils",
+    ]
     ############################################################
 
     printt("Reading files...")
