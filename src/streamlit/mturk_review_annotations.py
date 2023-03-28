@@ -79,7 +79,12 @@ def load_dataset():
 
 
 def next_review():
-    to_review = server_state[st.session_state.dataset].to_review
+    df = server_state[st.session_state.dataset]
+    to_review = (
+        (df.AssignmentStatus0 == "Submitted")
+        | (df.AssignmentStatus1 == "Submitted")
+        | (df.AssignmentStatus2 == "Submitted")
+    )
     to_review = np.where(to_review.values[st.session_state.counter + 1 :])[0]
     if to_review.size:
         st.session_state.counter += to_review[0] + 1
