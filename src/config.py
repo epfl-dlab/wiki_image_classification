@@ -45,7 +45,7 @@ EVALUATION_PATH = "./data/evaluation/"
 
 
 ### Versions (!!!)
-TAXONOMY_VERSION = "v1.3"
+TAXONOMY_VERSION = "v1.4"
 HEURISTICS_VERSION = "headJ+depth"
 ####################################
 

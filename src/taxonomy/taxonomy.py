@@ -334,6 +334,82 @@ class Taxonomy:
                 Label("Logos & Symbols", ["Logos"], self.hierarchical)
             )
 
+        elif version == "v1.4":
+            self.taxonomy = Label("All", [], self.hierarchical)
+
+            stem = Label("STEM", ["STEM"], self.hierarchical)
+
+            stem.add_children(
+                [
+                    Label("Diagrams", ["Diagrams"], self.hierarchical),
+                    Label("Mathematics", ["Mathematics"], self.hierarchical),
+                    Label("Chemistry", ["Chemistry"], self.hierarchical),
+                    Label(
+                        "Geology & Fossils", ["Geology", "Fossils"], self.hierarchical
+                    ),
+                    Label("Space", ["Astronomy"], self.hierarchical),
+                    Label(
+                        "Medicine & Health", ["Medicine", "Health"], self.hierarchical
+                    ),
+                    Label(
+                        "Technology & Engineering", ["Technology"], self.hierarchical
+                    ),
+                ]
+            )
+
+            nature = Label("Nature", ["Nature"], self.hierarchical)
+            nature.add_children(
+                [
+                    Label("Plants", ["Plantae"], self.hierarchical),
+                    Label("Animals", ["Animalia"], self.hierarchical),
+                ]
+            )
+            stem.add_child(nature)
+            self.taxonomy.add_child(stem)
+
+            places = Label("Places", ["Places"], self.hierarchical)
+            places.add_children(
+                [
+                    Label("Architecture", ["Architecture"], self.hierarchical),
+                    Label(
+                        "Monuments & Memorials",
+                        ["Monuments and memorials"],
+                        self.hierarchical,
+                    ),
+                    Label("Landscapes", ["Landscapes"], self.hierarchical),
+                    Label("Maps & Flags", ["Maps", "Flags"], self.hierarchical),
+                ]
+            )
+            self.taxonomy.add_child(places)
+
+            society = Label("Society", ["Society"], self.hierarchical)
+            society.add_children(
+                [
+                    Label("People", ["People", "Human births"], self.hierarchical),
+                    Label("Sports", ["Sports"], self.hierarchical),
+                    Label("Politics", ["Politics"], self.hierarchical),
+                    Label("Events", ["Events"], self.hierarchical),
+                    Label("Transportation", ["Transport"], self.hierarchical),
+                ]
+            )
+            self.taxonomy.add_child(society)
+
+            culture = Label("Culture", ["Culture"], self.hierarchical)
+            culture.add_children(
+                [
+                    Label("History", ["History"], self.hierarchical),
+                    Label("Art", ["Art"], self.hierarchical),
+                    Label("Music", ["Music"], self.hierarchical),
+                    Label("Literature", ["Literature"], self.hierarchical),
+                    Label("Food", ["Food"], self.hierarchical),
+                ]
+            )
+            self.taxonomy.add_child(culture)
+
+            self.taxonomy.add_child(
+                Label("Logos & Symbols", ["Logos"], self.hierarchical)
+            )
+
         else:
             raise ValueError("Invalid taxonomy version")
 

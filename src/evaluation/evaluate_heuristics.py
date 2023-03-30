@@ -10,6 +10,7 @@ import os
 import re
 import sys
 from ast import literal_eval
+from collections import Counter
 
 import numpy as np
 import pandas as pd
@@ -51,6 +52,23 @@ def load_annotations():
         {"labels_enriched_majority": "labels"}, axis=1
     )
     files_annotated.labels = files_annotated.labels.apply(literal_eval).apply(list)
+    files_annotated.drop_duplicates(subset=["id"])
+
+    ## Map taxonomy v1.3 to v1.4
+    files_annotated.labels = files_annotated.labels.apply(
+        lambda x: [
+            re.sub(r"Belief|Geology", "Geology & Fossils", label)
+            for label in x
+            if label != "Belief"
+        ]
+    )
+
+    print("\n\nLabel counts:")
+    counts = dict(Counter(files_annotated.labels.apply(list).sum()).most_common())
+    counts = pd.DataFrame.from_dict(counts, orient="index", columns=["count"])
+    counts = counts.sort_values("count", ascending=False)
+    print(counts)
+
     return files_annotated
 
 
