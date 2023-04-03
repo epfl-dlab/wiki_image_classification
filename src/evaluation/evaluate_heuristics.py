@@ -57,7 +57,9 @@ def load_annotations():
     ## Map taxonomy v1.3 to v1.4
     files_annotated.labels = files_annotated.labels.apply(
         lambda x: [
-            re.sub(r"Belief|Geology", "Geology & Fossils", label)
+            label
+            if (label != "Fossils" and label != "Geology")
+            else "Geology & Fossils"
             for label in x
             if label != "Belief"
         ]
@@ -117,3 +119,7 @@ def main():
     df_heuristics.columns = cols
 
     df_heuristics.to_csv(os.path.join(EVALUATION_PATH, "heuristics_evaluation.csv"))
+
+
+if __name__ == "__main__":
+    main()
