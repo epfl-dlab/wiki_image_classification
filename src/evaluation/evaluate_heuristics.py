@@ -5,12 +5,10 @@ selecting the best set of heuristics and tuning their hyperparameters.
 Usage:
     python evaluate_heuristics.py
 """
-import argparse
 import os
 import re
 import sys
-from ast import literal_eval
-from collections import Counter
+from itertools import permutations
 
 import numpy as np
 import pandas as pd
@@ -26,58 +24,55 @@ from src.taxonomy.heuristics import Heuristics
 from src.utilities import printt
 
 
-def load_annotations():
+def get_heuristics_list(max_n_heuristics=4):
     """
-    Loads the manually annotated images from MTurk.
+    Construct a list of all possible combinations of heuristics.
+
+    Parameters
+    ----------
+    max_n_heuristics : int
+        The maximum number of heuristics to use.
 
     Returns
     ----------
-    pd.DataFrame
-        The manually annotated images.
+    list
+        A list of all possible combinations of heuristics.
     """
-    files = pd.read_parquet(FILES_PATH)
-    files_annotated = []
-    for file in os.listdir(MTURK_PATH):
-        if file.endswith("aggregated.csv"):
-            df = pd.read_csv(os.path.join(MTURK_PATH, file))
-            files_annotated.append(df)
-    files_annotated = pd.concat(files_annotated)
-    files_annotated = files_annotated.merge(
-        files[["id", "categories"]], on=["id"], how="inner"
+
+    base_heuristics = ["head", "depth", "embedding", "look"]
+    heuristics_list = []
+
+    for i in range(1, max_n_heuristics + 1):
+        heuristics_list += list(permutations(base_heuristics, i))
+
+    heuristics_list = list(map(lambda x: "+".join(x), heuristics_list))
+
+    embeddings_thresholds = np.arange(10, 31, 5, dtype=int)
+    new_list = []
+    for heuristics in heuristics_list:
+        if "head" in heuristics:
+            new_list.append(heuristics.replace("head", "headJ"))
+    heuristics_list += new_list
+    new_list = []
+    for heuristics in heuristics_list:
+        if "embedding" in heuristics:
+            for threshold in embeddings_thresholds:
+                new_list.append(
+                    heuristics.replace("embedding", f"embedding{threshold}")
+                )
+    heuristics_list += new_list
+
+    # replace look with lookahead
+    heuristics_list = list(
+        map(lambda x: x.replace("look", "lookahead"), heuristics_list)
     )
-    files_annotated = files_annotated[
-        ["title", "id", "url", "categories", "labels_enriched_majority"]
-    ]
-    files_annotated = files_annotated.rename(
-        {"labels_enriched_majority": "labels"}, axis=1
-    )
-    files_annotated.labels = files_annotated.labels.apply(literal_eval).apply(list)
-    files_annotated.drop_duplicates(subset=["id"])
 
-    ## Map taxonomy v1.3 to v1.4
-    files_annotated.labels = files_annotated.labels.apply(
-        lambda x: [
-            label
-            if (label != "Fossils" and label != "Geology")
-            else "Geology & Fossils"
-            for label in x
-            if label != "Belief"
-        ]
-    )
-
-    print("\n\nLabel counts:")
-    counts = dict(Counter(files_annotated.labels.apply(list).sum()).most_common())
-    counts = pd.DataFrame.from_dict(counts, orient="index", columns=["count"])
-    counts = counts.sort_values("count", ascending=False)
-    print(counts)
-
-    return files_annotated
+    return heuristics_list
 
 
-def main():
+def evaluate_heuristics():
     printt("Loading files...")
-    files_annotated = load_annotations()
-
+    files_annotated = pd.read_csv(EVALUATION_PATH + "annotated_validation.csv")
     heuristics = Heuristics()
     printt("Loading graph...")
     heuristics.load_graph(EH_GRAPH_PATH)
@@ -87,7 +82,8 @@ def main():
     encoder = MultiLabelBinarizer()
     labels_true = encoder.fit_transform(files_annotated.labels)
 
-    heuristics_list = ["embedding15+headJ", "head+lookahead+depth"]
+    # Evaluate heuristics
+    heuristics_list = get_heuristics_list(max_n_heuristics=4)
     df_list = []
     for heuristics_version in tqdm(heuristics_list):
         heuristics.set_heuristics(heuristics_version=heuristics_version)
@@ -122,4 +118,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    evaluate_heuristics()
