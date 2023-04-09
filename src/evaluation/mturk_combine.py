@@ -64,7 +64,7 @@ def load_annotations():
             if (label != "Fossils" and label != "Geology")
             else "Geology & Fossils"
             for label in x
-            if label != "Belief"
+            if (label != "Belief" and label != "Politics")
         ]
     )
 
@@ -74,6 +74,7 @@ def load_annotations():
 
 
 if __name__ == "__main__":
+    printt("Loading files...")
     files_annotated = load_annotations()
 
     ## Split into validation (for the heuristics) and test set
@@ -94,9 +95,11 @@ if __name__ == "__main__":
     print_counts(files_annotated_test)
 
     ## Save files
-    files_annotated_val.to_csv(
-        os.path.join(EVALUATION_PATH, "annotated_validation.csv"), index=False
+    printt("Saving files...")
+    files_annotated_val.to_parquet(
+        os.path.join(EVALUATION_PATH, "annotated_validation.parquet")
     )
-    files_annotated_test.to_csv(
-        os.path.join(EVALUATION_PATH, "annotated_test.csv"), index=False
+    files_annotated_test.to_parquet(
+        os.path.join(EVALUATION_PATH, "annotated_test.parquet")
     )
+    printt("Done.")

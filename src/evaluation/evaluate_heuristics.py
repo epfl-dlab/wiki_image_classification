@@ -8,6 +8,7 @@ Usage:
 import os
 import re
 import sys
+from ast import literal_eval
 from itertools import permutations
 
 import numpy as np
@@ -72,7 +73,7 @@ def get_heuristics_list(max_n_heuristics=4):
 
 def evaluate_heuristics():
     printt("Loading files...")
-    files_annotated = pd.read_csv(EVALUATION_PATH + "annotated_validation.csv")
+    files_annotated = pd.read_parquet(EVALUATION_PATH + "annotated_validation.parquet")
     heuristics = Heuristics()
     printt("Loading graph...")
     heuristics.load_graph(EH_GRAPH_PATH)
@@ -83,6 +84,7 @@ def evaluate_heuristics():
     labels_true = encoder.fit_transform(files_annotated.labels)
 
     # Evaluate heuristics
+    printt("Evaluating heuristics...")
     heuristics_list = get_heuristics_list(max_n_heuristics=4)
     df_list = []
     for heuristics_version in tqdm(heuristics_list):
@@ -96,7 +98,11 @@ def evaluate_heuristics():
         labels_pred = labels_pred.apply(list)
         labels_pred = encoder.transform(labels_pred)
         report = classification_report(
-            labels_true, labels_pred, target_names=encoder.classes_, output_dict=True
+            labels_true,
+            labels_pred,
+            target_names=encoder.classes_,
+            output_dict=True,
+            zero_division=0,
         )
 
         df = pd.DataFrame(report).T
@@ -114,7 +120,9 @@ def evaluate_heuristics():
     ]
     df_heuristics.columns = cols
 
+    printt("Saving results...")
     df_heuristics.to_csv(os.path.join(EVALUATION_PATH, "heuristics_evaluation.csv"))
+    printt("Done.")
 
 
 if __name__ == "__main__":
