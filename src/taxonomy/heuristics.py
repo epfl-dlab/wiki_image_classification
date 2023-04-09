@@ -349,7 +349,7 @@ class Heuristics:
                     + str(distance)
                 )
 
-        if threshold is None:
+        if threshold is None and distances:
             distances.sort()
             next_queries.append(distances[0][1])
 
