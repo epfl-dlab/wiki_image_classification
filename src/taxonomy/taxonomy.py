@@ -387,7 +387,7 @@ class Taxonomy:
                 [
                     Label("People", ["People", "Human births"], self.hierarchical),
                     Label("Sports", ["Sports"], self.hierarchical),
-                    Label("Politics", ["Politics"], self.hierarchical),
+                    # Label("Politics", ["Politics"], self.hierarchical),
                     Label("Events", ["Events"], self.hierarchical),
                     Label("Transportation", ["Transport"], self.hierarchical),
                 ]
