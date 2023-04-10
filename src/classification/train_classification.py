@@ -8,10 +8,12 @@ import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
 from hierarchical_model import HierarchicalModel
+# hf.setup_gpu(gpu_nr=0) # if some of the GPUs is busy, choose one (0 or 1)
 
-# hf.setup_gpu(gpu_nr=0)
 
-# ================== HYPER-PARAMETERS ==================
+# ===========================================
+# =========== HYPER-PARAMETERS ==============
+# ===========================================
 i = sys.argv[1]
 
 with open('training_configurations.json', 'r') as fp:
@@ -22,75 +24,47 @@ old_stdout = sys.stdout
 os.mkdir(config['results_folder'])
 log_file = open(config['results_folder'] + '/log.txt', 'w')
 sys.stdout = log_file
-# ======================================================
+
+# If you don't want to use the pre-defined configurations, define the following dict here:
+# config = {}
+# # Training hyper parameters
+# config['batch_size'] = (batch size for training)
+# config['epochs'] = (number of training epochs)
+# config['image_dimension'] = (height and width to which all images will be resized)
+# # Techniques
+# config['random_initialization'] = (true or false)
+# config['class_weights'] = (true or false)
+# config['hierarchical'] = (true or false)
+# config['number_trainable_layers'] = (number of trainable layers of the basemodel. either 'all' or an integer)
+# # Folders
+# config['data_folder'] = (path to folder where the train_df.json.bz2 and val_df.json.bz2 are in)
+# config['results_folder'] = (path to folder where training numbers will be saved)
 
 
+
+# ============================================
 # ================= LOAD DATA ================
-start = time.time()
+# ============================================
 train, train_df = hf.get_flow(df_file=config['data_folder'] + '/train_df.json.bz2',
                               batch_size=config['batch_size'],
                               image_dimension=config['image_dimension'])
-
 print('LOG: finished getting training flow')
-hf.print_time(start)
 
 y_true = hf.get_y_true(shape=(train.samples, len(train.class_indices)), classes=train.classes)
-
-if config['undersample']:
-    indices_to_remove = hf.undersample(y_true, 
-                                       list(train.class_indices.keys()), 
-                                       0.8, 
-                                       config['results_folder'])
-    balanced_df = train_df.reset_index().drop(index=indices_to_remove) 
-    train, _ = hf.get_flow(df=balanced_df,
-                           batch_size=config['batch_size'],
-                           image_dimension=config['image_dimension'])
-    print('LOG: got the new undersampled flow')
-elif config['oversample']:
-    start = time.time()
-    print('LOG: oversampling....')
-    duplicate_indices_dict = hf.oversample(y_true, 
-                                           list(train.class_indices.keys()), 
-                                           0.2, 
-                                           config['results_folder'])
-    hf.print_time(start)
-    print('LOG: found indices to duplicate...')
-    start = time.time()
-    idx_to_duplicate_from = y_true.shape[0] # the oversampled images will be added after this index
-    for index_to_duplicate in duplicate_indices_dict:
-        times_to_duplicate = duplicate_indices_dict[index_to_duplicate]
-        train_df = pd.concat([train_df, pd.DataFrame([train_df.iloc[index_to_duplicate]] * times_to_duplicate)], axis=0, ignore_index=True)
-    train_df = train_df.reset_index() 
-    # Take number of rows divisible by batch_size otherwise training will fail
-    train_df = train_df.iloc[0:config['batch_size']*(train_df.shape[0] // config['batch_size'])]
-    print('LOG: starting to get oversampled new flow with number of rows divisible by batch size...')
-    train, _ = hf.get_flow(df=train_df,
-                           batch_size=config['batch_size'],
-                           image_dimension=config['image_dimension'])
-    if config['augment']:
-        train_augment = hf.augment(train, config['batch_size'], config['image_dimension'], idx_to_duplicate_from)
-        print('LOG: got augmented dataset')
-
-    print('LOG: got the new oversampled flow')
-    hf.print_time(start)
-
-start = time.time()
 
 val_stop, _ = hf.get_flow(df_file=config['data_folder'] + '/val_df.json.bz2',
                           batch_size=config['batch_size'],
                           image_dimension=config['image_dimension'])
-
 print('LOG: Got the validation flow')
-hf.print_time(start)
-# ======================================================
 
 
 
-# ====================== CREATE MODEL ==================
+# ============================================
+# ============= CREATE MODEL =================
+# ============================================
 print('LOG: creating and training model')
 start = time.time()
 if config['hierarchical']:
-    print('LOG: Getting hierarchical model...')
     model = HierarchicalModel(nr_labels=len(train.class_indices), image_dimension=config['image_dimension'])
 else:
     model = hf.create_model(n_labels=len(train.class_indices), 
@@ -99,11 +73,12 @@ else:
                             number_trainable_layers=config['number_trainable_layers'],
                             random_initialization=config['random_initialization'],
                             y_true=y_true)
-# ======================================================
 
 
 
-# ===================== TRAIN MODEL ==================
+# ============================================
+# ================ TRAIN MODEL ===============
+# ============================================
 # Save model in-between epochs
 checkpoint_path = config['results_folder'] + "/cp-{epoch:04d}.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
@@ -129,17 +104,6 @@ if config['class_weights'] == True:
         epochs=config['epochs'],
         callbacks=[cp_callback, history_callback],
         class_weight=class_weights)
-elif config['augment'] == True:
-    # steps_per_epoch = (train.samples // config['batch_size'])
-    # validation_steps = (val_stop.samples // config['batch_size'])
-    history = model.fit(
-        train_augment, 
-        # steps_per_epoch=steps_per_epoch,
-        verbose=2,
-        validation_data=val_stop,
-        # validation_steps=validation_steps,
-        epochs=config['epochs'],
-        callbacks=[cp_callback, history_callback])
 elif config['hierarchical']:
     model.compile(optimizer=tf.keras.optimizers.Adam(), 
                   loss='binary_crossentropy', 
@@ -162,12 +126,13 @@ else:
         epochs=config['epochs'],
         callbacks=[cp_callback, history_callback])
 hf.print_time(start)
-# ======================================================
 
 
 
+# =========================================
+# ========= PLOT TRAINING METRICS =========
+# =========================================
 
-# ================= PLOT TRAINING METRICS ==============
 training_metrics = pd.read_csv(config['results_folder'] + '/history.csv')
 
 epochs = training_metrics.shape[0]
@@ -213,6 +178,3 @@ plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
 plt.legend(['Train', 'Validation'])
 
 hf.save_img(config['results_folder'] + '/training_metrics.png')
-
-
-# ======================================================

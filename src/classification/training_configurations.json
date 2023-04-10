@@ -63,7 +63,7 @@
             "class_weights": false, "per_class_thresh": false, "random_initialization": false, "number_trainable_layers": "all", 
             "hierarchical": false, "data_folder": "data/split_flat_data_221216", "batch_size": 512, "basemodel": "EfficientNetB2", 
             "epochs": 15, "nr_classes": "all", "image_dimension": 64, "results_folder": "results_thesis/112_bs_512"}, 
-    "113": {"augment": false, "oversample": false, "undersample": false, "loss_function": "custom_loss", 
+    "113": {"augment": false, "oversample": false, "undersample": false, "loss_function": "sample_weight", 
             "class_weights": false, "per_class_thresh": false, "random_initialization": false, "number_trainable_layers": 0, 
             "hierarchical": false, "data_folder": "data/split_hierarchical_data_221218", "batch_size": 512, "basemodel": "EfficientNetB2", 
             "epochs": 15, "nr_classes": "all", "image_dimension": 64, "results_folder": "results_thesis/113_sample_weights"}}

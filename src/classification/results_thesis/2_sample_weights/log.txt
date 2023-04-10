@@ -1,4 +1,4 @@
-{'augment': False, 'oversample': False, 'undersample': False, 'loss_function': 'custom_loss', 'class_weights': False, 'per_class_thresh': False, 'random_initialization': False, 'number_trainable_layers': 0, 'hierarchical': False, 'data_folder': 'data/split_hierarchical_data_221218', 'batch_size': 512, 'basemodel': 'EfficientNetB2', 'epochs': 15, 'nr_classes': 'all', 'image_dimension': 64, 'results_folder': 'results_thesis/113_bs_512'}
+{'augment': False, 'oversample': False, 'undersample': False, 'loss_function': 'sample_weight', 'class_weights': False, 'per_class_thresh': False, 'random_initialization': False, 'number_trainable_layers': 0, 'hierarchical': False, 'data_folder': 'data/split_hierarchical_data_221218', 'batch_size': 512, 'basemodel': 'EfficientNetB2', 'epochs': 15, 'nr_classes': 'all', 'image_dimension': 64, 'results_folder': 'results_thesis/113_bs_512'}
 Time passed: 0.0 hours
 09:07:12
 Found 773500 validated image filenames belonging to 31 classes.

@@ -31,9 +31,10 @@ AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 # =================================== Model-related =========================================
 
-def create_model(n_labels, image_dimension, model_name, number_trainable_layers, y_true=None, loss='binary_crossentropy', random_initialization=False):
-    """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
-    assert(model_name == 'EfficientNetB2')
+def create_model(n_labels, image_dimension, number_trainable_layers, y_true=None, loss='binary_crossentropy', random_initialization=False):
+    """'
+    Take EfficientNetB2 pre-trained on imagenet-1k, not including the last layer.
+    """
     if random_initialization:
         base_model = EfficientNetB2(include_top=False, 
                                     weights=None, 
@@ -89,7 +90,7 @@ def create_model(n_labels, image_dimension, model_name, number_trainable_layers,
                         tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
                     ])
     # Sample weight loss
-    elif loss == 'custom_loss':
+    elif loss == 'sample_weight':
         positive_samples_per_class = np.sum(y_true, axis=0)
         negative_samples_per_class = y_true.shape[0] - positive_samples_per_class
         alpha_weights = negative_samples_per_class / positive_samples_per_class
