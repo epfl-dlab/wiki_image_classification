@@ -7,6 +7,14 @@ This folder contains the code used in the experiments of multilabel classificati
 
 Moreover, we find interesting outlier labels that, despite having fewer samples, obtain better performance metrics, which is believed to be either due to bias from pre-training or simply more signal in the label. The distribution of the visual data predicted by the model is displayed. Finally, some qualitative examples of the model predictions to some images are presented, proving the ability of the model to find correct labels that are missing in the ground truth.
 
+
+## How to navigate files if you want to:
+1. Generate data: first use the get_labels.ipynb function to create a dataframe containing image urls and their labels (gotten by calling Francesco's heuristics), and then use clean_and_split_data.ipynb to clean the dataframe and split it into train, validation and test.
+2. Train: use the train.py file to load hyperparameters, load the training and validation dataframes, train the created model and then plot training metrics.
+3. Predict: use the predict.py file to load the desired weights to the created model and then predict the labels of the images of the test set.
+4. Evaluate: use the evaluate.ipynb notebook to predict the labels of the images of the test set and then compute prediction metrics.
+
+
 ## Documents
 This work is the result of a master's thesis. Here is the report and the presentation slides:
 - [Report](https://github.com/epfl-dlab/wiki_image_classification/blob/main/reports/matvi959_final_master_thesis_200123.pdf)
