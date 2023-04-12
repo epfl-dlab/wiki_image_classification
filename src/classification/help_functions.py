@@ -24,16 +24,14 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Other stuff
 from focal_loss import BinaryFocalLoss
-import albumentations as A
-
-AUTOTUNE = tf.data.experimental.AUTOTUNE
 
 
 # =================================== Model-related =========================================
 
-def create_model(n_labels, image_dimension, model_name, number_trainable_layers, y_true=None, loss='binary_crossentropy', random_initialization=False):
-    """Take efficientnet pre-trained on imagenet-1k, not including the last layer."""
-    assert(model_name == 'EfficientNetB2')
+def create_model(n_labels, image_dimension, number_trainable_layers, y_true=None, loss='binary_crossentropy', random_initialization=False):
+    """'
+    Take EfficientNetB2 pre-trained on imagenet-1k, not including the last layer.
+    """
     if random_initialization:
         base_model = EfficientNetB2(include_top=False, 
                                     weights=None, 
@@ -89,7 +87,7 @@ def create_model(n_labels, image_dimension, model_name, number_trainable_layers,
                         tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
                     ])
     # Sample weight loss
-    elif loss == 'custom_loss':
+    elif loss == 'sample_weight':
         positive_samples_per_class = np.sum(y_true, axis=0)
         negative_samples_per_class = y_true.shape[0] - positive_samples_per_class
         alpha_weights = negative_samples_per_class / positive_samples_per_class
@@ -127,12 +125,13 @@ def get_flow(image_dimension, batch_size, df_file='', df=None):
     return flow, df
 
 
-# fast fix for evaluate.py of 4M images, to avoid returning the whole dataframe
+# fast fix for evaluate.py of 4M images. return df.url.values instead of the whole df
 def get_flow_urls(image_dimension, batch_size, df_file='', df=None):
     if df_file:
         df = pd.read_json(df_file, compression='bz2')
     datagen = ImageDataGenerator() 
 
+    # --------------- not sure why I added this, probably some file was failing at prediction
     white_list_formats = ("png", "jpg", "jpeg", "bmp", "ppm", "tif", "tiff")
     def validate_filename(filename, white_list_formats):
         return filename.lower().endswith(white_list_formats) and os.path.isfile(filename)
@@ -140,6 +139,7 @@ def get_flow_urls(image_dimension, batch_size, df_file='', df=None):
     filepaths = df['url'].map(lambda fname: os.path.join('/scratch/WIT_Dataset/images', fname))
     mask = filepaths.apply(validate_filename, args=(white_list_formats,))
     df = df[mask]
+    # ---------------------------------------------------------------------------------------
 
     flow = datagen.flow_from_dataframe(
             dataframe=df, 
@@ -152,7 +152,7 @@ def get_flow_urls(image_dimension, batch_size, df_file='', df=None):
             target_size=(image_dimension, image_dimension),
             validate_filenames=False,
             shuffle=False)
-    return flow, df.url.values
+    return flow, df.url.values 
 
 
 def get_optimal_threshold(y_true, probs, thresholds, labels, image_path, N=3):
@@ -373,189 +373,6 @@ def get_metrics(y_true, y_pred, label_names, image_path):
         save_img(image_path)
 
     return metrics_df['f1-score'][0:n_labels]
-
-
-# ============================= Undersampling & oversampling ================================
-
-def undersample(y_true, label_names, kept_pctg, image_path):
-    """
-    Undersamples using a non-random algorithm, that removes the images with least cost
-    until kept_pctg (e.g. 90%) of the data is left. This "cost" is defined as the sum of
-    "label_costs", where label_cost = 1/label_count_through_data.
-
-    Inputs:
-        - y_true: ground-truth one-hot encoded array of format (nr_images x nr_classes)
-        - label_names: array of strings, e.g. ['Architecture', 'Art', 'Science', ...]
-        - kept_pctg: float strictly between 0 and 1
-        - image_path: string containing path where the IR image will be saved
-    Output:
-        - indices_to_remove: a list of strings, containing the indices to be removed from the 
-                             original dataframe in order to balance it
-    """
-    assert(kept_pctg > 0 and kept_pctg < 1)
-
-    mean_ir_original, dict_ir_original = mean_imbalance_ratio(y_true=y_true, class_names=label_names)
-
-
-    def remove_row(label_costs, row_costs):
-        """
-        Removes the row with the minimal cost.
-        Input:
-            - label_costs: a numpy array of dimension (nr_labels x 1) containing the cost of each label
-            - row_costs: a numpy array of dimension (nr_images x 1) containing the cost of each image
-        Output:
-            - tuple containing the index of the removed row (i.e. image), and the updated row and label costs.
-        """
-        # Select and remove the row with minimal cost
-        row_idx = np.argmin(row_costs)
-        # Update label_costs and row_costs for the next iteration
-        label_costs -= row_costs[row_idx] 
-        row_costs = np.delete(row_costs, row_idx)
-        return row_idx, label_costs, row_costs
-
-    original_nr_rows = y_true.shape[0]
-    y_true_copy = np.copy(y_true)
-    indices_to_remove = []
-
-    BIG_NUMBER = 10_000
-    label_costs = BIG_NUMBER / y_true_copy.sum(axis=0)
-    row_costs = row_costs = (label_costs * y_true_copy).sum(axis=1)
-
-
-    while y_true_copy.shape[0] > original_nr_rows * kept_pctg:
-        (row_idx, label_costs, row_costs) = remove_row(label_costs, row_costs)
-        # All indices of rows in y_true that match with the removed row.
-        matching_indices_to_remove = np.where((y_true == y_true_copy[row_idx]).all(axis=1))[0]
-        y_true_copy = np.delete(y_true_copy, row_idx, axis=0)
-        # Below, take the indices which have not been already added to indices_to_remove
-        try:
-            idx_to_remove = np.setdiff1d(matching_indices_to_remove, indices_to_remove)[0]
-            indices_to_remove.append(idx_to_remove)
-        except:
-            print('Failed to get index to remove')
-
-    mean_ir_heuristics, dict_ir_heuristics = mean_imbalance_ratio(y_true=y_true_copy, class_names=label_names)
-
-    plt.figure(figsize=(12, 6))
-    x_axis = np.arange(len(dict_ir_original.keys()))
-    plt.bar(x_axis-0.1, dict_ir_original.values(), width=0.2, label=f'Original; MeanIR: {np.round(mean_ir_original, 1)}')
-    plt.bar(x_axis+0.1, dict_ir_heuristics.values(), width=0.2, label=f'Undersampled, MeanIR: {np.round(mean_ir_heuristics, 2)}')
-    plt.legend(fontsize=12)
-    _ = plt.xticks(x_axis, dict_ir_heuristics.keys(), rotation=70, rotation_mode='anchor', ha="right", fontsize=14)
-    plt.title('Mean imbalance ratio per label')
-    plt.ylabel('Imbalance ratio')
-    plt.xlabel('Label')
-    save_img(image_path + '/undersampled_imbalance_ratios.png')
-
-    return indices_to_remove
-
-
-def oversample(y_true, label_names, add_pctg, image_path):
-    """
-    Lets each image have a reward (reward := sum of label rewards in the image, where 
-    label_reward := BIG_NUMBER / label_samples). An image will have high reward when 
-    it has rare labels, and small rewards when it has frequent labels.
-
-    Input:
-        - y_true: a binary numpy array of dimension (nr_images x nr_labels) containing the ground-truth
-                  assignments of labels for each image. 
-        - label_names: a list of the names of the labels of dimension (nr_labels x 1).
-        - add_pctg: the percentual size of the data that will be oversampled. Between 0 and 1.
-        - image_path: path to image that displays the imbalance ratio per class before and after oversampling.
-    Output:
-        - indices_to_add: a dict of the indices to be duplicated and the amount of times 
-    """
-    assert(add_pctg > 0 and add_pctg < 1)
-
-    mean_ir_original, dict_ir_original = mean_imbalance_ratio(y_true=y_true, class_names=label_names)
-
-    original_nr_rows = y_true.shape[0]
-    nr_labels = y_true.shape[1]
-    y_true_copy = np.copy(y_true)
-    indices_to_add = []
-
-    BIG_NUMBER = 10_000
-    label_rewards = BIG_NUMBER / y_true_copy.sum(axis=0)
-    row_rewards = (label_rewards * y_true_copy).sum(axis=1)
-
-    reps = 20
-    while y_true_copy.shape[0] < original_nr_rows * (1 + add_pctg):
-
-        best_row = y_true_copy[np.argmax(row_rewards), :].reshape(1, nr_labels)
-        y_true_copy = np.append(y_true_copy, np.tile(best_row, (reps, 1)), axis=0)
-
-        label_rewards = BIG_NUMBER / y_true_copy.sum(axis=0)
-        row_rewards = (label_rewards * y_true_copy).sum(axis=1)
-
-        idx_to_add = np.where((y_true == best_row).all(axis=1))[0]
-        for _ in range(reps):
-            indices_to_add.append(idx_to_add)
-
-    mean_ir_heuristics, dict_ir_heuristics = mean_imbalance_ratio(y_true=y_true_copy, class_names=label_names)
-
-    plt.figure(figsize=(12, 6))
-    x_axis = np.arange(len(dict_ir_original.keys()))
-    plt.bar(x_axis-0.1, dict_ir_original.values(), width=0.2, label=f'Original; MeanIR: {np.round(mean_ir_original, 1)}')
-    plt.bar(x_axis+0.1, dict_ir_heuristics.values(), width=0.2, label=f'Oversampled, MeanIR: {np.round(mean_ir_heuristics, 2)}')
-    plt.legend(fontsize=12)
-    _ = plt.xticks(x_axis, dict_ir_heuristics.keys(), rotation=70, rotation_mode='anchor', ha="right", fontsize=14)
-    plt.title('Mean imbalance ratio per label')
-    plt.ylabel('Imbalance ratio')
-    plt.yscale('log')
-    plt.xlabel('Label')
-    save_img(image_path + '/oversampled_imbalance_ratios.png')
-
-    indices_to_add_hashable = [tuple([el[0]]) for el in indices_to_add]
-    return dict(Counter(indices_to_add_hashable))
-
-
-def augment(flow, batch_size, image_dimension, idx_to_augment_from):
-    """
-    
-    
-    """
-    nr_classes = len(flow.class_indices)
-    train_ds = tf.data.Dataset.from_generator(
-        lambda: flow, 
-        output_types=(tf.float32, tf.float32), 
-        output_shapes=((batch_size, image_dimension, image_dimension, 3), 
-                    (batch_size, nr_classes)), 
-        )
-    def augment_train_data(ds):
-        transforms = A.Compose([
-            A.Transpose(always_apply=True),
-            A.HorizontalFlip(always_apply=True),
-            A.VerticalFlip(always_apply=True),
-            A.ShiftScaleRotate(always_apply=True), 
-            # A.HueSaturationValue(hue_shift_limit=0.2, sat_shift_limit=0.2, val_shift_limit=0.2, always_apply=True), # gives black images
-            # A.RandomBrightnessContrast(brightness_limit=(-0.1, 0.1), contrast_limit=(-0.1, 0.1), always_apply=True), # gives black images
-            A.CoarseDropout(max_height=4, max_width=4),
-            ])
-    
-        def aug_fn(images):
-            # all_label_names = np.array(list(flow.class_indices.keys()))
-            aug_imgs = np.zeros((images.shape))
-            for img_idx in range(images.shape[0]):
-                img = images[img_idx, :, :, :]
-                # img_label_names = all_label_names[labels[img_idx].astype(bool)]
-                # if any(label in img_label_names for label in minority_labels):
-                if img_idx > idx_to_augment_from:
-                    img = transforms(image=img)['image']
-                aug_imgs[img_idx, :, :, :] = img
-                
-            aug_imgs = tf.cast(aug_imgs, tf.float32)
-            return aug_imgs
-
-        def process_data(image, label):
-            """"
-            Here, we we call the augmentation function if the image has any of the minority labels.
-            """
-            image = tf.numpy_function(func=aug_fn, inp=[image], Tout=tf.float32)
-            return image, label
-    
-        return ds.map(partial(process_data), num_parallel_calls=AUTOTUNE).prefetch(AUTOTUNE)
-
-    return augment_train_data(train_ds)
 
 
 # ====================================== Utilities ==========================================

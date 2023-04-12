@@ -18,6 +18,9 @@ old_stdout = sys.stdout
 log_file = open(config['results_folder'] + '/log_eval.txt', 'w')
 sys.stdout = log_file
 
+# Path to the desired weights:
+WEIGHTS_PATH = 'results_thesis/8_flat_model__hierarchical_data'
+
 
 
 test, urls = hf.get_flow_urls(
@@ -29,7 +32,7 @@ assert(test.samples == len(urls))
 print('got flow object and urls')
 model = hf.create_model(n_labels=len(test.class_indices), image_dimension=config['image_dimension'], model_name=config['basemodel'], number_trainable_layers=config['number_trainable_layers'])
 
-latest = tf.train.latest_checkpoint('results_thesis/8_flat_model__hierarchical_data')
+latest = tf.train.latest_checkpoint(WEIGHTS_PATH)
 
 print('Predicting on test set:\n')
 
