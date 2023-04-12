@@ -8,7 +8,6 @@ Usage:
 import os
 import re
 import sys
-from ast import literal_eval
 from itertools import permutations
 
 import numpy as np

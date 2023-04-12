@@ -42,15 +42,17 @@ STREAMLIT_LOG_FILE = "streamlit_preparation.log"
 GTRUTH_PATH = "./data/grounded_truth/"
 MTURK_PATH = "./data/mturk/"
 EVALUATION_PATH = "./data/evaluation/"
+REPORTS_PATH = "./reports/"
 
 
 ### Versions (!!!)
 TAXONOMY_VERSION = "v1.4"
-HEURISTICS_VERSION = "headJ+depth"
+HEURISTICS_VERSION = "headJ+embedding10+lookahead+depth"
 ####################################
 
 # Graph with labels (i.e. enriched with heads, embeddings and labels)
 LGRAPH_PATH = f"/scratch/WikipediaImagesTaxonomy/20220220-category-graph-wlabels_{HEURISTICS_VERSION}_{TAXONOMY_VERSION}.pkl.bz2"
 LGRAPH_H_PATH = f"/scratch/WikipediaImagesTaxonomy/20220220-clean-graph-wlabels_{HEURISTICS_VERSION}_{TAXONOMY_VERSION}.pkl.bz2"
 
+FILES_ANNOTATED_PATH = f"/scratch/WikipediaImagesTaxonomy/commonswiki-20220220-files-{HEURISTICS_VERSION}.parquet"
 FILES_PROBA_PATH = "/scratch/WikipediaImagesTaxonomy/probs_df_280223.json.bz2"
