@@ -21,12 +21,25 @@ if __name__ == "__main__":
 
     printt("Loading graph...")
     heuristics = Heuristics()
-    heuristics.load_graph(HGRAPH_PATH)
+    heuristics.load_graph(EH_GRAPH_PATH)
     printt("Loading mapping...")
-    heuristics.set_taxonomy(version=TAXONOMY_VERSION)
+    heuristics.set_taxonomy(TAXONOMY_VERSION)
+    heuristics.set_heuristics(HEURISTICS_VERSION)
+
+    printt("Loading files...")
+    files = pd.read_parquet(FILES_PATH)
+
+    files["labels_pred"] = files.progress_apply(
+        lambda x: heuristics.queryFile(x, debug=False),
+        axis=1,
+        result_type="expand",
+    )[0]
+
+    printt("Saving annotated files...")
+    files.to_parquet(FILES_ANNOTATED_PATH)
 
     nodes = pd.Series(list(heuristics.G.nodes))
-    nodes.progress_apply(lambda cat: heuristics.get_label(cat, how=HEURISTICS_VERSION))
+    nodes.progress_apply(lambda cat: heuristics.query_category(cat))
     printt("Saving graph...")
     heuristics.dump_graph(LGRAPH_PATH)
     heuristics.dump_graph(LGRAPH_H_PATH, clean=True)
