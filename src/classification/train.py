@@ -8,38 +8,31 @@ import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
 from hierarchical_model import HierarchicalModel
+import datetime
+from configs import configs
+
 # hf.setup_gpu(gpu_nr=0) # if some of the GPUs is busy, choose one (0 or 1)
 
 
 # ===========================================
 # =========== HYPER-PARAMETERS ==============
 # ===========================================
-i = sys.argv[1]
+# i = sys.argv[1]
 
-with open('training_configurations.json', 'r') as fp:
-    config = json.load(fp)[str(i)]
+# with open('training_configurations.json', 'r') as fp:
+#     config = json.load(fp)[str(i)]
+# print(config)
+
+# -----------> If you don't want to use the pre-defined configurations, define the following dict below:
+config = configs[1]
 print(config)
+
+
 # Save outputs to log file
 old_stdout = sys.stdout
 os.mkdir(config['results_folder'])
 log_file = open(config['results_folder'] + '/log.txt', 'w')
 sys.stdout = log_file
-
-# If you don't want to use the pre-defined configurations, define the following dict here:
-# config = {}
-# # Training hyper parameters
-# config['batch_size'] = (batch size for training)
-# config['epochs'] = (number of training epochs)
-# config['image_dimension'] = (height and width to which all images will be resized)
-# # Techniques
-# config['random_initialization'] = (true or false)
-# config['class_weights'] = (true or false)
-# config['hierarchical'] = (true or false)
-# config['number_trainable_layers'] = (number of trainable layers of the basemodel. either 'all' or an integer)
-# # Folders
-# config['data_folder'] = (path to folder where the train_df.json.bz2 and val_df.json.bz2 are in)
-# config['results_folder'] = (path to folder where training numbers will be saved)
-
 
 
 # ============================================
@@ -69,9 +62,9 @@ if config['hierarchical']:
 else:
     model = hf.create_model(n_labels=len(train.class_indices), 
                             image_dimension=config['image_dimension'],
-                            model_name=config['basemodel'], 
                             number_trainable_layers=config['number_trainable_layers'],
                             random_initialization=config['random_initialization'],
+                            loss=config['loss_function'],
                             y_true=y_true)
 
 
@@ -83,11 +76,19 @@ else:
 checkpoint_path = config['results_folder'] + "/cp-{epoch:04d}.ckpt"
 checkpoint_dir = os.path.dirname(checkpoint_path)
 
-cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-                                                 save_best_only=True,
-                                                 monitor='val_loss',
-                                                 save_weights_only=True,
-                                                 verbose=1)
+if config['monitor'] == 'pr_auc':
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                    save_best_only=True,
+                                                    monitor='val_pr_auc', 
+                                                    mode='max',
+                                                    save_weights_only=True,
+                                                    verbose=1)
+else:
+    cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
+                                                    save_best_only=True,
+                                                    monitor='val_loss',
+                                                    save_weights_only=True,
+                                                    verbose=1)
 history_callback = tf.keras.callbacks.CSVLogger(f"{config['results_folder']}/history.csv", 
                                                 separator=',', 
                                                 append=True)
