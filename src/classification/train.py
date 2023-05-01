@@ -1,6 +1,5 @@
 ﻿import os
 import sys
-import json
 import time
 import numpy as np
 import pandas as pd
@@ -8,7 +7,6 @@ import tensorflow as tf
 import help_functions as hf
 from matplotlib import pyplot as plt
 from hierarchical_model import HierarchicalModel
-import datetime
 from configs import configs
 
 # hf.setup_gpu(gpu_nr=0) # if some of the GPUs is busy, choose one (0 or 1)
@@ -17,16 +15,9 @@ from configs import configs
 # ===========================================
 # =========== HYPER-PARAMETERS ==============
 # ===========================================
-# i = sys.argv[1]
 
-# with open('training_configurations.json', 'r') as fp:
-#     config = json.load(fp)[str(i)]
-# print(config)
-
-# -----------> If you don't want to use the pre-defined configurations, define the following dict below:
-config = configs[1]
+config = configs[0]
 print(config)
-
 
 # Save outputs to log file
 old_stdout = sys.stdout
@@ -78,17 +69,18 @@ checkpoint_dir = os.path.dirname(checkpoint_path)
 
 if config['monitor'] == 'pr_auc':
     cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-                                                    save_best_only=True,
+                                                    save_best_only=False,
                                                     monitor='val_pr_auc', 
                                                     mode='max',
                                                     save_weights_only=True,
                                                     verbose=1)
 else:
     cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,
-                                                    save_best_only=True,
+                                                    save_best_only=False,
                                                     monitor='val_loss',
                                                     save_weights_only=True,
                                                     verbose=1)
+    
 history_callback = tf.keras.callbacks.CSVLogger(f"{config['results_folder']}/history.csv", 
                                                 separator=',', 
                                                 append=True)
@@ -125,7 +117,9 @@ else:
         verbose=2,
         validation_data=val_stop,
         epochs=config['epochs'],
-        callbacks=[cp_callback, history_callback])
+        callbacks=[cp_callback, history_callback],
+        use_multiprocessing=True,
+        workers=10)
 hf.print_time(start)
 
 
@@ -138,12 +132,14 @@ training_metrics = pd.read_csv(config['results_folder'] + '/history.csv')
 
 epochs = training_metrics.shape[0]
 
+plt.figure(figsize=(25,10))
+
 _ = plt.subplot(1, 5, 1)
 plt.plot(range(config['epochs']), training_metrics.loss.values, label='Training loss')
 plt.plot(range(config['epochs']), training_metrics.val_loss.values, label='Validation loss')
 plt.xlabel('Epochs')
 plt.title('Loss')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
+plt.xticks(np.arange(0, config['epochs'], step=2), np.arange(1, config['epochs'], step=2))
 plt.legend(['Train', 'Validation'])
 
 _ = plt.subplot(1, 5, 2)
@@ -151,7 +147,7 @@ plt.plot(range(config['epochs']), training_metrics.recall.values, label='Trainin
 plt.plot(range(config['epochs']), training_metrics.val_recall.values, label='Validation recall')
 plt.title('Recall')
 plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
+plt.xticks(np.arange(0, config['epochs'], step=2), np.arange(1, config['epochs'], step=2))
 plt.legend(['Train', 'Validation'])
 
 _ = plt.subplot(1, 5, 3)
@@ -159,7 +155,7 @@ plt.plot(range(config['epochs']), training_metrics.precision.values, label='Trai
 plt.plot(range(config['epochs']), training_metrics.val_precision.values, label='Validation precision')
 plt.title('Precision')
 plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
+plt.xticks(np.arange(0, config['epochs'], step=2), np.arange(1, config['epochs'], step=2))
 plt.legend(['Train', 'Validation'])
 
 _ = plt.subplot(1, 5, 4)
@@ -167,7 +163,7 @@ plt.plot(range(config['epochs']), training_metrics.pr_auc.values, label='Trainin
 plt.plot(range(config['epochs']), training_metrics.val_pr_auc.values, label='Validation PR_AUC')
 plt.title('PR AUC')
 plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
+plt.xticks(np.arange(0, config['epochs'], step=2), np.arange(1, config['epochs'], step=2))
 plt.legend(['Train', 'Validation'])
 
 _ = plt.subplot(1, 5, 5)
@@ -175,7 +171,7 @@ plt.plot(range(config['epochs']), training_metrics.binary_accuracy.values, label
 plt.plot(range(config['epochs']), training_metrics.val_binary_accuracy.values, label='Validation binary acc')
 plt.title('Binary accuracy')
 plt.xlabel('Epochs')
-plt.xticks(np.arange(0, 20, step=2), np.arange(1, 20, step=2))
+plt.xticks(np.arange(0, config['epochs'], step=2), np.arange(1, config['epochs'], step=2))
 plt.legend(['Train', 'Validation'])
 
 hf.save_img(config['results_folder'] + '/training_metrics.png')
