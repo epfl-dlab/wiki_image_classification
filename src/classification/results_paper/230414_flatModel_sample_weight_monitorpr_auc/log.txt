@@ -1,0 +1,147 @@
+Found 700000 validated image filenames belonging to 28 classes.
+LOG: finished getting training flow
+Found 75000 validated image filenames belonging to 28 classes.
+LOG: Got the validation flow
+LOG: creating and training model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 339
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 4, 4, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 22528)             0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               2883712   
+_________________________________________________________________
+dense_1 (Dense)              (None, 28)                3612      
+=================================================================
+Total params: 10,655,893
+Trainable params: 10,588,318
+Non-trainable params: 67,575
+_________________________________________________________________
+Epoch 1/30
+
+Epoch 00001: val_pr_auc improved from -inf to 0.27474, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0001.ckpt
+5469/5469 - 4437s - loss: 0.9457 - binary_accuracy: 0.7335 - precision: 0.2281 - recall: 0.6625 - pr_auc: 0.2492 - roc_auc: 0.7870 - val_loss: 0.9109 - val_binary_accuracy: 0.7371 - val_precision: 0.2332 - val_recall: 0.6768 - val_pr_auc: 0.2747 - val_roc_auc: 0.8057
+Epoch 2/30
+
+Epoch 00002: val_pr_auc improved from 0.27474 to 0.29583, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0002.ckpt
+5469/5469 - 3658s - loss: 0.9004 - binary_accuracy: 0.7441 - precision: 0.2395 - recall: 0.6788 - pr_auc: 0.2697 - roc_auc: 0.8050 - val_loss: 0.8851 - val_binary_accuracy: 0.7397 - val_precision: 0.2348 - val_recall: 0.6744 - val_pr_auc: 0.2958 - val_roc_auc: 0.8144
+Epoch 3/30
+
+Epoch 00003: val_pr_auc did not improve from 0.29583
+5469/5469 - 3668s - loss: 0.8786 - binary_accuracy: 0.7529 - precision: 0.2477 - recall: 0.6832 - pr_auc: 0.2834 - roc_auc: 0.8138 - val_loss: 1.0116 - val_binary_accuracy: 0.7528 - val_precision: 0.2455 - val_recall: 0.6734 - val_pr_auc: 0.2832 - val_roc_auc: 0.8014
+Epoch 4/30
+
+Epoch 00004: val_pr_auc improved from 0.29583 to 0.30600, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0004.ckpt
+5469/5469 - 3654s - loss: 0.8568 - binary_accuracy: 0.7598 - precision: 0.2548 - recall: 0.6882 - pr_auc: 0.2934 - roc_auc: 0.8228 - val_loss: 0.8513 - val_binary_accuracy: 0.7526 - val_precision: 0.2508 - val_recall: 0.7035 - val_pr_auc: 0.3060 - val_roc_auc: 0.8273
+Epoch 5/30
+
+Epoch 00005: val_pr_auc improved from 0.30600 to 0.32671, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0005.ckpt
+5469/5469 - 3656s - loss: 0.8300 - binary_accuracy: 0.7699 - precision: 0.2652 - recall: 0.6930 - pr_auc: 0.3070 - roc_auc: 0.8322 - val_loss: 0.8464 - val_binary_accuracy: 0.8111 - val_precision: 0.3054 - val_recall: 0.6516 - val_pr_auc: 0.3267 - val_roc_auc: 0.8317
+Epoch 6/30
+
+Epoch 00006: val_pr_auc did not improve from 0.32671
+5469/5469 - 3644s - loss: 0.8126 - binary_accuracy: 0.7747 - precision: 0.2703 - recall: 0.6951 - pr_auc: 0.3121 - roc_auc: 0.8378 - val_loss: 0.8337 - val_binary_accuracy: 0.7834 - val_precision: 0.2807 - val_recall: 0.7038 - val_pr_auc: 0.3234 - val_roc_auc: 0.8354
+Epoch 7/30
+
+Epoch 00007: val_pr_auc did not improve from 0.32671
+5469/5469 - 3672s - loss: 0.7975 - binary_accuracy: 0.7779 - precision: 0.2742 - recall: 0.6983 - pr_auc: 0.3142 - roc_auc: 0.8422 - val_loss: 0.8414 - val_binary_accuracy: 0.7693 - val_precision: 0.2702 - val_recall: 0.7265 - val_pr_auc: 0.3238 - val_roc_auc: 0.8354
+Epoch 8/30
+
+Epoch 00008: val_pr_auc did not improve from 0.32671
+5469/5469 - 3658s - loss: 0.7784 - binary_accuracy: 0.7827 - precision: 0.2799 - recall: 0.7017 - pr_auc: 0.3185 - roc_auc: 0.8473 - val_loss: 0.8349 - val_binary_accuracy: 0.7890 - val_precision: 0.2850 - val_recall: 0.6929 - val_pr_auc: 0.3223 - val_roc_auc: 0.8383
+Epoch 9/30
+
+Epoch 00009: val_pr_auc did not improve from 0.32671
+5469/5469 - 3637s - loss: 0.7670 - binary_accuracy: 0.7852 - precision: 0.2828 - recall: 0.7025 - pr_auc: 0.3220 - roc_auc: 0.8504 - val_loss: 0.8417 - val_binary_accuracy: 0.7800 - val_precision: 0.2772 - val_recall: 0.7042 - val_pr_auc: 0.3222 - val_roc_auc: 0.8371
+Epoch 10/30
+
+Epoch 00010: val_pr_auc improved from 0.32671 to 0.32975, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0010.ckpt
+5469/5469 - 3648s - loss: 0.7551 - binary_accuracy: 0.7875 - precision: 0.2856 - recall: 0.7041 - pr_auc: 0.3242 - roc_auc: 0.8531 - val_loss: 0.8887 - val_binary_accuracy: 0.7894 - val_precision: 0.2889 - val_recall: 0.7129 - val_pr_auc: 0.3298 - val_roc_auc: 0.8372
+Epoch 11/30
+
+Epoch 00011: val_pr_auc did not improve from 0.32975
+5469/5469 - 3653s - loss: 0.7463 - binary_accuracy: 0.7899 - precision: 0.2885 - recall: 0.7046 - pr_auc: 0.3283 - roc_auc: 0.8553 - val_loss: 0.8588 - val_binary_accuracy: 0.7849 - val_precision: 0.2814 - val_recall: 0.6984 - val_pr_auc: 0.3242 - val_roc_auc: 0.8377
+Epoch 12/30
+
+Epoch 00012: val_pr_auc did not improve from 0.32975
+5469/5469 - 3649s - loss: 0.7328 - binary_accuracy: 0.7933 - precision: 0.2929 - recall: 0.7074 - pr_auc: 0.3304 - roc_auc: 0.8583 - val_loss: 0.9134 - val_binary_accuracy: 0.7908 - val_precision: 0.2877 - val_recall: 0.6965 - val_pr_auc: 0.3296 - val_roc_auc: 0.8387
+Epoch 13/30
+
+Epoch 00013: val_pr_auc improved from 0.32975 to 0.33062, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0013.ckpt
+5469/5469 - 3654s - loss: 0.7273 - binary_accuracy: 0.7940 - precision: 0.2938 - recall: 0.7082 - pr_auc: 0.3316 - roc_auc: 0.8600 - val_loss: 0.8802 - val_binary_accuracy: 0.7832 - val_precision: 0.2826 - val_recall: 0.7159 - val_pr_auc: 0.3306 - val_roc_auc: 0.8390
+Epoch 14/30
+
+Epoch 00014: val_pr_auc did not improve from 0.33062
+5469/5469 - 3654s - loss: 0.7187 - binary_accuracy: 0.7962 - precision: 0.2967 - recall: 0.7101 - pr_auc: 0.3340 - roc_auc: 0.8620 - val_loss: 0.9282 - val_binary_accuracy: 0.8018 - val_precision: 0.3045 - val_recall: 0.7169 - val_pr_auc: 0.3295 - val_roc_auc: 0.8378
+Epoch 15/30
+
+Epoch 00015: val_pr_auc improved from 0.33062 to 0.33129, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0015.ckpt
+5469/5469 - 3642s - loss: 0.7038 - binary_accuracy: 0.8006 - precision: 0.3023 - recall: 0.7114 - pr_auc: 0.3381 - roc_auc: 0.8654 - val_loss: 0.9668 - val_binary_accuracy: 0.8125 - val_precision: 0.3157 - val_recall: 0.6995 - val_pr_auc: 0.3313 - val_roc_auc: 0.8376
+Epoch 16/30
+
+Epoch 00016: val_pr_auc did not improve from 0.33129
+5469/5469 - 3642s - loss: 0.6984 - binary_accuracy: 0.8008 - precision: 0.3028 - recall: 0.7124 - pr_auc: 0.3387 - roc_auc: 0.8665 - val_loss: 0.9813 - val_binary_accuracy: 0.8117 - val_precision: 0.3146 - val_recall: 0.6998 - val_pr_auc: 0.3249 - val_roc_auc: 0.8379
+Epoch 17/30
+
+Epoch 00017: val_pr_auc did not improve from 0.33129
+5469/5469 - 3651s - loss: 0.6919 - binary_accuracy: 0.8024 - precision: 0.3049 - recall: 0.7132 - pr_auc: 0.3398 - roc_auc: 0.8680 - val_loss: 0.9655 - val_binary_accuracy: 0.8117 - val_precision: 0.3129 - val_recall: 0.6901 - val_pr_auc: 0.3254 - val_roc_auc: 0.8373
+Epoch 18/30
+
+Epoch 00018: val_pr_auc did not improve from 0.33129
+5469/5469 - 3645s - loss: 0.6812 - binary_accuracy: 0.8048 - precision: 0.3082 - recall: 0.7151 - pr_auc: 0.3438 - roc_auc: 0.8705 - val_loss: 0.9507 - val_binary_accuracy: 0.7876 - val_precision: 0.2848 - val_recall: 0.7004 - val_pr_auc: 0.3263 - val_roc_auc: 0.8364
+Epoch 19/30
+
+Epoch 00019: val_pr_auc did not improve from 0.33129
+5469/5469 - 3645s - loss: 0.6739 - binary_accuracy: 0.8063 - precision: 0.3103 - recall: 0.7159 - pr_auc: 0.3461 - roc_auc: 0.8721 - val_loss: 0.9963 - val_binary_accuracy: 0.8005 - val_precision: 0.3038 - val_recall: 0.7230 - val_pr_auc: 0.3302 - val_roc_auc: 0.8368
+Epoch 20/30
+
+Epoch 00020: val_pr_auc did not improve from 0.33129
+5469/5469 - 3644s - loss: 0.6651 - binary_accuracy: 0.8086 - precision: 0.3136 - recall: 0.7172 - pr_auc: 0.3472 - roc_auc: 0.8741 - val_loss: 0.9999 - val_binary_accuracy: 0.7939 - val_precision: 0.2951 - val_recall: 0.7184 - val_pr_auc: 0.3217 - val_roc_auc: 0.8350
+Epoch 21/30
+
+Epoch 00021: val_pr_auc improved from 0.33129 to 0.33192, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0021.ckpt
+5469/5469 - 3648s - loss: 0.6550 - binary_accuracy: 0.8109 - precision: 0.3168 - recall: 0.7181 - pr_auc: 0.3508 - roc_auc: 0.8762 - val_loss: 1.0532 - val_binary_accuracy: 0.8019 - val_precision: 0.3063 - val_recall: 0.7274 - val_pr_auc: 0.3319 - val_roc_auc: 0.8372
+Epoch 22/30
+
+Epoch 00022: val_pr_auc did not improve from 0.33192
+5469/5469 - 3667s - loss: 0.6480 - binary_accuracy: 0.8120 - precision: 0.3184 - recall: 0.7185 - pr_auc: 0.3520 - roc_auc: 0.8777 - val_loss: 1.0722 - val_binary_accuracy: 0.8129 - val_precision: 0.3173 - val_recall: 0.7058 - val_pr_auc: 0.3294 - val_roc_auc: 0.8354
+Epoch 23/30
+
+Epoch 00023: val_pr_auc did not improve from 0.33192
+5469/5469 - 3651s - loss: 0.6403 - binary_accuracy: 0.8144 - precision: 0.3218 - recall: 0.7194 - pr_auc: 0.3549 - roc_auc: 0.8794 - val_loss: 1.0588 - val_binary_accuracy: 0.8089 - val_precision: 0.3081 - val_recall: 0.6845 - val_pr_auc: 0.3192 - val_roc_auc: 0.8308
+Epoch 24/30
+
+Epoch 00024: val_pr_auc did not improve from 0.33192
+5469/5469 - 3648s - loss: 0.6397 - binary_accuracy: 0.8142 - precision: 0.3212 - recall: 0.7180 - pr_auc: 0.3545 - roc_auc: 0.8797 - val_loss: 1.0240 - val_binary_accuracy: 0.7959 - val_precision: 0.2885 - val_recall: 0.6670 - val_pr_auc: 0.3114 - val_roc_auc: 0.8296
+Epoch 25/30
+
+Epoch 00025: val_pr_auc did not improve from 0.33192
+5469/5469 - 3652s - loss: 0.6271 - binary_accuracy: 0.8173 - precision: 0.3260 - recall: 0.7197 - pr_auc: 0.3599 - roc_auc: 0.8819 - val_loss: 1.1790 - val_binary_accuracy: 0.8219 - val_precision: 0.3338 - val_recall: 0.7297 - val_pr_auc: 0.3279 - val_roc_auc: 0.8350
+Epoch 26/30
+
+Epoch 00026: val_pr_auc improved from 0.33192 to 0.33261, saving model to results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0026.ckpt
+5469/5469 - 3653s - loss: 0.6244 - binary_accuracy: 0.8173 - precision: 0.3262 - recall: 0.7205 - pr_auc: 0.3583 - roc_auc: 0.8825 - val_loss: 1.1703 - val_binary_accuracy: 0.8166 - val_precision: 0.3223 - val_recall: 0.7056 - val_pr_auc: 0.3326 - val_roc_auc: 0.8336
+Epoch 27/30
+
+Epoch 00027: val_pr_auc did not improve from 0.33261
+5469/5469 - 3653s - loss: 0.6173 - binary_accuracy: 0.8192 - precision: 0.3291 - recall: 0.7220 - pr_auc: 0.3624 - roc_auc: 0.8839 - val_loss: 1.1640 - val_binary_accuracy: 0.8225 - val_precision: 0.3304 - val_recall: 0.7014 - val_pr_auc: 0.3285 - val_roc_auc: 0.8319
+Epoch 28/30
+
+Epoch 00028: val_pr_auc did not improve from 0.33261
+5469/5469 - 3650s - loss: 0.6137 - binary_accuracy: 0.8205 - precision: 0.3310 - recall: 0.7220 - pr_auc: 0.3616 - roc_auc: 0.8848 - val_loss: 1.1983 - val_binary_accuracy: 0.8271 - val_precision: 0.3394 - val_recall: 0.7141 - val_pr_auc: 0.3290 - val_roc_auc: 0.8340
+Epoch 29/30
+
+Epoch 00029: val_pr_auc did not improve from 0.33261
+5469/5469 - 3655s - loss: 0.6039 - binary_accuracy: 0.8230 - precision: 0.3350 - recall: 0.7236 - pr_auc: 0.3669 - roc_auc: 0.8865 - val_loss: 1.1640 - val_binary_accuracy: 0.8187 - val_precision: 0.3255 - val_recall: 0.7062 - val_pr_auc: 0.3288 - val_roc_auc: 0.8340
+Epoch 30/30
+
+Epoch 00030: val_pr_auc did not improve from 0.33261
+5469/5469 - 3652s - loss: 0.5977 - binary_accuracy: 0.8244 - precision: 0.3372 - recall: 0.7240 - pr_auc: 0.3688 - roc_auc: 0.8879 - val_loss: 1.1863 - val_binary_accuracy: 0.8179 - val_precision: 0.3255 - val_recall: 0.7136 - val_pr_auc: 0.3279 - val_roc_auc: 0.8322
+Time passed: 30.66 hours
+07:31:23

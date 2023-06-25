@@ -4,6 +4,7 @@ import tensorflow as tf
 import help_functions as hf
 from PIL import PngImagePlugin
 import time
+hf.setup_gpu(gpu_nr=0)
 
 LARGE_ENOUGH_NUMBER = 100
 PngImagePlugin.MAX_TEXT_CHUNK = LARGE_ENOUGH_NUMBER * (1024**2)
@@ -12,6 +13,7 @@ start = time.time()
 # ================== HYPER-PARAMETERS ==================
 from configs import configs
 config = configs[0]
+config['epochs'] = 100
 
 old_stdout = sys.stdout
 log_file = open(config['results_folder'] + '/log_eval.txt', 'w')

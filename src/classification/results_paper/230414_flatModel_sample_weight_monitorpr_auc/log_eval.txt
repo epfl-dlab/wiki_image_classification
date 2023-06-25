@@ -1,0 +1,220 @@
+Found 150000 validated image filenames belonging to 28 classes.
+creating model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 339
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 4, 4, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 22528)             0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               2883712   
+_________________________________________________________________
+dense_1 (Dense)              (None, 28)                3612      
+=================================================================
+Total params: 10,655,893
+Trainable params: 10,588,318
+Non-trainable params: 67,575
+_________________________________________________________________
+results_paper/230414_flatModel_sample_weight_monitorpr_auc/cp-0026.ckpt
+Predicting on test set:
+
+1172/1172 - 448s
+finished predicting
+Found 75000 validated image filenames belonging to 28 classes.
+Predicting on validation set:
+
+586/586 - 314s
+
+---------- DISTRIBUTION OF PREDICTIONS ----------
+{'Animals': 0.6517, 'Architecture': 6.8791, 'Art': 5.4636, 'Chemistry': 1.1689, 'Culture': 6.6965, 'Diagrams': 0.4171, 'Events': 5.3099, 'Food': 3.4497, 'Geology & Fossils': 2.7446, 'History': 6.1279, 'Landscapes': 2.3082, 'Literature': 3.3059, 'Logos & Symbols': 0.4085, 'Maps & Flags': 0.7391, 'Mathematics': 0.2017, 'Medicine & Health': 2.7277, 'Monuments & Memorials': 2.9131, 'Music': 3.1501, 'Nature': 3.9963, 'People': 5.4594, 'Places': 8.286, 'Plants': 0.8864, 'STEM': 5.4525, 'Society': 7.0323, 'Space': 2.1078, 'Sports': 2.9999, 'Technology & Engineering': 5.1832, 'Transportation': 3.9327}
+
+---------- DISTRIBUTION OF PREDICTIONS (individual thresholds) ----------
+{'Animals': 0.2236, 'Architecture': 7.907, 'Art': 6.6406, 'Chemistry': 0.447, 'Culture': 18.9389, 'Diagrams': 0.1812, 'Events': 2.5822, 'Food': 0.2413, 'Geology & Fossils': 0.7295, 'History': 6.9195, 'Landscapes': 0.6352, 'Literature': 0.3019, 'Logos & Symbols': 0.2147, 'Maps & Flags': 0.363, 'Mathematics': 0.0943, 'Medicine & Health': 0.262, 'Monuments & Memorials': 0.4107, 'Music': 0.3077, 'Nature': 3.2372, 'People': 7.4, 'Places': 11.6587, 'Plants': 0.4917, 'STEM': 5.3125, 'Society': 17.6133, 'Space': 0.2186, 'Sports': 1.2525, 'Technology & Engineering': 3.0646, 'Transportation': 2.3509}
+METRICS FOR THRESHOLD 0.5
+
+Mean number of label assignments per image in ground-truth: 2.8970
+Mean number of label assignments per image in predictions: 6.3413
+
+                          precision    recall  f1-score   support index
+Animals                    0.075657  0.744444  0.137355     630.0     0
+Architecture               0.355763  0.871220  0.505220   26720.0     1
+Art                        0.300423  0.645379  0.409994   24192.0     2
+Chemistry                  0.017088  0.452381  0.032932     420.0     3
+Culture                    0.602980  0.580813  0.591689   66128.0     4
+Diagrams                   0.059995  0.716867  0.110723     332.0     5
+Events                     0.121149  0.720052  0.207403    8498.0     6
+Food                       0.049980  0.777989  0.093926    2108.0     7
+Geology & Fossils          0.057647  0.756662  0.107133    1989.0     8
+History                    0.184412  0.631143  0.285426   17031.0     9
+Landscapes                 0.027737  0.762203  0.053527     799.0    10
+Literature                 0.028398  0.710422  0.054613    1257.0    11
+Logos & Symbols            0.110396  0.868421  0.195890     494.0    12
+Maps & Flags               0.239403  0.884858  0.376847    1902.0    13
+Mathematics                0.014591  0.233333  0.027464     120.0    14
+Medicine & Health          0.022508  0.563707  0.043288    1036.0    15
+Monuments & Memorials      0.058140  0.744799  0.107860    2163.0    16
+Music                      0.069116  0.813752  0.127411    2545.0    17
+Nature                     0.381685  0.703740  0.494934   20617.0    18
+People                     0.522819  0.749710  0.616037   36214.0    19
+Places                     0.705123  0.836280  0.765122   66455.0    20
+Plants                     0.206856  0.889796  0.335675    1960.0    21
+STEM                       0.414777  0.665656  0.511089   32317.0    22
+Society                    0.804712  0.642285  0.714382   83807.0    23
+Space                      0.053170  0.626690  0.098023    1701.0    24
+Sports                     0.270965  0.807098  0.405720    9580.0    25
+Technology & Engineering   0.132003  0.644165  0.219106   10103.0    26
+Transportation             0.285447  0.795086  0.420079   13430.0    27
+micro avg                  0.322141  0.705146  0.442246  434548.0  None
+macro avg                  0.220462  0.708534  0.287460  434548.0  None
+weighted avg               0.517256  0.705146  0.560493  434548.0  None
+samples avg                0.361514  0.741155  0.447780  434548.0  None
+Ordered class in descending order of samples:
+ ['Society' 'Places' 'Culture' 'People' 'STEM' 'Architecture' 'Art'
+ 'Nature' 'History' 'Transportation' 'Technology & Engineering' 'Sports'
+ 'Events' 'Music' 'Monuments & Memorials' 'Food' 'Geology & Fossils'
+ 'Plants' 'Maps & Flags' 'Space' 'Literature' 'Medicine & Health'
+ 'Landscapes' 'Animals' 'Logos & Symbols' 'Chemistry' 'Diagrams'
+ 'Mathematics']
+
+Unweighted avg. F1-score of all classes: 0.2874596466126648
+Unweighted avg. F1-score of top 5 classes: 0.6396639102122119
+Unweighted avg. F1-score of the rest: 0.21089350235189375
+
+
+Unweighted avg. precision of all classes: 0.22046221143763203
+Unweighted avg. precision of top 5 classes: 0.610082298009438
+Unweighted avg. precision of the rest: 0.1357621926176742
+
+
+Unweighted avg. recall of all classes: 0.7085339440001566
+Unweighted avg. recall of top 5 classes: 0.6949488625354425
+Unweighted avg. recall of the rest: 0.7114872225794422
+
+METRICS WHEN HAVING PER-CLASS THRESHOLDS
+
+Mean number of label assignments per image in ground-truth: 2.8970
+Mean number of label assignments per image in predictions: 4.2577
+
+                          precision    recall  f1-score   support index
+Animals                    0.168067  0.380952  0.233236     630.0     0
+Architecture               0.406551  0.768338  0.531741   26720.0     1
+Art                        0.325253  0.570188  0.414222   24192.0     2
+Chemistry                  0.034676  0.235714  0.060458     420.0     3
+Culture                    0.494622  0.904700  0.639573   66128.0     4
+Diagrams                   0.138289  0.481928  0.214909     332.0     5
+Events                     0.184343  0.357731  0.243307    8498.0     6
+Food                       0.465931  0.340607  0.393532    2108.0     7
+Geology & Fossils          0.132432  0.310206  0.185620    1989.0     8
+History                    0.203390  0.527744  0.293620   17031.0     9
+Landscapes                 0.069017  0.350438  0.115321     799.0    10
+Literature                 0.088693  0.136038  0.107378    1257.0    11
+Logos & Symbols            0.274982  0.763158  0.404290     494.0    12
+Maps & Flags               0.601812  0.733438  0.661137    1902.0    13
+Mathematics                0.021595  0.108333  0.036011     120.0    14
+Medicine & Health          0.117155  0.189189  0.144703    1036.0    15
+Monuments & Memorials      0.279832  0.339344  0.306728    2163.0    16
+Music                      0.334860  0.258546  0.291796    2545.0    17
+Nature                     0.548128  0.549643  0.548885   20617.0    18
+People                     0.545556  0.711962  0.617749   36214.0    19
+Places                     0.724583  0.811843  0.765735   66455.0    20
+Plants                     0.445541  0.713776  0.548627    1960.0    21
+STEM                       0.510640  0.536096  0.523058   32317.0    22
+Society                    0.659818  0.885618  0.756223   83807.0    23
+Space                      0.392550  0.322163  0.353891    1701.0    24
+Sports                     0.664583  0.554906  0.604813    9580.0    25
+Technology & Engineering   0.193951  0.375730  0.255838   10103.0    26
+Transportation             0.493673  0.551899  0.521164   13430.0    27
+micro avg                  0.489971  0.720102  0.583153  434548.0  None
+macro avg                  0.340019  0.491794  0.384770  434548.0  None
+weighted avg               0.525644  0.720102  0.598756  434548.0  None
+samples avg                0.511060  0.773341  0.570984  434548.0  None
+Ordered class in descending order of samples:
+ ['Society' 'Places' 'Culture' 'People' 'STEM' 'Architecture' 'Art'
+ 'Nature' 'History' 'Transportation' 'Technology & Engineering' 'Sports'
+ 'Events' 'Music' 'Monuments & Memorials' 'Food' 'Geology & Fossils'
+ 'Plants' 'Maps & Flags' 'Space' 'Literature' 'Medicine & Health'
+ 'Landscapes' 'Animals' 'Logos & Symbols' 'Chemistry' 'Diagrams'
+ 'Mathematics']
+
+Unweighted avg. F1-score of all classes: 0.3847702513551235
+Unweighted avg. F1-score of top 5 classes: 0.6604677022006646
+Unweighted avg. F1-score of the rest: 0.32483602291044067
+
+
+Unweighted avg. precision of all classes: 0.34001867036826733
+Unweighted avg. precision of top 5 classes: 0.5870440014791318
+Unweighted avg. precision of the rest: 0.2863175114311229
+
+
+Unweighted avg. recall of all classes: 0.4917939220184152
+Unweighted avg. recall of top 5 classes: 0.7700437000987588
+Unweighted avg. recall of the rest: 0.43130483982703616
+
+
+
+-------------------------- PR AUC metrics table -----------------------
+Macro PR_AUC is: 0.350175237449296
+                  label_name    pr_auc  random_auc  frequency  \
+0                    Animals  0.147726    0.004200   0.001450   
+1               Architecture  0.469384    0.178133   0.061489   
+2                        Art  0.382489    0.161280   0.055672   
+3                  Chemistry  0.024355    0.002800   0.000967   
+4                    Culture  0.640809    0.440853   0.152177   
+5                   Diagrams  0.107870    0.002213   0.000764   
+6                     Events  0.159695    0.056653   0.019556   
+7                       Food  0.327111    0.014053   0.004851   
+8          Geology & Fossils  0.119261    0.013260   0.004577   
+9                    History  0.215438    0.113540   0.039192   
+10                Landscapes  0.055501    0.005327   0.001839   
+11                Literature  0.068169    0.008380   0.002893   
+12           Logos & Symbols  0.467942    0.003293   0.001137   
+13              Maps & Flags  0.681875    0.012680   0.004377   
+14               Mathematics  0.012544    0.000800   0.000276   
+15         Medicine & Health  0.079681    0.006907   0.002384   
+16     Monuments & Memorials  0.237083    0.014420   0.004978   
+17                     Music  0.220765    0.016967   0.005857   
+18                    Nature  0.576374    0.137447   0.047445   
+19                    People  0.572611    0.241427   0.083337   
+20                    Places  0.782889    0.443033   0.152929   
+21                    Plants  0.460901    0.013067   0.004510   
+22                      STEM  0.567899    0.215447   0.074369   
+23                   Society  0.833366    0.558713   0.192860   
+24                     Space  0.296370    0.011340   0.003914   
+25                    Sports  0.583557    0.063867   0.022046   
+26  Technology & Engineering  0.206740    0.067353   0.023249   
+27            Transportation  0.506503    0.089533   0.030906   
+
+    better_than_random  
+0               35.173  
+1                2.635  
+2                2.372  
+3                8.698  
+4                1.454  
+5               48.736  
+6                2.819  
+7               23.276  
+8                8.994  
+9                1.897  
+10              10.419  
+11               8.135  
+12             142.088  
+13              53.776  
+14              15.680  
+15              11.537  
+16              16.441  
+17              13.012  
+18               4.193  
+19               2.372  
+20               1.767  
+21              35.273  
+22               2.636  
+23               1.492  
+24              26.135  
+25               9.137  
+26               3.069  
+27               5.657  

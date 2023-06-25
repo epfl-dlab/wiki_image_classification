@@ -1,0 +1,31 @@
+Found 150000 validated image filenames belonging to 28 classes.
+creating model
+
+Number of layers in basemodel: 339
+Number of trainable layers: 339
+
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+efficientnetb2 (Functional)  (None, 4, 4, 1408)        7768569   
+_________________________________________________________________
+flatten (Flatten)            (None, 22528)             0         
+_________________________________________________________________
+dense (Dense)                (None, 128)               2883712   
+_________________________________________________________________
+dense_1 (Dense)              (None, 28)                3612      
+=================================================================
+Total params: 10,655,893
+Trainable params: 10,588,318
+Non-trainable params: 67,575
+_________________________________________________________________
+results_paper/230414_flatModel_binary_crossentropy_monitorpr_auc/cp-0011.ckpt
+Predicting on test set:
+
+1172/1172 - 2527s
+finished predicting
+Found 75000 validated image filenames belonging to 28 classes.
+Predicting on validation set:
+
+586/586 - 1259s

@@ -19,7 +19,7 @@ import tensorflow as tf
 from keras import backend
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.applications import EfficientNetB2
+from tensorflow.keras.applications import EfficientNetB2, EfficientNetB1 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Other stuff
@@ -28,7 +28,7 @@ from focal_loss import BinaryFocalLoss
 
 # =================================== Model-related =========================================
 
-def create_model(n_labels, image_dimension, number_trainable_layers, y_true=None, loss='binary_crossentropy', random_initialization=False):
+def create_model(n_labels, image_dimension, y_true=None, loss='binary_crossentropy', random_initialization=False):
     """'
     Take EfficientNetB2 pre-trained on imagenet-1k, not including the last layer.
     """
@@ -45,21 +45,8 @@ def create_model(n_labels, image_dimension, number_trainable_layers, y_true=None
 
     print(f'\nNumber of layers in basemodel: {len(base_model.layers)}')
 
-    if isinstance(number_trainable_layers, str):
-        assert(number_trainable_layers == 'all')
-    elif isinstance(number_trainable_layers, int):
-        assert(number_trainable_layers >= 0 & number_trainable_layers <= len(base_model.layers))
-    else:
-        raise ValueError('Invalid argument for variable number_of_trainable_layers')
-    if number_trainable_layers == 'all':
-        number_trainable_layers = len(base_model.layers)
-    # Fine tune from this layer onwards
-    fine_tune_at = len(base_model.layers) - number_trainable_layers
+    base_model.trainable = True # TODO: works?
  
-    print(f'Number of trainable layers: {len(base_model.layers) - fine_tune_at}\n')
-    for layer in base_model.layers[:fine_tune_at]:
-        layer.trainable = False
-
     model = Sequential([
         base_model,
         layers.Flatten(),
@@ -114,7 +101,7 @@ def get_flow(image_dimension, batch_size, df_file='', df=None):
     datagen = ImageDataGenerator() 
     flow = datagen.flow_from_dataframe(
             dataframe=df, 
-            directory='/scratch/WIT_Dataset/images',
+            # directory='/scratch/WIT_Dataset/images',
             color_mode='rgb',
             batch_size=batch_size,
             x_col='url', 
@@ -143,7 +130,7 @@ def get_flow_urls(image_dimension, batch_size, df_file='', df=None):
 
     flow = datagen.flow_from_dataframe(
             dataframe=df, 
-            directory='/scratch/WIT_Dataset/images',
+            # directory='/scratch/WIT_Dataset/images',
             color_mode='rgb',
             batch_size=batch_size,
             x_col='url', 
@@ -418,7 +405,7 @@ def save_img(image_path):
 def plot_distribution(dataframe, filename):
     _generator = ImageDataGenerator() 
     _data = _generator.flow_from_dataframe(dataframe=dataframe, 
-                                            directory='/scratch/WIT_Dataset/images', 
+                                            # directory='/scratch/WIT_Dataset/images',  # TODO: remove this. url will have an absolute path
                                             x_col='url', 
                                             y_col='labels', 
                                             class_mode='categorical', 
@@ -437,3 +424,15 @@ def plot_distribution(dataframe, filename):
     _ = plt.ylabel('Labels', fontsize=13)
     _ = plt.grid(True)
     save_img(filename)
+
+
+def print_file_percentages_in_url(some_df):
+    """The some_df dataframe has a url column whose file ending we compute percentages for."""
+    # Count the number of occurrences of each file-ending in the url column
+    counts = some_df['url'].str.lower().str.extract(r'\.([a-z]+)$', expand=False).value_counts()
+
+    # Divide each count by the total number of rows and multiply by 100 to get the percentage
+    percentages = counts / len(some_df) * 100
+
+    # Print the percentages for each file-ending
+    print(percentages)
