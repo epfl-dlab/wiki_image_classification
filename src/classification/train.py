@@ -18,12 +18,12 @@ hf.setup_gpu(gpu_nr=0) # if some of the GPUs is busy, choose one (0 or 1)
 
 config = configs[0]
 print(config)
+os.mkdir(config['results_folder'])
 
 # Save outputs to log file
-old_stdout = sys.stdout
-os.mkdir(config['results_folder'])
-log_file = open(config['results_folder'] + '/log.txt', 'w')
-sys.stdout = log_file
+# old_stdout = sys.stdout
+# log_file = open(config['results_folder'] + '/log.txt', 'w')
+# sys.stdout = log_file
 
 
 # ============================================
@@ -76,7 +76,7 @@ if config['class_weights'] == True:
     class_weights = hf.compute_class_weights(y_true)
     history = model.fit(
         train,
-        verbose=1,
+        verbose=2, # one line per epoch 
         validation_data=val_stop,
         epochs=config['epochs'],
         callbacks=[history_callback, evaluate_callback],
@@ -85,7 +85,7 @@ else:
     print('\n\nStarting training...')
     history = model.fit(
         train,
-        verbose=1,
+        verbose=2, # one line per epoch 
         validation_data=val_stop,
         epochs=config['epochs'],
         callbacks=[history_callback, evaluate_callback])

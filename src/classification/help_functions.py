@@ -34,21 +34,37 @@ class EvaluateCallback(tf.keras.callbacks.Callback):
         self.history_csv_path = history_csv_path
 
     def on_epoch_end(self, epoch, logs=None):
+
+        print('model summary from EvaluateCallback')
+        print(self.model.summary())
+        print('end')
+
+        print('predict on human')
+        human_pred_array = self.model.predict(self.human_dataflow, verbose=1)  # predictions are different, how can then the evaluate() be exactly the same?
+        print(f'human_pred_array shape: {human_pred_array.shape}')
+        print(human_pred_array)
+
+        print('predict on validation')
+        val_pred_array = self.model.predict(self.val_dataflow, verbose=1)
+        print(f'val_pred_array shape: {val_pred_array.shape}')
+        print(val_pred_array)
+
         human_evaluation_results = self.model.evaluate(x=self.human_dataflow, verbose=0)
+        print(f'human_evaluation_results: {human_evaluation_results}')
         human_loss = human_evaluation_results[0]
         human_metrics_values = human_evaluation_results[1:]
-        human_metrics_names = self.model.metrics_names[1:]
+        # human_metrics_names = self.model.metrics_names[1:]
 
         val_evaluation_results = self.model.evaluate(x=self.val_dataflow, verbose=0)
+        print(f'val_evaluation_results: {val_evaluation_results}')
         val_loss = val_evaluation_results[0]
         val_metrics_values = val_evaluation_results[1:]
-        val_metrics_names = self.model.metrics_names[1:]
 
-        print(f'\nEpoch {epoch}: train_loss {human_loss}, val_loss={val_loss}') ## TODO: exact same values for model.evaluate(human) and model.evaluate(val). WHERE'S THE PROBLEM?
-        for name, value in zip(human_metrics_names, human_metrics_values):
-            print(f'Train {name}: {value}')
-        for name, value in zip(val_metrics_names, val_metrics_values):
-            print(f'Validation {name}: {value}')
+        # print(f'\nEpoch {epoch}: train_loss {human_loss}, val_loss={val_loss}') ## TODO: exact same values for model.evaluate(human) and model.evaluate(val). WHERE'S THE PROBLEM?
+        # for name, value in zip(human_metrics_names, human_metrics_values):
+        #     print(f'Train {name}: {value}')
+        # for name, value in zip(val_metrics_names, val_metrics_values):
+        #     print(f'Validation {name}: {value}')
 
         with open(self.history_csv_path, 'a') as file:
             writer = csv.writer(file)
@@ -73,7 +89,7 @@ def create_model(n_labels, image_dimension, y_true=None, loss='binary_crossentro
 
     print(f'\nNumber of layers in basemodel: {len(base_model.layers)}')
 
-    base_model.trainable = True # TODO: works?
+    base_model.trainable = True
  
     model = Sequential([
         base_model,
