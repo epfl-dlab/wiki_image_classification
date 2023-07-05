@@ -19,12 +19,40 @@ import tensorflow as tf
 from keras import backend
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.applications import EfficientNetB2, EfficientNetB1 
+from tensorflow.keras.applications import EfficientNetB2 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Other stuff
 from focal_loss import BinaryFocalLoss
 
+import csv
+class EvaluateCallback(tf.keras.callbacks.Callback):
+    def __init__(self, human_dataflow, val_dataflow, history_csv_path):
+        super(EvaluateCallback, self).__init__()
+        self.human_dataflow = human_dataflow
+        self.val_dataflow = val_dataflow
+        self.history_csv_path = history_csv_path
+
+    def on_epoch_end(self, epoch, logs=None):
+        human_evaluation_results = self.model.evaluate(x=self.human_dataflow, verbose=0)
+        human_loss = human_evaluation_results[0]
+        human_metrics_values = human_evaluation_results[1:]
+        human_metrics_names = self.model.metrics_names[1:]
+
+        val_evaluation_results = self.model.evaluate(x=self.val_dataflow, verbose=0)
+        val_loss = val_evaluation_results[0]
+        val_metrics_values = val_evaluation_results[1:]
+        val_metrics_names = self.model.metrics_names[1:]
+
+        print(f'\nEpoch {epoch}: train_loss {human_loss}, val_loss={val_loss}') ## TODO: exact same values for model.evaluate(human) and model.evaluate(val). WHERE'S THE PROBLEM?
+        for name, value in zip(human_metrics_names, human_metrics_values):
+            print(f'Train {name}: {value}')
+        for name, value in zip(val_metrics_names, val_metrics_values):
+            print(f'Validation {name}: {value}')
+
+        with open(self.history_csv_path, 'a') as file:
+            writer = csv.writer(file)
+            writer.writerow([epoch] + [human_loss] + human_metrics_values)
 
 # =================================== Model-related =========================================
 
@@ -86,7 +114,6 @@ def create_model(n_labels, image_dimension, y_true=None, loss='binary_crossentro
                             tf.keras.metrics.Precision(name='precision'),
                             tf.keras.metrics.Recall(name='recall'),
                             tf.keras.metrics.AUC(num_thresholds=50, curve='PR', name='pr_auc', multi_label=True),
-                            tf.keras.metrics.AUC(num_thresholds=50, curve='ROC', name='roc_auc', multi_label=True)
                         ])
     else:
         raise ValueError('This loss function is not supported!')
@@ -101,7 +128,6 @@ def get_flow(image_dimension, batch_size, df_file='', df=None):
     datagen = ImageDataGenerator() 
     flow = datagen.flow_from_dataframe(
             dataframe=df, 
-            # directory='/scratch/WIT_Dataset/images',
             color_mode='rgb',
             batch_size=batch_size,
             x_col='url', 
