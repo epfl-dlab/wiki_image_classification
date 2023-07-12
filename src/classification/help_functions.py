@@ -35,32 +35,21 @@ class EvaluateCallback(tf.keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs=None):
 
-        print('model summary from EvaluateCallback')
-        print(self.model.summary())
-        print('end')
-
-        print('predict on human')
-        human_pred_array = self.model.predict(self.human_dataflow, verbose=1)  # predictions are different, how can then the evaluate() be exactly the same?
-        print(f'human_pred_array shape: {human_pred_array.shape}')
-        print(human_pred_array)
-
-        print('predict on validation')
-        val_pred_array = self.model.predict(self.val_dataflow, verbose=1)
-        print(f'val_pred_array shape: {val_pred_array.shape}')
-        print(val_pred_array)
-
-        human_evaluation_results = self.model.evaluate(x=self.human_dataflow, verbose=0)
-        print(f'human_evaluation_results: {human_evaluation_results}')
+        # print('\n---------- PREDICTING HUMAN ---------')
+        human_evaluation_results = self.model.evaluate(self.human_dataflow, verbose=0)
+        print(f'\nhuman_evaluation_results: {human_evaluation_results}')
         human_loss = human_evaluation_results[0]
         human_metrics_values = human_evaluation_results[1:]
-        # human_metrics_names = self.model.metrics_names[1:]
 
-        val_evaluation_results = self.model.evaluate(x=self.val_dataflow, verbose=0)
-        print(f'val_evaluation_results: {val_evaluation_results}')
+        # print('\n---------- PREDICTING VAL ---------')
+        val_evaluation_results = self.model.evaluate(self.val_dataflow, verbose=0)
+        print(f'\val_evaluation_results: {val_evaluation_results}')
+        val_loss = val_evaluation_results[0]
+        val_metrics_values = val_evaluation_results[1:]
 
         with open(self.history_csv_path, 'a') as file:
             writer = csv.writer(file)
-            writer.writerow([epoch] + [human_loss] + human_metrics_values)
+            writer.writerow([epoch] + [human_loss] + human_metrics_values + [777] + [val_loss] + val_metrics_values)
 
 # =================================== Model-related =========================================
 
@@ -272,7 +261,7 @@ def compute_class_weights(y_true):
 
 def get_custom_loss(alpha_weights):
     """
-    Sample weight loss implementation, inspired by https://www.tensorflow.org/guide/keras/train_and_evaluate#sample_weights.
+    Sample weight loss implementation, inspired by https://www.tensorflow.org/guide/keras/training_with_built_in_methods#using_sample_weighting_and_class_weighting.
 
     Input:  
         - alpha_weights: a Tensorflow tensor with dimension (n_labels x 1) containing the n_labels positive weights of each label.
