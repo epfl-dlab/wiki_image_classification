@@ -478,3 +478,13 @@ class Taxonomy:
         dfs(self.taxonomy, 0)
         del clusters[0]
         return clusters
+    
+    def get_hierarchy(self):
+        """
+        Return a dictionary representing the hierarchical structure of the taxonomy
+        """
+        def dfs(node):
+            return {node.name: [dfs(child) for child in node.children]}
+
+        hierarchy = dfs(self.taxonomy)
+        return hierarchy
